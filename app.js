@@ -93,9 +93,9 @@ function toggleThroughput(model) {
 
 // --- Cloud vs. On-Prem Savings Calculator ---
 const scalePresets = {
-  small: { tokens: 5, rate: 2.50 },
-  medium: { tokens: 50, rate: 2.50 },
-  large: { tokens: 250, rate: 2.50 }
+  small: { tokens: 50, rate: 2.50 },
+  medium: { tokens: 500, rate: 2.50 },
+  large: { tokens: 2500, rate: 2.50 }
 };
 
 function applyPreset(presetName) {
@@ -117,8 +117,9 @@ function calculateSavings() {
   const tokens = parseFloat(tokensSlider.value); // Millions of tokens
   const rate = parseFloat(rateSlider.value); // $ per 1 Million tokens
   
-  // Update labels
-  document.getElementById("token-val-display").textContent = `${tokens}M tokens`;
+  // Update labels (handling Millions vs Billions scaling)
+  let tokenStr = tokens >= 1000 ? `${(tokens / 1000).toFixed(1)}B tokens` : `${tokens}M tokens`;
+  document.getElementById("token-val-display").textContent = tokenStr;
   document.getElementById("api-rate-display").textContent = `$${rate.toFixed(2)} per 1M tokens`;
   
   // Calculate costs

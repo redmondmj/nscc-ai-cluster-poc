@@ -101,9 +101,9 @@
             <div class="input-group">
               <label class="input-label" for="slider-tokens">
                 <span>Monthly Token Volume</span>
-                <span class="value-display" id="token-val-display">50M tokens</span>
+                <span class="value-display" id="token-val-display">500M tokens</span>
               </label>
-              <input type="range" class="slider-input" id="slider-tokens" min="1" max="500" value="50" oninput="calculateSavings()">
+              <input type="range" class="slider-input" id="slider-tokens" min="10" max="5000" step="10" value="500" oninput="calculateSavings()">
               <p style="font-size: 0.75rem; color: var(--color-text-secondary);">Combined input & output tokens requested by students/faculty monthly.</p>
             </div>
 
@@ -118,13 +118,13 @@
 
             <div class="input-group">
               <label class="input-label" for="select-campus-scale">
-                <span>Campus Deployment Profile Quick-Presets</span>
+                <span>Deployment Profile Presets</span>
               </label>
               <select id="select-campus-scale" onchange="applyPreset(this.value)" style="background: rgba(255,255,255,0.05); color: var(--color-text-primary); border: var(--border-glass); padding: 0.5rem; border-radius: 6px; font-family: var(--font-sans); outline: none;">
                 <option value="custom">-- Custom Settings --</option>
-                <option value="small">Small Department (5 Million Tokens/mo)</option>
-                <option value="medium" selected>Standard Campus Use (50 Million Tokens/mo)</option>
-                <option value="large">Full College Integration (250 Million Tokens/mo)</option>
+                <option value="small">Pilot Class / Dev Sandbox (50 Million Tokens/mo)</option>
+                <option value="medium" selected>Collaborative IT Programs - CCN (500 Million Tokens/mo)</option>
+                <option value="large">Full CCN Enterprise Roll-out (2.5 Billion Tokens/mo)</option>
               </select>
             </div>
 

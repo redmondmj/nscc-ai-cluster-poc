@@ -16,9 +16,9 @@ This version uses your pre-attached avatar image as the identity reference, but 
 
 ### Clip 2 (0:10 - 0:20) — The Cloud Risk
 * **Visual Prompt (Omni)**: 
-  "Featuring the avatar from the attached reference image, styled in professional business-casual clothing consisting of a smart dark blazer over a gray shirt. The avatar is speaking directly to the camera. Floating behind them are abstract digital graphics showing red neon data packets moving towards a red cloud icon with warning symbols, representing data leakage."
-* **Voiceover Script (21 words)**: 
-  "Commercial APIs send student queries and proprietary research outside our walls, creating significant data governance and institutional privacy compliance risks."
+  "Featuring the avatar from the attached reference image, styled in professional business-casual clothing consisting of a smart dark blazer over a gray shirt. The avatar is speaking directly to the camera. In the background, abstract graphics illustrate data packets moving along red lines toward an external cloud server node, representing external network routing."
+* **Voiceover Script (22 words)**: 
+  "Commercial APIs route student inputs and institutional assets outside our campus network, creating challenges for local data sovereignty and governance."
 
 ### Clip 3 (0:20 - 0:30) — The On-Prem Solution
 * **Visual Prompt (Omni)**: 

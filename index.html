@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NSCC AI Cluster POC: Local Infrastructure. Zero Cloud Costs. Total Governance.</title>
+  <meta name="description" content="Explore the Proof-of-Concept results of the NSCC AI Cluster. Read performance reports, cost savings analysis, interactive system architecture maps, and the strategic upgrade roadmap.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon">N</div>
+        <span class="logo-text">NSCC AI CLUSTER</span>
+        <span class="badge-poc">POC Result</span>
+      </div>
+    <nav>
+      <a href="#stats" class="active">Overview</a>
+      <a href="#comparison">Cloud vs On-Prem</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#pillars">Value Pillars</a>
+      <a href="#case-study">Case Study</a>
+      <a href="#roadmap">Roadmap</a>
+    </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- Hero Header -->
+    <section class="hero">
+      <h1>NSCC AI Cluster: Local Infrastructure. <br><span style="color: var(--color-primary);">Zero Cloud Costs. Total Governance.</span></h1>
+      <p class="lead">Proof-of-Concept results proving that campus-managed hardware can run enterprise-grade LLMs locally, securely, and with zero subscription invoicing.</p>
+    </section>
+
+    <!-- KPI Dashboard -->
+    <section id="stats" style="scroll-margin-top: 100px;">
+      <div class="kpi-grid">
+        
+        <!-- Throughput KPI Card -->
+        <div class="glass-card kpi-card" style="--card-accent: var(--color-primary);">
+          <div class="kpi-label">Distributed Throughput</div>
+          <div class="kpi-value" id="kpi-throughput-val">57.83 <span style="font-size: 1rem; font-weight: 500;">tok/s</span></div>
+          <div class="kpi-sub">Active Model: <strong id="kpi-active-model">Mistral 7B</strong></div>
+          <div class="kpi-throughput-toggle">
+            <button class="toggle-btn active" id="btn-mistral" onclick="toggleThroughput('mistral')">Mistral 7B</button>
+            <button class="toggle-btn" id="btn-qwen" onclick="toggleThroughput('qwen')">Qwen 2.5 32B</button>
+          </div>
+          <!-- Typing Ticker Simulator -->
+          <div class="ticker-simulation" id="ticker-sim-box">
+            <span id="ticker-text"></span><span class="ticker-cursor"></span>
+          </div>
+        </div>
+
+        <!-- Context KPI Card -->
+        <div class="glass-card kpi-card" style="--card-accent: var(--color-warning);">
+          <div class="kpi-label">Max Context window</div>
+          <div class="kpi-value">32,768</div>
+          <div class="kpi-sub">Full attention span using flash attention.</div>
+          <div style="margin-top: 1rem; height: 6px; background: rgba(255,255,255,0.05); border-radius: 99px; overflow: hidden; position: relative;">
+            <div style="width: 100%; height: 100%; background: linear-gradient(90deg, var(--color-primary), var(--color-warning));"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 0.25rem;">
+            <span>8k default</span>
+            <span>32k cached limit</span>
+          </div>
+        </div>
+
+        <!-- Footprint KPI Card -->
+        <div class="glass-card kpi-card" style="--card-accent: #3b82f6;">
+          <div class="kpi-label">Cluster Footprint</div>
+          <div class="kpi-value">3 Nodes</div>
+          <div class="kpi-sub" style="line-height: 1.5; margin-top: 0.5rem;">
+            CPU cores: <strong>36 Cores</strong><br>
+            RAM capacity: <strong>124 GB RAM</strong><br>
+            VRAM capacity: <strong>36 GB Total VRAM</strong>
+          </div>
+        </div>
+
+        <!-- Operating Cost Card -->
+        <div class="glass-card kpi-card pulse-emerald" style="--card-accent: var(--color-success);">
+          <div class="kpi-label">Operating Cost</div>
+          <div class="kpi-value" style="color: var(--color-success);">$0.00</div>
+          <div class="kpi-sub">Invoiced external API token fees. Completely air-gapped run.</div>
+        </div>
+
+      </div>
+
+      <!-- Cost-Savings Calculator Panel -->
+      <div class="glass-card savings-calculator">
+        <div class="calculator-header">
+          <h2>Cloud Cost Avoidance Calculator</h2>
+          <p>Estimate the operational cloud spend avoided by serving prompts locally on the NSCC Cluster.</p>
+        </div>
+        <div class="calculator-grid">
+          <div class="calculator-inputs">
+            
+            <div class="input-group">
+              <label class="input-label" for="slider-tokens">
+                <span>Monthly Token Volume</span>
+                <span class="value-display" id="token-val-display">50M tokens</span>
+              </label>
+              <input type="range" class="slider-input" id="slider-tokens" min="1" max="500" value="50" oninput="calculateSavings()">
+              <p style="font-size: 0.75rem; color: var(--color-text-secondary);">Combined input & output tokens requested by students/faculty monthly.</p>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="slider-api-rate">
+                <span>Equivalent Cloud API Rate</span>
+                <span class="value-display" id="api-rate-display">$2.50 per 1M tokens</span>
+              </label>
+              <input type="range" class="slider-input" id="slider-api-rate" min="0.5" max="15.0" step="0.5" value="2.50" oninput="calculateSavings()">
+              <p style="font-size: 0.75rem; color: var(--color-text-secondary);">Blended average cost (e.g. GPT-4o, Claude Sonnet) per million tokens.</p>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="select-campus-scale">
+                <span>Campus Deployment Profile Quick-Presets</span>
+              </label>
+              <select id="select-campus-scale" onchange="applyPreset(this.value)" style="background: rgba(255,255,255,0.05); color: var(--color-text-primary); border: var(--border-glass); padding: 0.5rem; border-radius: 6px; font-family: var(--font-sans); outline: none;">
+                <option value="custom">-- Custom Settings --</option>
+                <option value="small">Small Department (5 Million Tokens/mo)</option>
+                <option value="medium" selected>Standard Campus Use (50 Million Tokens/mo)</option>
+                <option value="large">Full College Integration (250 Million Tokens/mo)</option>
+              </select>
+            </div>
+
+          </div>
+          <div class="calculator-results">
+            <span class="kpi-label">Estimated Monthly Savings</span>
+            <div class="results-value" id="savings-monthly">$125.00</div>
+            <span class="kpi-label" style="margin-top: 1rem;">Estimated Annual Savings</span>
+            <div class="results-value" id="savings-annual" style="font-size: 2.25rem; color: var(--color-primary); text-shadow: 0 0 15px rgba(6, 182, 212, 0.2);">$1,500.00</div>
+            
+            <div class="results-compare">
+              <div class="results-compare-col cloud">
+                <span class="kpi-label">Cloud Invoice Cost</span>
+                <span class="cost" id="compare-cloud-cost">$125.00</span>
+              </div>
+              <div class="results-compare-col onprem">
+                <span class="kpi-label">On-Prem Cost</span>
+                <span class="cost">$0.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cloud vs On-Prem Infographic -->
+    <section id="comparison" style="margin-top: 5rem; scroll-margin-top: 100px;">
+      <h2 class="section-title">Executive Comparison: Before vs. After</h2>
+      <p class="section-subtitle">A side-by-side financial and operational breakdown of local cluster hosting versus vendor-managed public APIs.</p>
+      
+      <div class="infographic-wrapper">
+        <table class="info-table">
+          <thead>
+            <tr>
+              <th colspan="2" class="header-main">NSCC AI Cluster POC Results</th>
+            </tr>
+            <tr>
+              <th class="col-cloud" style="color: var(--color-alert);">The Cloud Approach</th>
+              <th class="col-onprem" style="color: var(--color-success);">Our On-Prem Cluster</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-cloud">
+                <div class="cell-content">
+                  <div class="cell-icon" style="color: var(--color-alert);">❌</div>
+                  <div>
+                    <div class="cell-title">Monthly Subscription Fees</div>
+                    <div class="cell-desc">Escalating operational expenses. Invoices scale linearly with token volume, creating budget unpredictability.</div>
+                  </div>
+                </div>
+              </td>
+              <td class="col-onprem">
+                <div class="cell-content">
+                  <div class="cell-icon" style="color: var(--color-success);">✅</div>
+                  <div>
+                    <div class="cell-title">Zero Operational Invoiced Cost</div>
+                    <div class="cell-desc">One-time capital hardware cost. Local power and cooling represent the only marginal overhead, unaffected by user requests.</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-cloud">
+                <div class="cell-content">
+                  <div class="cell-icon" style="color: var(--color-alert);">❌</div>
+                  <div>
+                    <div class="cell-title">Data Sent Outside College Walls</div>
+                    <div class="cell-desc">Prompts leave the campus, traversing third-party servers. Exposes research, student logs, and proprietary data to privacy leak risks.</div>
+                  </div>
+                </div>
+              </td>
+              <td class="col-onprem">
+                <div class="cell-content">
+                  <div class="cell-icon" style="color: var(--color-success);">✅</div>
+                  <div>
+                    <div class="cell-title">100% On-Prem & Air-Gapped</div>
+                    <div class="cell-desc">Network isolation via isolated VLAN 30. Student submissions and local outputs never exit campus-controlled hypervisors.</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-cloud">
+                <div class="cell-content">
+                  <div class="cell-icon" style="color: var(--color-alert);">❌</div>
+                  <div>
+                    <div class="cell-title">Zero Local Infrastructure Assets</div>
+                    <div class="cell-desc">Capital departs to hyperscalers. IT staff gain no engineering skills or physical assets that stay inside the college portfolio.</div>
+                  </div>
+                </div>
+              </td>
+              <td class="col-onprem">
+                <div class="cell-content">
+                  <div class="cell-icon" style="color: var(--color-success);">✅</div>
+                  <div>
+                    <div class="cell-title">Predictable Local Hardware Asset</div>
+                    <div class="cell-desc">Valuable local infrastructure that can be repurposed, clustered, or upgraded physically, strengthening in-house computational research.</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-cloud">
+                <div class="cell-content">
+                  <div class="cell-icon" style="color: var(--color-alert);">❌</div>
+                  <div>
+                    <div class="cell-title">Opaque Security Oversight</div>
+                    <div class="cell-desc">No access to lower-level networking or model logs. System security relies entirely on third-party security certifications and vendor compliance reports.</div>
+                  </div>
+                </div>
+              </td>
+              <td class="col-onprem">
+                <div class="cell-content">
+                  <div class="cell-icon" style="color: var(--color-success);">✅</div>
+                  <div>
+                    <div class="cell-title">Total Admin & Audit Control</div>
+                    <div class="cell-desc">Direct access to the hypervisor (Proxmox VE 9.1). Admin dashboards log, rate-limit, and audit all request traffic at the raw hardware and VM levels.</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Interactive Architecture Map -->
+    <section id="architecture" style="scroll-margin-top: 100px;">
+      <h2 class="section-title">Distributed Architecture</h2>
+      <p class="section-subtitle">An interactive look at how commodity hardware is bridged over dedicated internal switches to run multi-node LLMs.</p>
+      
+      <div class="architecture-container">
+        
+        <!-- SVG Architecture Drawing -->
+        <div class="architecture-map-box">
+          <svg class="map-svg" viewBox="0 0 720 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Gradients & Shadows definitions -->
+            <defs>
+              <linearGradient id="grad-vlan" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.05" />
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.05" />
+              </linearGradient>
+              <linearGradient id="grad-vms" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.05" />
+                <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.05" />
+              </linearGradient>
+            </defs>
+
+            <!-- VLAN 30 Boundary -->
+            <rect x="20" y="20" width="680" height="150" rx="16" fill="url(#grad-vlan)" stroke="rgba(6, 182, 212, 0.2)" stroke-width="2" />
+            <text x="35" y="45" fill="var(--color-primary)" font-family="var(--font-sans)" font-weight="700" font-size="12" letter-spacing="1">VLAN 30 MANAGEMENT NETWORK (10.30.0.0/24)</text>
+
+            <!-- Proxmox Nodes (AIProx1, 2, 3) -->
+            <!-- AIProx1 -->
+            <g class="svg-interactive" id="svg-node-1" onclick="selectArchItem('aiprox1')">
+              <rect x="50" y="70" width="170" height="70" rx="8" fill="#111827" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" />
+              <text x="70" y="95" fill="#fff" font-family="var(--font-sans)" font-weight="600" font-size="13">AIProx1</text>
+              <text x="70" y="115" fill="var(--color-text-secondary)" font-family="var(--font-sans)" font-size="10">IP: 10.30.0.11</text>
+              <circle cx="200" cy="85" r="4" fill="var(--color-success)" />
+            </g>
+            <!-- AIProx2 -->
+            <g class="svg-interactive" id="svg-node-2" onclick="selectArchItem('aiprox2')">
+              <rect x="275" y="70" width="170" height="70" rx="8" fill="#111827" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" />
+              <text x="295" y="95" fill="#fff" font-family="var(--font-sans)" font-weight="600" font-size="13">AIProx2</text>
+              <text x="295" y="115" fill="var(--color-text-secondary)" font-family="var(--font-sans)" font-size="10">IP: 10.30.0.12</text>
+              <circle cx="425" cy="85" r="4" fill="var(--color-success)" />
+            </g>
+            <!-- AIProx3 -->
+            <g class="svg-interactive" id="svg-node-3" onclick="selectArchItem('aiprox3')">
+              <rect x="500" y="70" width="170" height="70" rx="8" fill="#111827" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" />
+              <text x="520" y="95" fill="#fff" font-family="var(--font-sans)" font-weight="600" font-size="13">AIProx3</text>
+              <text x="520" y="115" fill="var(--color-text-secondary)" font-family="var(--font-sans)" font-size="10">IP: 10.30.0.13</text>
+              <circle cx="650" cy="85" r="4" fill="var(--color-success)" />
+            </g>
+
+            <!-- Links between Management Nodes -->
+            <path d="M 220 105 L 275 105" stroke="rgba(255,255,255,0.15)" stroke-width="2" stroke-dasharray="4" />
+            <path d="M 445 105 L 500 105" stroke="rgba(255,255,255,0.15)" stroke-width="2" stroke-dasharray="4" />
+
+            <!-- PCIe Passthrough arrows -->
+            <path d="M 135 140 L 135 250" stroke="var(--color-primary)" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arrow)" />
+            <path d="M 360 140 L 360 250" stroke="var(--color-primary)" stroke-width="1.5" stroke-dasharray="4" />
+            <path d="M 585 140 L 585 250" stroke="var(--color-primary)" stroke-width="1.5" stroke-dasharray="4" />
+            
+            <!-- Connection Text (PCIe) -->
+            <rect x="300" y="178" width="120" height="24" rx="4" fill="#070a13" stroke="rgba(6, 182, 212, 0.2)" />
+            <text x="312" y="194" fill="var(--color-primary)" font-family="var(--font-sans)" font-weight="500" font-size="9">PCIe Passthrough (IOMMU)</text>
+
+            <!-- VM Cluster Boundary -->
+            <rect x="20" y="230" width="680" height="230" rx="16" fill="url(#grad-vms)" stroke="rgba(16, 185, 129, 0.2)" stroke-width="2" />
+            <text x="35" y="255" fill="var(--color-success)" font-family="var(--font-sans)" font-weight="700" font-size="12" letter-spacing="1">DEDICATED INTERNAL LLM VM CLUSTER</text>
+
+            <!-- VMs -->
+            <!-- VM 100 -->
+            <g class="svg-interactive" id="svg-vm-1" onclick="selectArchItem('vm100')">
+              <rect x="40" y="280" width="190" height="150" rx="12" fill="#0b0f19" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" />
+              <text x="55" y="305" fill="#fff" font-family="var(--font-sans)" font-weight="700" font-size="13">Stage 0: VM 100</text>
+              <text x="55" y="325" fill="var(--color-text-secondary)" font-family="var(--font-mono)" font-size="10">IP: 192.168.100.1 (eth1)</text>
+              <line x1="55" y1="340" x2="215" y2="340" stroke="rgba(255,255,255,0.08)" />
+              <rect x="55" y="352" width="160" height="20" rx="4" fill="rgba(6,182,212,0.1)" />
+              <text x="65" y="366" fill="var(--color-primary)" font-family="var(--font-sans)" font-weight="600" font-size="10">RTX 4070 (12GB VRAM)</text>
+              <text x="55" y="392" fill="var(--color-text-secondary)" font-family="var(--font-sans)" font-size="10">Assigned Pipeline Stages:</text>
+              <text x="55" y="412" fill="#fff" font-family="var(--font-sans)" font-weight="600" font-size="11">Embeddings + Layers 0-10</text>
+            </g>
+
+            <!-- VM 200 -->
+            <g class="svg-interactive" id="svg-vm-2" onclick="selectArchItem('vm200')">
+              <rect x="265" y="280" width="190" height="150" rx="12" fill="#0b0f19" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" />
+              <text x="280" y="305" fill="#fff" font-family="var(--font-sans)" font-weight="700" font-size="13">Stage 1: VM 200</text>
+              <text x="280" y="325" fill="var(--color-text-secondary)" font-family="var(--font-mono)" font-size="10">IP: 192.168.100.2 (eth1)</text>
+              <line x1="280" y1="340" x2="440" y2="340" stroke="rgba(255,255,255,0.08)" />
+              <rect x="280" y="352" width="160" height="20" rx="4" fill="rgba(6,182,212,0.1)" />
+              <text x="290" y="366" fill="var(--color-primary)" font-family="var(--font-sans)" font-weight="600" font-size="10">RTX 4070 (12GB VRAM)</text>
+              <text x="280" y="392" fill="var(--color-text-secondary)" font-family="var(--font-sans)" font-size="10">Assigned Pipeline Stages:</text>
+              <text x="280" y="412" fill="#fff" font-family="var(--font-sans)" font-weight="600" font-size="11">Layers 11-21</text>
+            </g>
+
+            <!-- VM 300 -->
+            <g class="svg-interactive" id="svg-vm-3" onclick="selectArchItem('vm300')">
+              <rect x="490" y="280" width="190" height="150" rx="12" fill="#0b0f19" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" />
+              <text x="505" y="305" fill="#fff" font-family="var(--font-sans)" font-weight="700" font-size="13">Stage 2: VM 300</text>
+              <text x="505" y="325" fill="var(--color-text-secondary)" font-family="var(--font-mono)" font-size="10">IP: 192.168.100.3 (eth1)</text>
+              <line x1="505" y1="340" x2="665" y2="340" stroke="rgba(255,255,255,0.08)" />
+              <rect x="505" y="352" width="160" height="20" rx="4" fill="rgba(6,182,212,0.1)" />
+              <text x="515" y="366" fill="var(--color-primary)" font-family="var(--font-sans)" font-weight="600" font-size="10">RTX 4070 (12GB VRAM)</text>
+              <text x="505" y="392" fill="var(--color-text-secondary)" font-family="var(--font-sans)" font-size="10">Assigned Pipeline Stages:</text>
+              <text x="505" y="412" fill="#fff" font-family="var(--font-sans)" font-weight="600" font-size="11">Layers 22-31 + LM Head</text>
+            </g>
+
+            <!-- Inter-VM communication link -->
+            <path id="gloo-link-1" d="M 230 355 L 265 355" stroke="var(--color-success)" stroke-width="3" stroke-dasharray="5" class="svg-link-active" />
+            <path id="gloo-link-2" d="M 455 355 L 490 355" stroke="var(--color-success)" stroke-width="3" stroke-dasharray="5" class="svg-link-active" />
+            
+            <!-- Pinning Marker label -->
+            <rect x="300" y="435" width="120" height="18" rx="4" fill="#070a13" stroke="rgba(16, 185, 129, 0.2)" />
+            <text x="312" y="447" fill="var(--color-success)" font-family="var(--font-sans)" font-weight="600" font-size="8">GLOO_SOCKET_IFNAME=eth1</text>
+          </svg>
+        </div>
+
+        <!-- Node Details Pane -->
+        <div class="glass-card architecture-info-pane">
+          <div class="info-pane-details">
+            <div class="info-pane-header">
+              <span id="active-item-badge" class="badge-poc" style="background: rgba(16, 185, 129, 0.1); border-color: var(--color-success); color: var(--color-success);">Interactive Map</span>
+              <h3 class="info-pane-title" id="arch-detail-title">Cluster System Architecture</h3>
+              <p class="info-pane-subtitle" id="arch-detail-subtitle">Click nodes or VMs to inspect detailed hardware maps.</p>
+            </div>
+            
+            <div class="info-pane-specs" id="arch-specs-default">
+              <p>The cluster operates in a <strong>distributed pipeline-parallel</strong> model across three commodity machines.</p>
+              <div class="architecture-callout" style="margin-top: 1rem;">
+                <strong>Network Pinned Routing:</strong> Inter-node tensors are strictly bound to the internal VM-to-VM interface (<code>192.168.100.x</code>) utilizing <code>GLOO_SOCKET_IFNAME=eth1</code>. Traffic never crosses the public management switch, guaranteeing speed and absolute internal security.
+              </div>
+            </div>
+
+            <div class="info-pane-specs" id="arch-specs-custom" style="display: none;">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+          
+          <div class="architecture-callout" id="pane-bottom-callout">
+            Hover over the SVG diagram elements to inspect networking and configuration bindings.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Value Pillars Section -->
+    <section id="pillars" style="scroll-margin-top: 100px;">
+      <h2 class="section-title">Core Value Pillars</h2>
+      <p class="section-subtitle">Why hosting our own AI infrastructure makes sense strategically and organizationally.</p>
+      
+      <div class="pillars-grid">
+        
+        <!-- Pillar 1 -->
+        <div class="glass-card pillar-card compliance">
+          <div class="pillar-icon">🛡️</div>
+          <h3 class="pillar-title">Policy Compliance & Data Governance</h3>
+          <p class="pillar-desc">
+            Student assignment submissions, administrative queries, and research datasets contain sensitive data. Running models on local VMs (Ubuntu 24.04 LTS guest OS) with persistent local caching at <code>/data/hf-cache</code> ensures data is never analyzed, stored, or processed by external providers.
+          </p>
+          <div style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--color-text-secondary); background: rgba(255,255,255,0.02); padding: 0.5rem; border-radius: 4px;">
+            VLAN 30 (10.30.0.0/24) Isolation
+          </div>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="glass-card pillar-card admin">
+          <div class="pillar-icon">⚙️</div>
+          <h3 class="pillar-title">Administration & Oversight</h3>
+          <p class="pillar-desc">
+            Commercial APIs are opaque. Because we control the hypervisor layer via Proxmox VE 9.1, the IT department retains total visibility. We can dynamically reallocate CPU/RAM resources, monitor real-time network flow, set query rate thresholds, and inspect application access logs without relying on third-party SaaS vendors.
+          </p>
+          <div style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--color-text-secondary); background: rgba(255,255,255,0.02); padding: 0.5rem; border-radius: 4px;">
+            Proxmox VE 9.1 Hypervisor Control
+          </div>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="glass-card pillar-card ingenuity">
+          <div class="pillar-icon">🛠️</div>
+          <h3 class="pillar-title">Engineering Ingenuity</h3>
+          <p class="pillar-desc">
+            To bypass hardware scaling limits, we implemented targeted optimizations, bypassing the vLLM pipeline initialization crashes using custom Python runtime patches and solving Gloo network constraints to force inter-node traffic onto the secondary Gigabit ring.
+          </p>
+          
+          <!-- Code Tabs -->
+          <div class="code-tab-container">
+            <div class="code-tab-headers">
+              <button class="code-tab-btn active" onclick="switchCodeTab(this, 'vllm')">vllm_patch.py</button>
+              <button class="code-tab-btn" onclick="switchCodeTab(this, 'gloo')">gloo-pinning.sh</button>
+            </div>
+            <div class="code-tab-body">
+              <pre class="code-pre" id="code-content-vllm"># Startup patch correcting pipeline initialization
+# in Ray distributed orchestration environments
+import os
+import vllm.engine.ray_utils as ray_utils
+
+# Patch ray GPU mapping bug during node handshake
+def patched_init_workers(*args, **kwargs):
+    os.environ["RAY_EXPERIMENTAL_NOSET_CUDA_VISIBLE_DEVICES"] = "0"
+    return original_init(*args, **kwargs)
+
+original_init = ray_utils.initialize_workers
+ray_utils.initialize_workers = patched_init_workers</pre>
+              <pre class="code-pre" id="code-content-gloo" style="display: none;"># Pinned network interface configurations
+# Prevents Gloo from attempting routing over public management gateway
+export GLOO_SOCKET_IFNAME=eth1
+export TP_SOCKET_IFNAME=eth1
+export NCCL_SOCKET_IFNAME=eth1
+
+# Launch Ray Worker bound to specific node IP
+ray start --address='192.168.100.1:6379' \
+          --node-ip-address='192.168.100.2' \
+          --block</pre>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Case Study Section -->
+    <section id="case-study" style="margin-top: 5rem; scroll-margin-top: 100px;">
+      <div class="glass-card">
+        <div class="case-study-grid">
+          <div class="case-study-content">
+            <span class="case-study-badge">Live Case Study</span>
+            <h2 class="case-study-title">Local Curriculum Outcome Mapping</h2>
+            <p>Traditionally, aligning Course Learning Outcomes (LOs) to overall Program Outcomes (POs) is a manual, labor-intensive audit process requiring hours of faculty review. To automate this, we built a fully local curriculum mapping pipeline.</p>
+            <p>The pipeline ingests raw course syllabus PDFs, extracts structural text into JSON format, and calls the NSCC AI Cluster REST API directly. Using the cluster's Qwen 2.5 32B model, it analyzes alignment logic and builds a comprehensive mapping matrix. The pipeline then auto-generates a formatted Microsoft Word report (<code>LO_PO_Alignment_Report.docx</code>) complete with analysis charts—running entirely on-premise with zero external data exposure.</p>
+            
+            <div class="github-btn-wrap">
+              <a href="https://github.com/redmondmj/nscc-curriculum-outcome-mapping" target="_blank" class="github-btn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                View Repository on GitHub
+              </a>
+            </div>
+          </div>
+          
+          <div class="flowchart-wrapper">
+            <div class="flowchart-step-card">
+              <div class="flowchart-step-number">1</div>
+              <div class="flowchart-step-info">
+                <h4 class="flowchart-step-title">Syllabus PDF Ingestion</h4>
+                <p class="flowchart-step-desc">Raw course syllabus and program outcome documents are placed in local directories.</p>
+              </div>
+            </div>
+            
+            <div class="flowchart-connector">↓</div>
+            
+            <div class="flowchart-step-card">
+              <div class="flowchart-step-number">2</div>
+              <div class="flowchart-step-info">
+                <h4 class="flowchart-step-title">Text Extraction (extract_curriculum.py)</h4>
+                <p class="flowchart-step-desc">Extracts text and saves to structured JSON (<code>curriculum_extracted.json</code>) format.</p>
+              </div>
+            </div>
+            
+            <div class="flowchart-connector">↓</div>
+            
+            <div class="flowchart-step-card">
+              <div class="flowchart-step-number">3</div>
+              <div class="flowchart-step-info">
+                <h4 class="flowchart-step-title">Inference & Alignment (llm_align.py)</h4>
+                <p class="flowchart-step-desc">Queries the local AI Cluster API to run mapping logic and save output matrix.</p>
+              </div>
+            </div>
+            
+            <div class="flowchart-connector">↓</div>
+            
+            <div class="flowchart-step-card">
+              <div class="flowchart-step-number">4</div>
+              <div class="flowchart-step-info">
+                <h4 class="flowchart-step-title">Report & Visuals (generate_report.py)</h4>
+                <p class="flowchart-step-desc">Generates a formatted MS Word <code>.docx</code> report and charts locally via Python.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Strategic Roadmap Timeline -->
+    <section id="roadmap" style="scroll-margin-top: 100px;">
+      <h2 class="section-title">Strategic Roadmap</h2>
+      <p class="section-subtitle">From Proof of Concept to a robust campus-wide enterprise AI network.</p>
+      
+      <div class="timeline-wrapper">
+        <div class="timeline">
+          
+          <!-- Phase 1 -->
+          <div class="timeline-item phase1">
+            <div class="timeline-marker">1</div>
+            <div class="timeline-content">
+              <div class="timeline-phase">Phase 1</div>
+              <h3 class="timeline-title">Pilot Campus Access</h3>
+              <p class="timeline-desc">
+                Expose the cluster's OpenAI-compatible REST API (serving at <code>http://10.30.0.21:8001/v1</code>) to select IT faculty and a pilot group of students. Leverage client interfaces like AnythingLLM or Open WebUI in a controlled sandbox environment to test latency and routing before broader roll-out.
+              </p>
+            </div>
+          </div>
+
+          <!-- Phase 2 -->
+          <div class="timeline-item phase2">
+            <div class="timeline-marker">2</div>
+            <div class="timeline-content">
+              <div class="timeline-phase">Phase 2</div>
+              <h3 class="timeline-title">Hardware Upgrade: Stability & Scale</h3>
+              <p class="timeline-desc">
+                To expand availability, we need to transition to stable, dedicated hardware. While Intel Arc B70s are sold out, we are considering **Radeon AI PRO R9700** or AMD **Radeon PRO W7900** (featuring 48GB VRAM for raw model capacity) or NVIDIA **RTX 4090 / 5090** (the CUDA standard). Swapping out the commodity 12GB RTX 4070 cards resolves the exact 170 MB deficit preventing execution of industry-standard Llama 3.1 70B models.
+              </p>
+              
+              <!-- Interactive Hardware Pitch comparison tool -->
+              <div class="hardware-pitch-container">
+                <div>
+                  <h4 style="margin-bottom: 0.5rem; font-size: 1rem;">The Hardware Ceiling</h4>
+                  <p style="font-size: 0.85rem; margin-bottom: 1rem;">Llama-3.1-70B (Int4 Quantized) requires <strong>36.17 GB</strong> of VRAM. The current 3x RTX 4070 cluster offers <strong>36.00 GB</strong>, missing the ceiling by a mere <strong>170 MB</strong>.</p>
+                  <button class="toggle-btn active" id="btn-chart-4070" onclick="updateHardwareChart('rtx4070')">Current (RTX 4070)</button>
+                  <button class="toggle-btn" id="btn-chart-4090" onclick="updateHardwareChart('rtx4090')">Proposed Upgrade (Radeon / RTX 4090)</button>
+                </div>
+                
+                <div class="hardware-bar-chart">
+                  <div class="bar-chart-row">
+                    <div class="bar-label-group">
+                      <span class="bar-label">Available Cluster VRAM</span>
+                      <span class="bar-val" id="chart-vram-avail">36.00 GB</span>
+                    </div>
+                    <div class="bar-track">
+                      <div class="bar-fill" id="fill-vram-avail" style="--fill-color: var(--color-primary); width: 50%;"></div>
+                      <!-- The 70B ceiling marker -->
+                      <div class="bar-marker" id="bar-70b-marker" style="left: 50.2%;"></div>
+                      <div class="bar-marker-label" id="bar-70b-label" style="left: 50.2%;">70B Limit (36.17 GB)</div>
+                    </div>
+                  </div>
+
+                  <div class="bar-chart-row" style="margin-top: 1.5rem;">
+                    <div class="bar-label-group">
+                      <span class="bar-label">Supported Model Parameter Scales</span>
+                      <span class="bar-val" id="chart-model-limit">Up to 32B Models</span>
+                    </div>
+                    <div class="bar-track">
+                      <div class="bar-fill" id="fill-param-limit" style="--fill-color: var(--color-success); width: 45%;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Phase 3 -->
+          <div class="timeline-item phase3">
+            <div class="timeline-marker">3</div>
+            <div class="timeline-content">
+              <div class="timeline-phase">Phase 3</div>
+              <h3 class="timeline-title">Collaborative Network (CCN) & Outcome Mapping</h3>
+              <p class="timeline-desc">
+                Deploy secure access to IT programs across our **College Collaborative Network (CCN)**. Integrate our local outcome mapping tool, <code>nscc-curriculum-outcome-mapping</code>, directly to the backend to automatically align syllabus outcomes securely across member campuses.
+              </p>
+            </div>
+          </div>
+
+          <!-- Phase 4 -->
+          <div class="timeline-item phase4">
+            <div class="timeline-marker">4</div>
+            <div class="timeline-content">
+              <div class="timeline-phase">Phase 4</div>
+              <h3 class="timeline-title">Enterprise Sandboxes & MS Foundry</h3>
+              <p class="timeline-desc">
+                Connect the on-premises raw computing power to our **Visual Studio Enterprise subscription M365 Dev Sandboxes**. This enables students to work with enterprise-grade AI payloads using **MS Foundry Local** and **Azure-managed endpoints** in a secure, hybrid college learning ecosystem.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="#stats">Overview</a>
+        <a href="#comparison">Cloud vs On-Prem</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#pillars">Value Pillars</a>
+        <a href="#case-study">Case Study</a>
+        <a href="#roadmap">Roadmap</a>
+      </div>
+      <p style="margin-top: 1.5rem;">NSCC AI Cluster Proof-of-Concept Report &bull; Built entirely on-premises using HTML5 &amp; CSS3</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

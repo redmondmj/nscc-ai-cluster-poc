@@ -52,9 +52,9 @@ This version uses your pre-attached avatar image as the identity reference, but 
 
 ### Clip 8 (1:10 - 1:20) — Hardware Upgrade Case
 * **Visual Prompt (Omni)**: 
-  "Featuring the avatar from the attached reference image, styled in professional business-casual clothing consisting of a smart dark blazer over a gray shirt. The avatar is speaking. Floating next to them is a VRAM capacity chart showing a bar for 'RTX 4070' stopping short of the Llama 3.1 70B limit, and a second 'Radeon/RTX 4090' bar exceeding it."
-* **Voiceover Script (25 words)**: 
-  "Upgrading to Radeon AI PRO or RTX 4090 GPUs unlocks standard Llama 3.1 70B parameters, using our already proven network orchestration stack."
+  "Featuring the avatar from the attached reference image, styled in professional business-casual clothing consisting of a smart dark blazer over a gray shirt. The avatar is speaking. Floating next to them is a memory capacity chart showing a bar for 'Current Setup' stopping short of the 'Target Limit' line, and a second 'Proposed Upgrade' bar exceeding it."
+* **Voiceover Script (21 words)**: 
+  "Transitioning to upgraded GPU nodes unlocks seventy-billion parameter model execution, using our already proven network orchestration stack."
 
 ### Clip 9 (1:20 - 1:30) — The Closing Pitch
 * **Visual Prompt (Omni)**: 
@@ -130,12 +130,12 @@ This version uses your pre-attached avatar image as the identity reference, but 
 
 ### Clip 11 (1:40 - 1:50) — Hardware Ceilings (170 MB deficit)
 * **Visual Prompt (Omni)**: 
-  "Featuring the avatar from the attached reference image, styled in professional business-casual clothing consisting of a dark polo shirt. The avatar is speaking. Next to them, a vertical VRAM bar climbs to 36.00 GB and turns orange at a red ceiling line labeled '170 MB deficit'."
-* **Voiceover Script**: 
-  "Our current RTX 4070 cards fall exactly 170 megabytes short of the VRAM address space required to host Llama 70B models."
+  "Featuring the avatar from the attached reference image, styled in professional business-casual clothing consisting of a dark polo shirt. The avatar is speaking. Next to them, a vertical capacity bar climbs to 36.00 GB and turns orange at a red ceiling line labeled '170 MB Deficit'."
+* **Voiceover Script (21 words)**: 
+  "Our current hardware nodes fall exactly 170 megabytes short of the capacity required to host seventy-billion parameter models."
 
 ### Clip 12 (1:50 - 2:00) — Stable GPU Upgrades
 * **Visual Prompt (Omni)**: 
-  "Featuring the avatar from the attached reference image, styled in professional business-casual clothing consisting of a dark polo shirt. The avatar smiles. The VRAM bar next to them expands to 72.00 GB and turns green. Text overlays: 'Llama 3.1 70B Supported'."
-* **Voiceover Script**: 
-  "Upgrading to Radeon AI PRO or RTX 4090 GPUs gives us the stable, high-VRAM footprint required to run production-grade 70B models."
+  "Featuring the avatar from the attached reference image, styled in professional business-casual clothing consisting of a dark polo shirt. The avatar smiles. The capacity bar next to them expands to 72.00 GB and turns green. Text overlays: '70B Scale Supported'."
+* **Voiceover Script (20 words)**: 
+  "Transitioning to upgraded GPU hardware gives us the stable, high-capacity footprint required to run production-grade seventy-billion parameter models."

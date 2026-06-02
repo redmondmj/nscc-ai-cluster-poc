@@ -1,0 +1,92 @@
+{
+  "mcpServers": {
+    "brightspace": {
+      "command": "node.exe",
+      "args": [
+        "C:/path/to/brightspace-mcp-server/build/index.js"
+      ],
+      "env": {
+        "D2L_BASE_URL": "https://your-institution.brightspace.com",
+        "D2L_USERNAME": "your@email.ca"
+      },
+      "anythingllm": {
+        "suppressedTools": [
+          "get_discussions", "get_syllabus", "get_roster", "get_classlist_emails",
+          "download_file", "create_link_topic", "create_module", "get_course_content",
+          "get_assignments", "create_announcement", "get_announcements",
+          "get_my_grades", "get_upcoming_due_dates"
+        ]
+      }
+    },
+    "ProxmoxMCP-Plus-AICluster": {
+      "command": "C:\\path\\to\\proxmox-mcp-server\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "proxmox_mcp.server"],
+      "env": {
+        "PYTHONPATH": "C:\\path\\to\\proxmox-mcp-server\\src",
+        "PROXMOX_MCP_CONFIG": "C:\\path\\to\\proxmox-mcp-server\\proxmox-config\\config.json"
+      },
+      "anythingllm": {
+        "_comment": "Suppressed: all destructive/creative ops. Enabled: read + safe start/stop.",
+        "suppressedTools": [
+          "delete_backup", "restore_backup", "create_backup", "list_backups",
+          "delete_iso", "download_iso", "list_templates", "list_isos",
+          "rollback_snapshot", "delete_snapshot", "create_snapshot", "list_snapshots",
+          "execute_container_command", "delete_container", "create_container",
+          "update_container_resources",
+          "create_vm", "clone_vm", "delete_vm", "execute_vm_command",
+          "get_vnc_console", "get_spice_config", "reset_vm"
+        ]
+      }
+    },
+    "unifi-network": {
+      "command": "uvx",
+      "args": ["unifi-network-mcp@latest"],
+      "env": {
+        "UNIFI_NETWORK_HOST": "your-unifi-controller-ip",
+        "UNIFI_NETWORK_USERNAME": "your-username",
+        "UNIFI_NETWORK_PASSWORD": "your-password"
+      },
+      "anythingllm": {
+        "_comment": "All suppressed — the load/execute/batch pipeline is too open-ended for unsupervised agent use.",
+        "suppressedTools": [
+          "unifi_tool_index", "unifi_execute", "unifi_batch",
+          "unifi_batch_status", "unifi_load_tools"
+        ]
+      }
+    },
+    "bitwarden": {
+      "command": "npx",
+      "args": ["-y", "@bitwarden/mcp-server"],
+      "env": {
+        "BW_SESSION": "your-bw-session-token",
+        "BW_CLIENT_ID": "your-client-id",
+        "BW_CLIENT_SECRET": "your-client-secret"
+      },
+      "anythingllm": {
+        "_comment": "All 59 tools suppressed. Enable specific read-only tools selectively if needed.",
+        "suppressedTools": [
+          "lock", "unlock", "sync", "status", "list", "get", "generate",
+          "create_item", "create_folder", "edit_item", "edit_folder", "delete",
+          "confirm", "create_org_collection", "edit_org_collection",
+          "edit_item_collections", "move",
+          "device_approval_list", "device_approval_approve",
+          "device_approval_approve_all", "device_approval_deny",
+          "device_approval_deny_all", "restore",
+          "create_text_send", "create_file_send", "list_send", "get_send",
+          "edit_send", "delete_send", "remove_send_password", "create_attachment",
+          "list_org_collections", "get_org_collection", "update_org_collection",
+          "delete_org_collection", "list_org_members", "get_org_member",
+          "get_org_member_groups", "invite_org_member", "update_org_member",
+          "update_org_member_groups", "remove_org_member", "reinvite_org_member",
+          "revoke_org_member", "restore_org_member",
+          "list_org_groups", "get_org_group", "get_org_group_members",
+          "create_org_group", "update_org_group", "delete_org_group",
+          "update_org_group_members",
+          "list_org_policies", "get_org_policy", "update_org_policy",
+          "get_org_events", "get_org_subscription", "update_org_subscription",
+          "import_org_users_and_groups"
+        ]
+      }
+    }
+  }
+}

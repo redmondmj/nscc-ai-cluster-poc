@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Cluster Curriculum Impact</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="hero-content">
+                <h1>AI Cluster POC <span class="highlight">Curriculum Impact</span></h1>
+                <p>Explore how the on-prem AI Cluster accelerates specific Course Learning Outcomes (CLOs) and modernizes the student experience through zero-cost, privacy-first infrastructure.</p>
+            </div>
+            <div class="hero-glow"></div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar / Filters -->
+            <aside class="sidebar">
+                <div class="filter-group">
+                    <h3>Filter by Program</h3>
+                    <div id="program-filters" class="filter-options">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <h3>Filter by Area of Interest</h3>
+                    <div id="area-filters" class="filter-options">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <button id="reset-filters" class="btn-reset">Reset Filters</button>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content">
+                <div class="content-header">
+                    <h2 id="results-count">Showing All Examples</h2>
+                </div>
+                <div id="cards-grid" class="cards-grid">
+                    <!-- Cards will be dynamically injected here -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Data and App Logic -->
+    <script src="examples_data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

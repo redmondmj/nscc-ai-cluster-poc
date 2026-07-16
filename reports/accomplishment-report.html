@@ -488,88 +488,80 @@
       </div>
 
       <h3 style="margin-top:32px; margin-bottom:12px;">Commercial API Equivalent Cost Comparison</h3>
-      <p>The table below shows what this exact 8.85 million token workload would have cost at current 2026 public API pricing from major cloud providers, compared to the actual on-premises cost. Anthropic pricing sourced from the Anthropic API (2026-06-24); OpenAI pricing approximate as of mid-2025.</p>
+      <p>The table below shows what this exact 8.85 million token workload would have cost at current 2026 public API pricing from major cloud providers. All API prices are billed in USD; CAD equivalents use an approximate rate of <strong>1 USD = 1.38 CAD</strong>. Anthropic pricing sourced from the Anthropic API (2026-06-24); OpenAI pricing approximate as of mid-2025.</p>
 
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
               <th>Provider / Model</th>
-              <th>Pricing (Input / Output per 1M)</th>
-              <th>Input Cost</th>
-              <th>Output Cost</th>
-              <th>Total Equivalent</th>
+              <th>Pricing per 1M (USD)</th>
+              <th>Total (USD)</th>
+              <th>Total (CAD ~)</th>
               <th>Actual Cost</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Anthropic Claude Fable 5</td>
-              <td>$10.00 / $50.00</td>
-              <td>$61.24</td>
-              <td>$136.43</td>
+              <td>$10.00 in / $50.00 out</td>
               <td>$197.67</td>
+              <td>$272.78</td>
               <td class="zero">$0.00</td>
             </tr>
             <tr>
               <td>Anthropic Claude Opus 4.8</td>
-              <td>$5.00 / $25.00</td>
-              <td>$30.62</td>
-              <td>$68.22</td>
+              <td>$5.00 in / $25.00 out</td>
               <td>$98.84</td>
+              <td>$136.40</td>
               <td class="zero">$0.00</td>
             </tr>
             <tr>
-              <td>Anthropic Claude Sonnet 5 <span style="font-size:0.80em;color:var(--muted)">(intro rate, through Aug 2026)</span></td>
-              <td>$2.00 / $10.00</td>
-              <td>$12.25</td>
-              <td>$27.29</td>
+              <td>Anthropic Claude Sonnet 5 <span style="font-size:0.80em;color:var(--muted)">(intro, through Aug 2026)</span></td>
+              <td>$2.00 in / $10.00 out</td>
               <td>$39.54</td>
+              <td>$54.56</td>
               <td class="zero">$0.00</td>
             </tr>
             <tr>
               <td>Anthropic Claude Haiku 4.5</td>
-              <td>$1.00 / $5.00</td>
-              <td>$6.12</td>
-              <td>$13.64</td>
+              <td>$1.00 in / $5.00 out</td>
               <td>$19.76</td>
+              <td>$27.27</td>
               <td class="zero">$0.00</td>
             </tr>
             <tr>
               <td>OpenAI GPT-4.1</td>
-              <td>$2.00 / $8.00</td>
-              <td>$12.25</td>
-              <td>$21.83</td>
+              <td>$2.00 in / $8.00 out</td>
               <td>$34.08</td>
+              <td>$47.03</td>
               <td class="zero">$0.00</td>
             </tr>
             <tr>
               <td>OpenAI GPT-4o</td>
-              <td>$2.50 / $10.00</td>
-              <td>$15.31</td>
-              <td>$27.29</td>
+              <td>$2.50 in / $10.00 out</td>
               <td>$42.60</td>
+              <td>$58.79</td>
               <td class="zero">$0.00</td>
             </tr>
             <tr>
               <td>OpenAI GPT-4o-mini</td>
-              <td>$0.15 / $0.60</td>
-              <td>$0.92</td>
-              <td>$1.64</td>
+              <td>$0.15 in / $0.60 out</td>
               <td>$2.56</td>
+              <td>$3.53</td>
               <td class="zero">$0.00</td>
             </tr>
             <tr class="highlight-row">
               <td>Local vLLM — NSCC AIProx Cluster</td>
               <td>—</td>
-              <td>$0.00</td>
-              <td>$0.00</td>
+              <td class="zero">$0.00</td>
               <td class="zero">$0.00</td>
               <td class="zero">$0.00</td>
             </tr>
           </tbody>
         </table>
       </div>
+      <p style="font-size:0.78rem; color:var(--muted); margin-top:-8px;">CAD estimates are approximate. Exchange rate (USD/CAD ≈ 1.38) is indicative and will vary.</p>
 
       <!-- Cost chart -->
       <div class="chart-wrap">
@@ -582,7 +574,7 @@
     <section>
       <h2>Strategic Value</h2>
       <p>
-        Avoiding up to <strong>~$198 USD</strong> in direct API fees for this single full-institutional sweep is a concrete near-term saving (equivalent to running the same workload against Anthropic's flagship Claude Fable 5 at current 2026 pricing). The deeper value, however, is structural: local AI inference eliminates per-token cost entirely, turning iterative re-auditing from a budgeted expense into a zero-marginal-cost operation.
+        Avoiding up to <strong>~$198 USD (~$273 CAD)</strong> in direct API fees for this single full-institutional sweep is a concrete near-term saving (equivalent to running the same workload against Anthropic's flagship Claude Fable 5 at current 2026 pricing). The deeper value, however, is structural: local AI inference eliminates per-token cost entirely, turning iterative re-auditing from a budgeted expense into a zero-marginal-cost operation.
       </p>
 
       <div class="benefit-grid">
@@ -605,7 +597,7 @@
       </div>
 
       <div class="callout" style="margin-top:24px;">
-        <strong>Projected annual savings:</strong> Across 10–20 iterative re-audit sweeps over an academic year — as outcomes are revised and re-evaluated — local hosting avoids an estimated <strong>$1,000–$4,000+ USD</strong> compared to current flagship cloud model pricing (Claude Opus 4.8 at $99/sweep → $990–$1,980; Claude Fable 5 at $198/sweep → $1,980–$3,960), while maintaining full institutional data custody at zero marginal cost per run.
+        <strong>Projected annual savings:</strong> Across 10–20 iterative re-audit sweeps over an academic year — as outcomes are revised and re-evaluated — local hosting avoids an estimated <strong>$1,000–$4,000+ USD ($1,400–$5,500+ CAD)</strong> compared to current flagship cloud model pricing (Claude Opus 4.8 at ~$99 USD / ~$136 CAD per sweep; Claude Fable 5 at ~$198 USD / ~$273 CAD per sweep), while maintaining full institutional data custody at zero marginal cost per run.
       </div>
     </section>
 

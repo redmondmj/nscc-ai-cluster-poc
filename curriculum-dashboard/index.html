@@ -10,6 +10,45 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+<style>
+  .site-nav {
+    background: #0A1120;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+  .site-nav a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 14px 12px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .site-nav a:hover { color: #fff; }
+  .site-nav a.home {
+    color: #0B8A79;
+    font-weight: 700;
+    padding-left: 0;
+    margin-right: 8px;
+  }
+  .site-nav a.active { color: #fff; border-bottom-color: #0B8A79; }
+</style>
+
+<nav class="site-nav">
+  <a href="../index.html" class="home">← AI Cluster</a>
+  <a href="../reports/accomplishment-report.html">Pipeline Report</a>
+  <a href="../reports/index.html">Program Directory</a>
+  <a href="#" class="active">Curriculum Dashboard</a>
+</nav>
+
     <div class="app-container">
         <!-- Hero Section -->
         <header class="hero">

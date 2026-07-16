@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NSCC AI Curriculum Pipeline — Accomplishment & Cost Savings Report</title>
+  <meta name="description" content="Full institutional sweep results: 15,459 learning outcomes evaluated across 148 programs at zero cloud API cost using the NSCC Truro Campus AI Cluster.">
+  <style>
+    /* ── Token system ── */
+    :root {
+      --navy:     #1A2744;
+      --teal:     #0B8A79;
+      --teal-lt:  #E6F4F2;
+      --amber:    #C97A0C;
+      --amber-lt: #FEF3E2;
+      --paper:    #F5F6F8;
+      --surface:  #FFFFFF;
+      --border:   #DDE1E8;
+      --text:     #1E2733;
+      --muted:    #5E6B7E;
+      --rule:     #C8CDD6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper:   #0D111B;
+        --surface: #141B28;
+        --border:  #252E40;
+        --text:    #DDE3EE;
+        --muted:   #7F8EA3;
+        --rule:    #2A3449;
+        --teal-lt: #0B2924;
+        --amber-lt:#241A06;
+      }
+    }
+    :root[data-theme="dark"] {
+      --paper:   #0D111B;
+      --surface: #141B28;
+      --border:  #252E40;
+      --text:    #DDE3EE;
+      --muted:   #7F8EA3;
+      --rule:    #2A3449;
+      --teal-lt: #0B2924;
+      --amber-lt:#241A06;
+    }
+    :root[data-theme="light"] {
+      --paper:   #F5F6F8;
+      --surface: #FFFFFF;
+      --border:  #DDE1E8;
+      --text:    #1E2733;
+      --muted:   #5E6B7E;
+      --rule:    #C8CDD6;
+      --teal-lt: #E6F4F2;
+      --amber-lt:#FEF3E2;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Site nav bar ── */
+    .site-nav {
+      background: var(--navy);
+      padding: 12px 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .site-nav a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-family: system-ui, sans-serif;
+      transition: color 0.15s;
+    }
+    .site-nav a:hover { color: #ffffff; }
+    .site-nav a.home {
+      color: #0B8A79;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .site-nav .divider {
+      color: rgba(255,255,255,0.2);
+      font-size: 0.82rem;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--text);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .doc-body {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 32px 80px;
+    }
+
+    /* ── Typography ── */
+    h1, h2, h3 {
+      font-family: Georgia, 'Palatino Linotype', serif;
+      color: var(--navy);
+      text-wrap: balance;
+      line-height: 1.25;
+    }
+    @media (prefers-color-scheme: dark) {
+      h1, h2, h3 { color: #D0DBF0; }
+      h2 { color: var(--teal); }
+      thead th { background: #0A1120; }
+    }
+    :root[data-theme="dark"] h1,
+    :root[data-theme="dark"] h3 { color: #D0DBF0; }
+    :root[data-theme="dark"] h2 { color: var(--teal); }
+    :root[data-theme="dark"] thead th { background: #0A1120; }
+
+    h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; }
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--teal);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--rule);
+    }
+    h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: system-ui, sans-serif;
+      margin-bottom: 6px;
+    }
+
+    p { margin-bottom: 14px; max-width: 68ch; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Header ── */
+    .doc-header {
+      border-left: 4px solid var(--teal);
+      padding-left: 20px;
+      margin-bottom: 40px;
+    }
+    .doc-meta {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .doc-meta span::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      vertical-align: middle;
+      margin-right: 6px;
+      margin-bottom: 2px;
+    }
+    .doc-meta span:first-child::before { display: none; }
+
+    /* ── Sections ── */
+    section { margin-bottom: 52px; }
+
+    /* ── Stat grid ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--teal);
+      padding: 18px 20px;
+    }
+    .stat-card.warn { border-top-color: var(--amber); }
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: Georgia, serif;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-card.warn .stat-num { color: var(--amber); }
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.3;
+    }
+
+    /* ── Callout ── */
+    .callout {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-size: 0.92rem;
+    }
+    .callout.amber {
+      background: var(--amber-lt);
+      border-left-color: var(--amber);
+    }
+    .callout strong { color: var(--teal); }
+    .callout.amber strong { color: var(--amber); }
+
+    /* ── Feature list ── */
+    .feature-list { list-style: none; padding: 0; margin: 0 0 16px; }
+    .feature-list li {
+      padding: 10px 0 10px 20px;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+      font-size: 0.94rem;
+    }
+    .feature-list li:first-child { border-top: 1px solid var(--rule); }
+    .feature-list li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+    .feature-list li strong { color: var(--text); }
+
+    /* ── Incident timeline ── */
+    .incident-list { list-style: none; padding: 0; margin: 0; }
+    .incident-list li {
+      padding: 12px 0 12px 28px;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+      font-size: 0.92rem;
+    }
+    .incident-list li:first-child { border-top: 1px solid var(--rule); }
+    .incident-list li::before {
+      content: attr(data-tag);
+      position: absolute;
+      left: 0;
+      top: 13px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--amber);
+      text-transform: uppercase;
+    }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      font-variant-numeric: tabular-nums;
+    }
+    thead th {
+      background: var(--navy);
+      color: #E8EEF8;
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+      font-size: 0.80rem;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    tbody tr:nth-child(even) { background: var(--paper); }
+    tbody tr:hover { background: var(--teal-lt); transition: background 0.1s; }
+    tbody td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
+    tbody tr:last-child td { border-bottom: none; }
+    .savings { color: var(--teal); font-weight: 600; }
+    .zero { color: var(--teal); font-weight: 700; }
+    .highlight-row td { background: var(--teal-lt) !important; font-weight: 600; }
+    .total-row td { background: var(--paper); font-weight: 700; border-top: 2px solid var(--rule); }
+
+    /* ── Charts ── */
+    .chart-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 24px;
+      margin: 20px 0;
+    }
+    .chart-title {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    canvas { display: block; max-width: 100%; }
+
+    /* ── Strategic section ── */
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .benefit-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 16px 18px;
+    }
+    .benefit-card h3 {
+      font-size: 0.88rem;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .benefit-card p {
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    /* ── Footer ── */
+    .doc-footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid var(--rule);
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 500px) {
+      .doc-body { padding: 28px 18px 60px; }
+      h1 { font-size: 1.5rem; }
+      .stat-num { font-size: 1.6rem; }
+      .site-nav { padding: 12px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site navigation -->
+  <nav class="site-nav">
+    <a href="../index.html" class="home">NSCC AI Cluster</a>
+    <span class="divider">/</span>
+    <a href="../index.html#case-study">Case Study</a>
+    <span class="divider">/</span>
+    <a href="../curriculum-dashboard/index.html">Curriculum Impact</a>
+    <span class="divider">/</span>
+    <a href="#" style="color:rgba(255,255,255,0.45); cursor:default;">Pipeline Report</a>
+  </nav>
+
+  <div class="doc-body">
+
+    <!-- ── Document header ── -->
+    <div class="doc-header">
+      <h1>Accomplishment &amp; Cost Savings Report</h1>
+      <p style="margin-top:10px; font-size:1.05rem; color:var(--muted); max-width:none;">
+        NSCC Curriculum Outcome Mapping &amp; Audit Pipeline — Full Institutional Sweep
+      </p>
+      <div class="doc-meta">
+        <span>Nova Scotia Community College</span>
+        <span>July 15, 2026</span>
+        <span>Prepared by: NSCC AI Systems</span>
+        <span>Classification: Internal</span>
+      </div>
+    </div>
+
+    <!-- ── Executive Summary ── -->
+    <section>
+      <h2>Executive Summary</h2>
+      <p>
+        The NSCC Curriculum Outcome Mapping &amp; Audit Pipeline completed a full institutional sweep of the college's academic inventory, evaluating every course learning outcome across every accredited program — entirely on-premises using locally hosted open-weight AI inference. The pipeline processed <strong>15,459 Learning Outcomes</strong> across <strong>3,225 courses</strong> and <strong>148 academic programs</strong>, producing publication-ready accreditation compliance reports for each, at a direct cloud API cost of <strong>$0.00</strong>.
+      </p>
+      <p>
+        This report documents pipeline accomplishments, infrastructure resilience under adverse conditions, the full token workload and equivalent commercial cost, and the strategic value of a local AI architecture for ongoing curriculum quality assurance.
+      </p>
+
+      <div class="stat-grid" style="margin-top:28px;">
+        <div class="stat-card">
+          <div class="stat-num">15,459</div>
+          <div class="stat-label">Learning Outcomes Evaluated</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3,225</div>
+          <div class="stat-label">Courses Processed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">148</div>
+          <div class="stat-label">Academic Programs</div>
+        </div>
+        <div class="stat-card warn">
+          <div class="stat-num">1,858</div>
+          <div class="stat-label">Structural Deficiencies Flagged</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Parse &amp; Structural Success Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">8.85M</div>
+          <div class="stat-label">Tokens Processed On-Premises</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Pipeline Accomplishments ── -->
+    <section>
+      <h2>Pipeline Accomplishments</h2>
+      <ul class="feature-list">
+        <li><strong>End-to-End Extraction &amp; Alignment.</strong> Mapped all 15,459 Course Learning Outcomes across 3,225 courses to institutional Program Outcomes across 148 academic programs, producing structured <code>alignment.json</code> files for every program.</li>
+        <li><strong>Bloom's Taxonomy Cognitive Auditing.</strong> Every outcome was evaluated for cognitive domain rigor and structural clarity against Bloom's taxonomy. The system identified <strong>1,858 structural deficiencies (12.0%)</strong> — outcomes using ambiguous action verbs such as <em>understand</em>, <em>know</em>, or <em>learn</em> that lack measurable evaluation criteria.</li>
+        <li><strong>Automated Accreditation Reporting.</strong> Generated 148 publication-ready Word documents (<code>Standards_Compliance_Report.docx</code>) containing compliance breakdowns, cognitive rigor scores, and actionable recommendations for academic chairs and curriculum committees.</li>
+        <li><strong>100% Execution Reliability.</strong> Achieved a 100% JSON parse and structural success rate across all 15,459 evaluations using <code>audit_compliance.py</code> against open-weights Qwen2.5-32B-Instruct-AWQ via local vLLM inference.</li>
+        <li><strong>27.75 Hours of Unattended GPU Compute.</strong> The full two-phase workload ran to completion on the NSCC Truro Campus three-node Proxmox AI cluster (AIProx1/2/3), requiring no manual intervention beyond incident recovery (see below).</li>
+      </ul>
+
+      <div class="callout amber">
+        <strong>Flagged outcomes (12.0%) represent an actionable curriculum improvement backlog.</strong> The 1,858 deficient outcomes, surfaced automatically in each program's compliance report, give academic chairs a prioritized list for the next curriculum review cycle — work that would otherwise require manual audit by faculty.
+      </div>
+    </section>
+
+    <!-- ── Technical Resilience ── -->
+    <section>
+      <h2>Technical Resilience</h2>
+      <p>The pipeline operated under genuinely adverse infrastructure conditions. The following incidents were encountered and recovered from without data loss:</p>
+
+      <ul class="incident-list">
+        <li data-tag="Incidents 5–7"><strong>Physical facility power outages</strong> disrupted hypervisor PCIe GPU passthrough (<code>WinError 10065</code>) and caused momentary hypervisor OOM freezes during restart boot loops, temporarily taking the vLLM endpoint offline.</li>
+        <li data-tag="Architecture"><strong>Idempotent state tracking</strong> in <code>run_compliance_batch.py</code> via <code>compliance_audit.json</code> ensured zero-loss recovery. Upon hardware restoration, the batch seamlessly skipped previously audited programs and resumed exactly where processing had stopped — no duplicate processing, no re-evaluation cost.</li>
+        <li data-tag="Timeout"><strong>Inference timeout handling</strong> in <code>audit_compliance.py</code> caught momentary <code>APITimeoutError</code> events (e.g., on Truck and Transport Repair) and skipped cleanly without crashing multi-hour batch operations.</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Key design principle:</strong> The batch architecture was built for resilience from the start — idempotent checkpointing meant infrastructure failures translated to minutes of delay rather than hours of lost work.
+      </div>
+    </section>
+
+    <!-- ── Token & Cost Analysis ── -->
+    <section>
+      <h2>Token Usage &amp; Cost Savings Analysis</h2>
+
+      <p>Across both pipeline phases, <strong>8,852,727 tokens</strong> were processed entirely on-premises over 27.75 hours of GPU compute on the NSCC Truro Campus AI Cluster (<code>10.30.0.21:8001</code>). No curriculum data left the NSCC private network.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Workflow Phase</th>
+              <th>Input Tokens</th>
+              <th>Output Tokens</th>
+              <th>Total Tokens</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Phase 1 — LO/PO Alignment (<code>alignment.json</code>)</td>
+              <td>2,391,904</td>
+              <td>734,986</td>
+              <td>3,126,890</td>
+            </tr>
+            <tr>
+              <td>Phase 2 — Cognitive Compliance Audit (<code>compliance_audit.json</code>)</td>
+              <td>3,732,146</td>
+              <td>1,993,690</td>
+              <td>5,725,836</td>
+            </tr>
+            <tr class="total-row">
+              <td>Total Dataset Volume</td>
+              <td>6,124,050</td>
+              <td>2,728,677</td>
+              <td>8,852,727</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Token chart -->
+      <div class="chart-wrap">
+        <div class="chart-title">Token Volume by Phase — Input vs. Output</div>
+        <canvas id="tokenChart" height="160"></canvas>
+      </div>
+
+      <h3 style="margin-top:32px; margin-bottom:12px;">Commercial API Equivalent Cost Comparison</h3>
+      <p>The table below shows what this exact 8.85 million token workload would have cost at current 2026 public API pricing from major cloud providers, compared to the actual on-premises cost. Anthropic pricing sourced from the Anthropic API (2026-06-24); OpenAI pricing approximate as of mid-2025.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Provider / Model</th>
+              <th>Pricing (Input / Output per 1M)</th>
+              <th>Input Cost</th>
+              <th>Output Cost</th>
+              <th>Total Equivalent</th>
+              <th>Actual Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Anthropic Claude Fable 5</td>
+              <td>$10.00 / $50.00</td>
+              <td>$61.24</td>
+              <td>$136.43</td>
+              <td>$197.67</td>
+              <td class="zero">$0.00</td>
+            </tr>
+            <tr>
+              <td>Anthropic Claude Opus 4.8</td>
+              <td>$5.00 / $25.00</td>
+              <td>$30.62</td>
+              <td>$68.22</td>
+              <td>$98.84</td>
+              <td class="zero">$0.00</td>
+            </tr>
+            <tr>
+              <td>Anthropic Claude Sonnet 5 <span style="font-size:0.80em;color:var(--muted)">(intro rate, through Aug 2026)</span></td>
+              <td>$2.00 / $10.00</td>
+              <td>$12.25</td>
+              <td>$27.29</td>
+              <td>$39.54</td>
+              <td class="zero">$0.00</td>
+            </tr>
+            <tr>
+              <td>Anthropic Claude Haiku 4.5</td>
+              <td>$1.00 / $5.00</td>
+              <td>$6.12</td>
+              <td>$13.64</td>
+              <td>$19.76</td>
+              <td class="zero">$0.00</td>
+            </tr>
+            <tr>
+              <td>OpenAI GPT-4.1</td>
+              <td>$2.00 / $8.00</td>
+              <td>$12.25</td>
+              <td>$21.83</td>
+              <td>$34.08</td>
+              <td class="zero">$0.00</td>
+            </tr>
+            <tr>
+              <td>OpenAI GPT-4o</td>
+              <td>$2.50 / $10.00</td>
+              <td>$15.31</td>
+              <td>$27.29</td>
+              <td>$42.60</td>
+              <td class="zero">$0.00</td>
+            </tr>
+            <tr>
+              <td>OpenAI GPT-4o-mini</td>
+              <td>$0.15 / $0.60</td>
+              <td>$0.92</td>
+              <td>$1.64</td>
+              <td>$2.56</td>
+              <td class="zero">$0.00</td>
+            </tr>
+            <tr class="highlight-row">
+              <td>Local vLLM — NSCC AIProx Cluster</td>
+              <td>—</td>
+              <td>$0.00</td>
+              <td>$0.00</td>
+              <td class="zero">$0.00</td>
+              <td class="zero">$0.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Cost chart -->
+      <div class="chart-wrap">
+        <div class="chart-title">Equivalent API Cost Comparison — This Sweep (USD)</div>
+        <canvas id="costChart" height="260"></canvas>
+      </div>
+    </section>
+
+    <!-- ── Strategic Value ── -->
+    <section>
+      <h2>Strategic Value</h2>
+      <p>
+        Avoiding up to <strong>~$198 USD</strong> in direct API fees for this single full-institutional sweep is a concrete near-term saving (equivalent to running the same workload against Anthropic's flagship Claude Fable 5 at current 2026 pricing). The deeper value, however, is structural: local AI inference eliminates per-token cost entirely, turning iterative re-auditing from a budgeted expense into a zero-marginal-cost operation.
+      </p>
+
+      <div class="benefit-grid">
+        <div class="benefit-card">
+          <h3>Zero Data Egress</h3>
+          <p>Internal curriculum documents, draft pedagogical outcomes, and program evaluations remained entirely within the NSCC private network (10.30.0.x). No institutional IP transmitted to any third party.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Continuous Re-Auditing</h3>
+          <p>As academic chairs refine outcomes based on compliance report recommendations, re-running the full pipeline costs <em>nothing</em> in API fees. Iteration is free.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>CI Integration Ready</h3>
+          <p>The idempotent batch architecture supports scheduled runs on a nightly or per-semester basis — enabling Continuous Integration checks for curriculum quality at no additional cost per run.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Scalable to New Programs</h3>
+          <p>Adding a new program requires only dropping source documents into the <code>data/raw/</code> folder. The pipeline generalizes automatically — no code changes, no additional cloud budget.</p>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:24px;">
+        <strong>Projected annual savings:</strong> Across 10–20 iterative re-audit sweeps over an academic year — as outcomes are revised and re-evaluated — local hosting avoids an estimated <strong>$1,000–$4,000+ USD</strong> compared to current flagship cloud model pricing (Claude Opus 4.8 at $99/sweep → $990–$1,980; Claude Fable 5 at $198/sweep → $1,980–$3,960), while maintaining full institutional data custody at zero marginal cost per run.
+      </div>
+    </section>
+
+    <!-- ── Recommendations ── -->
+    <section>
+      <h2>Recommendations</h2>
+      <ul class="feature-list">
+        <li><strong>Prioritize the 1,858 flagged outcomes</strong> for curriculum committee review in the next academic cycle. Each program's <code>Standards_Compliance_Report.docx</code> contains a prioritized list with specific recommendations.</li>
+        <li><strong>Schedule recurring sweeps</strong> — at minimum once per semester — to track outcome quality improvement over time. The pipeline supports this at zero marginal cost.</li>
+        <li><strong>Expand to remaining programs</strong> as program outline PDFs and course RTFs become available. The current architecture requires no modification to onboard additional programs.</li>
+        <li><strong>Formalize cluster authentication</strong> before broader internal access. The current vLLM endpoint has no authentication layer; network-level isolation is the only access control. Role-based auth should be added prior to sharing access with additional staff.</li>
+        <li><strong>Pin the model version</strong> in deployment configuration. LLM outputs are non-deterministic; cluster upgrades that silently change the model version may alter audit results across sweeps. Track model version alongside run timestamps in audit metadata.</li>
+      </ul>
+    </section>
+
+    <!-- ── Footer ── -->
+    <div class="doc-footer">
+      <p><strong>Document classification:</strong> Internal — NSCC Faculty &amp; Administration only. All pipeline outputs are AI-generated and require expert human review before use in official capacity, accreditation submissions, or program review decisions. See <code>DISCLAIMER.md</code> in the project repository for full limitations and data handling policy.</p>
+      <p style="margin-top:8px;">Inference: Qwen2.5-32B-Instruct-AWQ · NSCC Truro Campus AI Cluster (AIProx1/2/3) · vLLM endpoint 10.30.0.21:8001 · Run duration: 27.75 hours</p>
+    </div>
+
+  </div><!-- /.doc-body -->
+
+  <script>
+  (function () {
+    function isDark() {
+      const theme = document.documentElement.getAttribute('data-theme');
+      if (theme === 'dark') return true;
+      if (theme === 'light') return false;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    const TEAL  = '#0B8A79';
+    const NAVY  = '#1A2744';
+    const TEAL2 = '#5BBCB0';
+
+    function textColor()  { return isDark() ? '#DDE3EE' : '#1E2733'; }
+    function mutedColor() { return isDark() ? '#7F8EA3' : '#5E6B7E'; }
+    function gridColor()  { return isDark() ? '#252E40' : '#DDE1E8'; }
+
+    /* TOKEN CHART */
+    (function drawTokenChart() {
+      const el = document.getElementById('tokenChart');
+      if (!el) return;
+      const dpr = window.devicePixelRatio || 1;
+      const W = el.parentElement.clientWidth - 48;
+      const H = 160;
+      el.width = W * dpr; el.height = H * dpr;
+      el.style.width = W + 'px'; el.style.height = H + 'px';
+      const ctx = el.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      const groups = ['Phase 1 — LO/PO Alignment', 'Phase 2 — Compliance Audit', 'Total'];
+      const input  = [2391904, 3732146, 6124050];
+      const output = [734986,  1993690, 2728677];
+      const colors = [TEAL, TEAL2];
+      const pad = { top: 16, right: 24, bottom: 40, left: 72 };
+      const bw = W - pad.left - pad.right;
+      const bh = H - pad.top - pad.bottom;
+      const maxV = 7000000;
+      const gW = bw / groups.length;
+      const barW = gW * 0.32;
+      const gap  = gW * 0.06;
+
+      function scaleY(v) { return bh - (v / maxV) * bh; }
+
+      const ticks = [0, 2000000, 4000000, 6000000];
+      ctx.strokeStyle = gridColor(); ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
+      ticks.forEach(t => {
+        const y = pad.top + scaleY(t);
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + bw, y); ctx.stroke();
+        ctx.fillStyle = mutedColor(); ctx.font = '10px system-ui'; ctx.textAlign = 'right';
+        ctx.fillText((t / 1000000).toFixed(0) + 'M', pad.left - 6, y + 3.5);
+      });
+      ctx.setLineDash([]);
+
+      groups.forEach((g, gi) => {
+        [input[gi], output[gi]].forEach((v, vi) => {
+          const x = pad.left + gi * gW + gW * 0.12 + vi * (barW + gap);
+          const y = pad.top + scaleY(v);
+          ctx.fillStyle = colors[vi];
+          ctx.fillRect(x, y, barW, bh - scaleY(v));
+        });
+        ctx.fillStyle = textColor(); ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText(g, pad.left + gi * gW + gW / 2, H - 4);
+      });
+
+      ['Input Tokens', 'Output Tokens'].forEach((l, i) => {
+        const lx = pad.left + bw - 200 + i * 110;
+        ctx.fillStyle = colors[i]; ctx.fillRect(lx, pad.top, 10, 10);
+        ctx.fillStyle = textColor(); ctx.font = '10px system-ui'; ctx.textAlign = 'left';
+        ctx.fillText(l, lx + 14, pad.top + 9);
+      });
+    })();
+
+    /* COST CHART */
+    (function drawCostChart() {
+      const el = document.getElementById('costChart');
+      if (!el) return;
+      const dpr = window.devicePixelRatio || 1;
+      const W = el.parentElement.clientWidth - 48;
+      const H = 260;
+      el.width = W * dpr; el.height = H * dpr;
+      el.style.width = W + 'px'; el.style.height = H + 'px';
+      const ctx = el.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      const labels = ['Claude Fable 5', 'Claude Opus 4.8', 'Claude Sonnet 5 (intro)', 'Claude Haiku 4.5', 'GPT-4.1', 'GPT-4o', 'GPT-4o-mini', 'NSCC Local vLLM'];
+      const values = [197.67, 98.84, 39.54, 19.76, 34.08, 42.60, 2.56, 0.00];
+      const barColors = [NAVY, NAVY, NAVY, NAVY, NAVY, NAVY, NAVY, TEAL];
+
+      const pad = { top: 8, right: 80, bottom: 16, left: 170 };
+      const bw  = W - pad.left - pad.right;
+      const bh  = H - pad.top - pad.bottom;
+      const maxV = 210;
+      const barH = bh / labels.length * 0.55;
+      const rowH = bh / labels.length;
+
+      function scaleX(v) { return (v / maxV) * bw; }
+
+      labels.forEach((l, i) => {
+        const y   = pad.top + i * rowH + rowH / 2 - barH / 2;
+        const val = values[i];
+        const bx  = scaleX(val);
+        ctx.fillStyle = barColors[i];
+        ctx.globalAlpha = val === 0 ? 1 : 0.85;
+        ctx.fillRect(pad.left, y, Math.max(bx, val === 0 ? 3 : 2), barH);
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = textColor(); ctx.font = '11px system-ui'; ctx.textAlign = 'right';
+        ctx.fillText(l, pad.left - 8, y + barH / 2 + 4);
+        ctx.fillStyle = val === 0 ? TEAL : textColor();
+        ctx.font = val === 0 ? 'bold 11px system-ui' : '11px system-ui';
+        ctx.textAlign = 'left';
+        ctx.fillText(val === 0 ? '$0.00 ✓' : '$' + val.toFixed(2), pad.left + bx + 6, y + barH / 2 + 4);
+      });
+
+      ctx.strokeStyle = gridColor(); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, H - pad.bottom); ctx.stroke();
+    })();
+  })();
+  </script>
+
+</body>
+</html>

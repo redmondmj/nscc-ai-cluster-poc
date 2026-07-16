@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSCC Curriculum Outcome Mapping</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:   #1A2744;
+    --teal:   #0B8A79;
+    --white:  #ffffff;
+    --paper:  #F3F4F6;
+    --border: #E2E5EA;
+    --text:   #1E2733;
+    --muted:  #5A6478;
+    --amber:  #C97A0C;
+  }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--white);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #233560 60%, #1d4e6b 100%);
+    color: #fff;
+    padding: 48px 40px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-inner { position: relative; max-width: 860px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(11,138,121,0.25);
+    border: 1px solid rgba(11,138,121,0.4);
+    color: #5DDFD0;
+    font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 16px;
+  }
+  .hero h1 { font-size: clamp(22px, 3vw, 34px); font-weight: 700; line-height: 1.2; margin-bottom: 12px; }
+  .hero p  { font-size: 15px; color: rgba(255,255,255,0.78); max-width: 560px; line-height: 1.75; margin-bottom: 24px; }
+  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--teal); color: #fff;
+    padding: 10px 20px; border-radius: 4px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-ghost {
+    background: rgba(255,255,255,0.1); color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 10px 20px; border-radius: 4px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+
+  /* Stats */
+  .stats-strip {
+    background: var(--teal);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    color: #fff;
+  }
+  .stat-cell {
+    padding: 18px 22px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-num { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
+  .stat-lbl { font-size: 11px; opacity: .82; text-transform: uppercase; letter-spacing: .07em; }
+
+  /* Content */
+  .page-content { padding: 32px 28px 48px; }
+  .section-head { margin-bottom: 16px; }
+  .section-head h2 { font-size: 18px; font-weight: 700; }
+  .section-head p  { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+  /* Cards */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin-bottom: 36px; }
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 16px;
+    text-decoration: none;
+    color: var(--text);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .card-icon {
+    width: 38px; height: 38px; border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-icon svg { width: 18px; height: 18px; }
+  .card-icon.navy  { background: rgba(26,39,68,.1);   color: #1A2744; }
+  .card-icon.teal  { background: rgba(11,138,121,.1); color: #0B8A79; }
+  .card-icon.amber { background: rgba(201,122,12,.1); color: #C97A0C; }
+  .card-icon.slate { background: rgba(90,100,120,.1); color: #5A6478; }
+  .card h3 { font-size: 14px; font-weight: 700; }
+  .card p  { font-size: 12.5px; color: var(--muted); line-height: 1.5; flex: 1; }
+  .card-tag {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 20px;
+    background: var(--border); color: var(--muted);
+    align-self: flex-start;
+  }
+
+  /* Two-col */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+    .stats-strip { grid-template-columns: 1fr 1fr; }
+  }
+
+  .about-panel {
+    background: var(--paper); border: 1px solid var(--border); border-radius: 6px;
+    padding: 22px;
+  }
+  .about-panel h2 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .about-panel p  { font-size: 13px; color: var(--muted); line-height: 1.75; margin-bottom: 8px; }
+  .about-panel p:last-child { margin-bottom: 0; }
+
+  .contact-panel {
+    background: var(--navy); border-radius: 6px;
+    padding: 22px; color: #fff;
+  }
+  .contact-panel h2 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .contact-panel p  { font-size: 13px; color: rgba(255,255,255,.72); line-height: 1.75; margin-bottom: 14px; }
+  .contact-row { display: flex; flex-direction: column; gap: 10px; }
+  .contact-item { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: rgba(255,255,255,.85); }
+  .contact-item svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 3px; opacity: .6; }
+  .contact-item strong { display: block; color: #fff; font-size: 13px; }
+
+  .footer-note {
+    margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 8px;
+  }
+  .footer-dot { width: 5px; height: 5px; background: var(--teal); border-radius: 50%; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v3.5l2.5 1.5"/></svg>
+      AI-Powered · Updated July 2026
+    </div>
+    <h1>NSCC Curriculum Outcome Mapping</h1>
+    <p>AI-generated compliance and learning outcome alignment reports for all 148 NSCC academic programs, produced using the on-campus AI inference cluster at zero cloud API cost.</p>
+    <div class="hero-btns">
+      <a href="https://cluster.redmond.link/reports/index.html" class="btn-primary" target="_blank">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path d="M9 4.5a.5.5 0 0 1 1 0v5.793l1.646-1.647a.5.5 0 0 1 .708.708l-2.5 2.5a.5.5 0 0 1-.708 0l-2.5-2.5a.5.5 0 1 1 .708-.708L9 10.293V4.5Z"/><path d="M3 13a1 1 0 0 1 1-1h3.5v.5A2.5 2.5 0 0 0 10 15h.5A2.5 2.5 0 0 0 13 12.5V12h3.5a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1v-3Z"/></svg>
+        Browse All Reports
+      </a>
+      <a href="https://cluster.redmond.link" class="btn-ghost" target="_blank">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="10" cy="10" r="8"/><path d="M10 2a12 12 0 0 1 0 16M10 2a12 12 0 0 0 0 16M2 10h16"/></svg>
+        AI Cluster Dashboard
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="stats-strip">
+  <div class="stat-cell"><span class="stat-num">148</span><span class="stat-lbl">Programs Analysed</span></div>
+  <div class="stat-cell"><span class="stat-num">296</span><span class="stat-lbl">DOCX Reports</span></div>
+  <div class="stat-cell"><span class="stat-num">15,459</span><span class="stat-lbl">Outcomes Evaluated</span></div>
+  <div class="stat-cell"><span class="stat-num">$0.00</span><span class="stat-lbl">Cloud API Cost</span></div>
+</div>
+
+<div class="page-content">
+
+  <div class="section-head">
+    <h2>Document Libraries</h2>
+    <p>Click a library to browse files, or use the nav bar above.</p>
+  </div>
+
+  <div class="cards">
+    <a href="https://nscc.sharepoint.com/sites/NSCCCurriculumOutcomeMapping/Program%20Reports" class="card" target="_top">
+      <div class="card-icon navy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <h3>Program Reports</h3>
+      <p>Standards compliance and learning outcome alignment DOCX reports — one folder per program.</p>
+      <span class="card-tag">148 programs · 296 files</span>
+    </a>
+
+    <a href="https://nscc.sharepoint.com/sites/NSCCCurriculumOutcomeMapping/RAG%20Exports" class="card" target="_top">
+      <div class="card-icon teal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+      </div>
+      <h3>RAG Exports</h3>
+      <p>JSONL files of all program outcomes structured for AI and RAG ingestion.</p>
+      <span class="card-tag">148 JSONL files</span>
+    </a>
+
+    <a href="https://nscc.sharepoint.com/sites/NSCCCurriculumOutcomeMapping/Curriculum%20Documents%202026-27" class="card" target="_top">
+      <div class="card-icon amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <h3>Curriculum Documents</h3>
+      <p>Source COC and PLO PDFs for all NSCC programs, 2026–27 academic year.</p>
+      <span class="card-tag">Source documents</span>
+    </a>
+
+    <a href="https://cluster.redmond.link/reports/index.html" class="card" target="_blank">
+      <div class="card-icon slate">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3>Public Directory</h3>
+      <p>Searchable web directory of all reports — accessible outside NSCC, no login required.</p>
+      <span class="card-tag">cluster.redmond.link ↗</span>
+    </a>
+  </div>
+
+  <div class="two-col">
+    <div class="about-panel">
+      <h2>About This Site</h2>
+      <p>This SharePoint site hosts the outputs of the NSCC AI Curriculum Pipeline — an automated system that uses a locally-hosted large language model (Qwen2.5-32B) running on the NSCC Truro Campus AI Cluster to analyse curriculum documents against accreditation standards.</p>
+      <p>Each program received two reports: a <strong>Standards Compliance Report</strong> measuring alignment with NSCC's institutional program outcomes, and a <strong>Learning Outcome Alignment Report</strong> cross-mapping course-level learning outcomes to program-level outcomes.</p>
+      <p>The full pipeline processed <strong>15,459 learning outcomes</strong> across 148 programs in approximately <strong>27.75 hours</strong> of GPU compute — at zero cloud API cost compared to an estimated <strong>~$198 USD</strong> using commercial AI services.</p>
+    </div>
+
+    <div class="contact-panel">
+      <h2>Questions or Access</h2>
+      <p>For access requests, questions about the methodology, or to learn more about the AI cluster, contact the project lead.</p>
+      <div class="contact-row">
+        <div class="contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <div><strong>Matthew Redmond</strong>IT Systems · NSCC Truro Campus</div>
+        </div>
+        <div class="contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div><strong>redmondmj@nscc.ca</strong></div>
+        </div>
+        <div class="contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <div><strong>cluster.redmond.link</strong>Public AI Cluster Dashboard</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <div class="footer-dot"></div>
+    Inference powered by Qwen2.5-32B-Instruct-AWQ · NSCC Truro Campus AI Cluster (AIProx1/2/3) · Reports generated July 2026
+  </div>
+</div>
+
+</body>
+</html>

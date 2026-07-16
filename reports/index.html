@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NSCC AI Curriculum Pipeline — Program Reports</title>
+  <meta name="description" content="AI-generated curriculum compliance and outcome alignment reports for all 148 NSCC academic programs.">
+  <style>
+    :root {
+      --navy:    #1A2744;
+      --teal:    #0B8A79;
+      --teal-lt: #E6F4F2;
+      --amber:   #C97A0C;
+      --paper:   #F0F2F5;
+      --surface: #FFFFFF;
+      --border:  #DDE1E8;
+      --text:    #1E2733;
+      --muted:   #5E6B7E;
+      --rule:    #C8CDD6;
+      --pending: #9CA3AF;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --navy:    #0A1120;
+        --paper:   #0D111B;
+        --surface: #141B28;
+        --border:  #252E40;
+        --text:    #DDE3EE;
+        --muted:   #7F8EA3;
+        --rule:    #2A3449;
+        --teal-lt: #0B2924;
+        --pending: #374151;
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Nav ── */
+    .site-nav {
+      background: #0A1120;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      height: 52px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .site-nav a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-family: system-ui, sans-serif;
+      padding: 0 14px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .site-nav a:hover { color: #fff; }
+    .site-nav a.home {
+      color: var(--teal);
+      font-weight: 700;
+      padding-left: 0;
+      margin-right: 8px;
+    }
+    .site-nav a.active { color: #fff; border-bottom-color: var(--teal); }
+
+    body {
+      background: var(--paper);
+      color: var(--text);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #0A1120 0%, #1A2744 100%);
+      padding: 52px 32px 44px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .hero-inner { max-width: 900px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(11,138,121,0.15);
+      border: 1px solid rgba(11,138,121,0.4);
+      color: #0B8A79;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: Georgia, serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #E8EEF8;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 span { color: #0B8A79; }
+    .hero p {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.95rem;
+      max-width: 60ch;
+      margin-bottom: 28px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .hero-stat { text-align: left; }
+    .hero-stat .num {
+      font-size: 1.7rem;
+      font-weight: 700;
+      font-family: Georgia, serif;
+      color: #0B8A79;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .hero-stat .lbl {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 3px;
+    }
+
+    /* ── Quick links ── */
+    .quick-links {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+    }
+    .quick-links-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .quick-link:hover { color: var(--teal); border-bottom-color: var(--teal); }
+    .quick-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ── Main content ── */
+    .main { max-width: 900px; margin: 0 auto; padding: 36px 32px 80px; }
+
+    /* ── SharePoint notice ── */
+    .sp-notice {
+      background: var(--teal-lt);
+      border: 1px solid rgba(11,138,121,0.25);
+      border-left: 3px solid var(--teal);
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sp-notice strong { color: var(--teal); }
+    #sp-url-display { font-family: monospace; font-size: 0.8rem; }
+
+    /* ── Search + filter bar ── */
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+    .search-wrap svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 15px; height: 15px;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    #search {
+      width: 100%;
+      padding: 9px 12px 9px 36px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: system-ui, sans-serif;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    #search:focus { border-color: var(--teal); }
+    #search::placeholder { color: var(--muted); }
+
+    .letter-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+    }
+    .lf-btn {
+      padding: 5px 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      cursor: pointer;
+      font-family: system-ui, sans-serif;
+      transition: background 0.12s, color 0.12s;
+      line-height: 1;
+    }
+    .lf-btn:hover, .lf-btn.active {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff;
+    }
+    .lf-btn.all { padding: 5px 10px; }
+
+    /* ── Results count ── */
+    .results-count {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .results-count strong { color: var(--text); }
+
+    /* ── Program table ── */
+    .program-table-wrap { overflow-x: auto; }
+    table.prog-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.87rem;
+    }
+    table.prog-table thead th {
+      background: #0A1120;
+      color: rgba(232,238,248,0.85);
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      user-select: none;
+    }
+    table.prog-table tbody tr { transition: background 0.1s; }
+    table.prog-table tbody tr:nth-child(even) { background: rgba(0,0,0,0.02); }
+    @media (prefers-color-scheme: dark) {
+      table.prog-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+    }
+    table.prog-table tbody tr:hover { background: var(--teal-lt); }
+    table.prog-table tbody tr.hidden { display: none; }
+    table.prog-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .prog-name {
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .prog-name small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2px;
+      font-family: monospace;
+    }
+    .doc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--teal);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 8px;
+      border: 1px solid rgba(11,138,121,0.3);
+      border-radius: 2px;
+      white-space: nowrap;
+      transition: background 0.12s;
+    }
+    .doc-link:hover { background: var(--teal-lt); }
+    .doc-link svg { width: 12px; height: 12px; flex-shrink: 0; }
+    .doc-link.pending {
+      color: var(--pending);
+      border-color: var(--border);
+      cursor: default;
+    }
+    .doc-link.pending:hover { background: transparent; }
+    .cell-links { display: flex; gap: 6px; flex-wrap: wrap; }
+    .badge-rag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(11,138,121,0.1);
+      color: var(--teal);
+      border: 1px solid rgba(11,138,121,0.25);
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    /* ── No results ── */
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      display: none;
+    }
+    .no-results.visible { display: block; }
+
+    /* ── Footer ── */
+    .page-footer {
+      border-top: 1px solid var(--rule);
+      margin-top: 48px;
+      padding-top: 20px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 36px 18px 32px; }
+      .main { padding: 24px 18px 60px; }
+      .quick-links { padding: 0 18px; }
+      .hero h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Site nav ── -->
+<nav class="site-nav">
+  <a href="../index.html" class="home">NSCC AI Cluster</a>
+  <a href="../index.html#case-study">Case Study</a>
+  <a href="../curriculum-dashboard/index.html">Curriculum Impact</a>
+  <a href="accomplishment-report.html">Pipeline Report</a>
+  <a href="#" class="active">Program Directory</a>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">AI Curriculum Pipeline · July 2026</div>
+    <h1>Program Report <span>Directory</span></h1>
+    <p>AI-generated curriculum compliance and learning outcome alignment reports for every NSCC academic program — produced on-premises at zero cloud API cost.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num" id="stat-programs">148</div><div class="lbl">Programs</div></div>
+      <div class="hero-stat"><div class="num">296</div><div class="lbl">DOCX Reports</div></div>
+      <div class="hero-stat"><div class="num">15,459</div><div class="lbl">Outcomes Evaluated</div></div>
+      <div class="hero-stat"><div class="num">$0.00</div><div class="lbl">Cloud API Cost</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Quick links ── -->
+<div class="quick-links">
+  <div class="quick-links-inner">
+    <a href="accomplishment-report.html" class="quick-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Accomplishment Report
+    </a>
+    <a href="../curriculum-dashboard/index.html" class="quick-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Curriculum Impact Dashboard
+    </a>
+    <a href="https://github.com/redmondmj/nscc-curriculum-outcome-mapping" target="_blank" class="quick-link">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      Pipeline Repository
+    </a>
+  </div>
+</div>
+
+<!-- ── Main content ── -->
+<div class="main">
+
+  <!-- SharePoint notice -->
+  <div class="sp-notice">
+    <svg style="width:16px;height:16px;flex-shrink:0;color:var(--teal)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span>
+      Report documents are hosted on SharePoint.
+      <strong id="sp-url-display">SharePoint URL not yet configured</strong> —
+      update <code>SP_BASE_URL</code> at the top of this page's script once your library is set up.
+    </span>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" id="search" placeholder="Search programs…" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="letter-filters" id="letter-filters"></div>
+  </div>
+
+  <div class="results-count" id="results-count"></div>
+
+  <!-- Program table -->
+  <div class="program-table-wrap">
+    <table class="prog-table">
+      <thead>
+        <tr>
+          <th style="width:42%">Program</th>
+          <th>Compliance Report</th>
+          <th>Alignment Report</th>
+          <th>RAG Data</th>
+        </tr>
+      </thead>
+      <tbody id="prog-tbody"></tbody>
+    </table>
+    <div class="no-results" id="no-results">No programs match your search.</div>
+  </div>
+
+  <div class="page-footer">
+    <p>Inference: Qwen2.5-32B-Instruct-AWQ · NSCC Truro Campus AI Cluster (AIProx1/2/3) · All outputs are AI-generated and require expert human review before use in accreditation or program review decisions.</p>
+  </div>
+
+</div>
+
+<script>
+// ── Configure this once your SharePoint library is set up ──────────────────
+// Set to the base URL of your SharePoint document library.
+// Example: 'https://nscc.sharepoint.com/sites/CurriculumAI/Shared%20Documents'
+const SP_BASE_URL = '';
+// ──────────────────────────────────────────────────────────────────────────
+
+// Program data: [folderSlug, hasRAG]
+// Display names are derived from the slug; slugs also build SharePoint URLs.
+const PROGRAMS = [
+  ['Academic_and_Career_Connections', true],
+  ['Achieve', true],
+  ['Administrative_Professional', true],
+  ['Adult_Learning_Program_ALP', true],
+  ['Aircraft_Maintenance_Technician___Struct', true],
+  ['Aircraft_Maintenance_Technology___Avioni', true],
+  ['Aircraft_Maintenance_Technology___Mechan', true],
+  ['American_Sign_Language_ASL_Studies', true],
+  ['American_Sign_Language_English_Interpret', true],
+  ['Applied_Media_and_Communication_Arts', true],
+  ['Architectural_Engineering_Technician', true],
+  ['Auto_Body_and_Collision_Repair', true],
+  ['Automotive_Service_and_Repair', true],
+  ['Baking_and_Pastry_Arts', true],
+  ['Behavioural_Interventions', true],
+  ['Brick_and_Stone_Masonry', true],
+  ['Bridge_Watch_Rating', true],
+  ['Business_Administration___Accounting', true],
+  ['Business_Administration___Financial_Serv', true],
+  ['Business_Administration___Year_One', true],
+  ['Business_Administration___Year_Two', true],
+  ['Business_Analysis', true],
+  ['Business_Intelligence_and_Analytics', true],
+  ['Cabinetmaking_and_Woodworking_Techniques', true],
+  ['Carpentry___Certificate_Accelerated', true],
+  ['Carpentry_Accelerated', true],
+  ['Carpentry_Certificate', true],
+  ['Carpentry_Diploma', true],
+  ['Child_and_Youth_Care', true],
+  ['Civil_Engineering_Technology', true],
+  ['Climate_Change___Building_Performance_Te', true],
+  ['CNC_Machining', true],
+  ['Construction_Project_Management', true],
+  ['Continuing_Care', true],
+  ['Cosmetology', true],
+  ['Criminal_Justice', true],
+  ['Culinary_Management', true],
+  ['Culinary_Skills', true],
+  ['Cyber_Security', true],
+  ['Deaf_Interpreter', true],
+  ['Dental_Assisting___Level_II', true],
+  ['Diesel_Repair___Industrial_and_Marine', true],
+  ['Digital_Animation', true],
+  ['Digital_Animation___2D_Animation', true],
+  ['Digital_Animation___3D_Animation', true],
+  ['Digital_Marketing', true],
+  ['Disability_Support_Professional', true],
+  ['Early_Childhood_Education', true],
+  ['Electrical___Industrial_Maintenance_and', true],
+  ['Electrical_Construction_and_Industrial', true],
+  ['Electrical_Construction_and_Industrial_A', true],
+  ['Electrical_Engineering_Technology', true],
+  ['Electrical_Technician', true],
+  ['Electro_Mechanical_Technician', true],
+  ['Electronic_Engineering_Technology', true],
+  ['Electronic_Systems_Technician', true],
+  ['Environmental_Engineering_Technology___W', true],
+  ['Esthetics_and_Spa_Therapies', true],
+  ['Fishing_Vessel_Operations_and_Leadership', true],
+  ['Food_Service_and_Nutrition_Management', true],
+  ['Forest_Geomatics_and_Biometrics_Technolo', true],
+  ['Full_Stack_Application_Development', true],
+  ['Funeral_and_Allied_Health_Services', true],
+  ['Funeral_Arranging_and_Directing', true],
+  ['Game_and_Interactive_Art', true],
+  ['Game_Programming', true],
+  ['Gas_Technician', true],
+  ['Geographic_Information_Systems', true],
+  ['Geographic_Information_Systems_GIS___Rem', true],
+  ['Geographic_Information_Systems_Technicia', true],
+  ['Geomatics_Engineering_Technology', true],
+  ['Geospatial_Data_Analytics', true],
+  ['Graphic_and_Print_Production', true],
+  ['Graphic_Design', true],
+  ['Health_Information_Management', true],
+  ['Healthcare_Simulation_Technician', true],
+  ['Heavy_Duty_Equipment_Repair', true],
+  ['Heavy_Duty_Equipment_Truck_and_Transport', true],
+  ['Heavy_Equipment_Operator', true],
+  ['Hotel_and_Restaurant_Management', true],
+  ['Human_Resource_Management', true],
+  ['Industrial_Mechanical', true],
+  ['Instrumentation_Technician', true],
+  ['IT_Data_Analytics', true],
+  ['IT_Database_Administration', true],
+  ['IT_Generalist', true],
+  ['IT_Programming', true],
+  ['IT_Programming_for_Artificial_Intelligen', true],
+  ['IT_Programming_for_Internet_of_Things_Io', true],
+  ['IT_Systems_Management_and_Security', true],
+  ['IT_Web_Programming', true],
+  ['ITSM', false],
+  ['ITWEB', false],
+  ['Landscape_Technician', true],
+  ['Library_and_Information_Technology', true],
+  ['Marine_Engineering_Management_Technology', true],
+  ['Marine_Engineering_Technology', true],
+  ['Marine_Foundations___Marine_Emergency_Du', true],
+  ['Marine_Foundations___Small_Vessel_Operat', true],
+  ['Marine_Geomatics', true],
+  ['Marine_Navigation_Management_Technology', true],
+  ['Marine_Navigation_Technology', true],
+  ['Mechanical_Drafting_and_Design', true],
+  ['Mechanical_Engineering_Technology', true],
+  ['Medical_Laboratory_Technology', true],
+  ['Medical_Office_Administration', true],
+  ['Mental_Health_Recovery_and_Promotion', true],
+  ['Metal_Fabrication', true],
+  ['Mikmaw_Early_Childhood_Education_Poqji_k', true],
+  ['Motorcycle_and_Power_Products_Repair', true],
+  ['Music_Arts', true],
+  ['Music_Production_and_Engineering', true],
+  ['Natural_Resources_Environmental_Technolo', true],
+  ['Nonprofit_Leadership', true],
+  ['Occupational_Health_and_Safety', true],
+  ['Occupational_Therapy___Physiotherapy_Ass', true],
+  ['Oceans_Technology', true],
+  ['Oil_Heat_Systems_Technician', true],
+  ['Paralegal_Services', true],
+  ['Pharmacy_Technician', true],
+  ['Pipe_Trades', true],
+  ['Plumbing', true],
+  ['Power_and_Utility_Line_Work', true],
+  ['Power_Engineering_Technology', true],
+  ['Practical_Nursing', true],
+  ['Practical_Nursing___Mikmaw_and_Indigenou', true],
+  ['Precision_Machining', true],
+  ['Professional_Photography', true],
+  ['PROG', true],
+  ['Public_Relations', true],
+  ['Radio_Television_Journalism', true],
+  ['Radio_Television_Journalism___Journalism', true],
+  ['Radio_Television_Journalism___Radio_Perf', true],
+  ['Radio_Television_Journalism___Television', true],
+  ['Refrigeration_and_Air_Conditioning', true],
+  ['Refrigeration_and_Air_Conditioning___Geo', true],
+  ['Screen_Arts', true],
+  ['Sheet_Metal_Systems', true],
+  ['Social_Services', true],
+  ['Startup_Accelerator', true],
+  ['Steamfitting_Pipefitting', true],
+  ['Survey_Technician', true],
+  ['Therapeutic_Recreation', true],
+  ['Tourism_Management', true],
+  ['Truck_and_Transport_Repair', true],
+  ['Welding', true],
+  ['Wind_Turbine_Technician', true],
+  ['Women_Unlimited', true],
+];
+
+// Convert folder slug to a human-readable display name
+function toDisplayName(slug) {
+  return slug
+    .replace(/___/g, ' — ')  // triple underscore → em dash
+    .replace(/__/g, ' — ')   // double underscore → em dash
+    .replace(/_/g, ' ')           // single underscore → space
+    .trim();
+}
+
+// Build SharePoint link for a document
+function spLink(slug, filename) {
+  if (!SP_BASE_URL) return null;
+  return SP_BASE_URL.replace(/\/$/, '') +
+    '/Program%20Reports/' +
+    encodeURIComponent(slug) + '/' +
+    encodeURIComponent(filename);
+}
+
+function ragLink(slug) {
+  if (!SP_BASE_URL) return null;
+  return SP_BASE_URL.replace(/\/$/, '') +
+    '/RAG%20Exports/' +
+    encodeURIComponent(slug + '_outcomes_for_rag.jsonl');
+}
+
+// Update the notice bar
+if (SP_BASE_URL) {
+  document.getElementById('sp-url-display').textContent = SP_BASE_URL;
+  document.getElementById('sp-url-display').style.color = 'var(--teal)';
+}
+
+// Collect first letters for filter buttons
+const letters = [...new Set(PROGRAMS.map(([s]) => toDisplayName(s)[0].toUpperCase()))].sort();
+const filterEl = document.getElementById('letter-filters');
+
+// All button
+const allBtn = document.createElement('button');
+allBtn.className = 'lf-btn all active';
+allBtn.textContent = 'All';
+allBtn.dataset.letter = '';
+filterEl.appendChild(allBtn);
+
+letters.forEach(l => {
+  const btn = document.createElement('button');
+  btn.className = 'lf-btn';
+  btn.textContent = l;
+  btn.dataset.letter = l;
+  filterEl.appendChild(btn);
+});
+
+// Build table rows
+const tbody = document.getElementById('prog-tbody');
+const docIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+const pendingIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+
+PROGRAMS.forEach(([slug, hasRag]) => {
+  const display = toDisplayName(slug);
+  const letter  = display[0].toUpperCase();
+  const compURL = spLink(slug, 'Standards_Compliance_Report.docx');
+  const alignURL = spLink(slug, 'LO_PO_Alignment_Report.docx');
+  const ragURL  = hasRag ? ragLink(slug) : null;
+
+  function makeDocLink(url, label) {
+    if (url) {
+      return `<a href="${url}" class="doc-link" target="_blank">${docIcon}${label}</a>`;
+    }
+    return `<span class="doc-link pending" title="Configure SP_BASE_URL to enable links">${pendingIcon}${label}</span>`;
+  }
+
+  const tr = document.createElement('tr');
+  tr.dataset.letter = letter;
+  tr.dataset.name   = display.toLowerCase();
+  tr.innerHTML = `
+    <td class="prog-name">
+      ${display}
+      <small>${slug}</small>
+    </td>
+    <td><div class="cell-links">${makeDocLink(compURL, 'Compliance')}</div></td>
+    <td><div class="cell-links">${makeDocLink(alignURL, 'Alignment')}</div></td>
+    <td>${hasRag
+      ? (ragURL
+          ? `<a href="${ragURL}" class="doc-link" target="_blank">${docIcon}<span class="badge-rag">JSONL</span></a>`
+          : `<span class="doc-link pending">${pendingIcon}<span class="badge-rag">JSONL</span></span>`)
+      : `<span style="color:var(--pending);font-size:0.8rem">—</span>`
+    }</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+// ── Filtering logic ──────────────────────────────────────────────────────────
+let activeLetter = '';
+let searchVal = '';
+
+function updateTable() {
+  const rows = tbody.querySelectorAll('tr');
+  let visible = 0;
+  rows.forEach(row => {
+    const letterMatch = !activeLetter || row.dataset.letter === activeLetter;
+    const searchMatch = !searchVal || row.dataset.name.includes(searchVal);
+    const show = letterMatch && searchMatch;
+    row.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+
+  const total = PROGRAMS.length;
+  const countEl = document.getElementById('results-count');
+  if (searchVal || activeLetter) {
+    countEl.innerHTML = `Showing <strong>${visible}</strong> of <strong>${total}</strong> programs`;
+  } else {
+    countEl.innerHTML = `<strong>${total}</strong> programs with AI-generated reports`;
+  }
+
+  document.getElementById('stat-programs').textContent = total;
+  document.getElementById('no-results').classList.toggle('visible', visible === 0);
+}
+
+document.getElementById('search').addEventListener('input', e => {
+  searchVal = e.target.value.toLowerCase().trim();
+  updateTable();
+});
+
+filterEl.addEventListener('click', e => {
+  const btn = e.target.closest('.lf-btn');
+  if (!btn) return;
+  filterEl.querySelectorAll('.lf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeLetter = btn.dataset.letter;
+  updateTable();
+});
+
+// Initial render
+updateTable();
+</script>
+
+</body>
+</html>

@@ -172,8 +172,10 @@
     /* ── SharePoint notice ── */
     .sp-notice {
       background: rgba(11,138,121,0.08);
-      border-bottom: 1px solid rgba(11,138,121,0.2);
-      padding: 10px 32px;
+      border: 1px solid rgba(11,138,121,0.2);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 24px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -404,17 +406,17 @@
   </div>
 </div>
 
-<!-- ── SharePoint access notice ── -->
-<div class="sp-notice">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0;opacity:0.7"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-  <span>
-    Report documents are hosted on SharePoint (NSCC internal access required).
-    <a href="https://nscc.sharepoint.com/sites/NSCCCurriculumOutcomeMapping" target="_blank">Visit the SharePoint site</a> to request access if document links don't open.
-  </span>
-</div>
-
 <!-- ── Main content ── -->
 <div class="main">
+
+  <!-- SharePoint access notice -->
+  <div class="sp-notice">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0;opacity:0.7"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <span>
+      Report documents are hosted on SharePoint (NSCC internal access required).
+      <a href="https://nscc.sharepoint.com/sites/NSCCCurriculumOutcomeMapping" target="_blank">Visit the SharePoint site</a> to request access if document links don't open.
+    </span>
+  </div>
 
   <!-- Controls -->
   <div class="controls">

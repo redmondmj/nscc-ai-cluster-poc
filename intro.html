@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De-Mystifying AI — OSYS1200 Workshop</title>
+<meta name="description" content="Follow-along slides for the OSYS1200 Module 6 in-class workshop: De-Mystifying Generative AI and Agentic Systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  html { background: #0A1018; }
+  body { margin: 0; font-family: 'IBM Plex Sans', Arial, sans-serif; color: #EEF1EC; background: #0A1018; }
+  .top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+         padding: 12px 16px; background: rgba(10,16,24,.92); backdrop-filter: blur(8px); border-bottom: 1px solid #1E2A38; }
+  .top h1 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.3; }
+  .top span { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #3CCFB0; white-space: nowrap; }
+  main { display: flex; flex-direction: column; align-items: center; gap: 28px; padding: 20px 16px 64px; }
+  .frame { margin: 0; width: min(100%, 1280px); }
+  .scaler { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px;
+            box-shadow: 0 4px 24px rgba(0,0,0,.45); }
+  .scaler > section { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0;
+            transform: scale(var(--s, .2)); box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column;
+            font-family: 'IBM Plex Sans', Arial, sans-serif; }
+  figcaption { margin-top: 8px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6F8090; }
+  section * { margin: 0; box-sizing: border-box; }
+  section h1 { font-size: 96px; font-weight: 600; line-height: 1.1; }
+  section h2 { font-size: 64px; font-weight: 600; line-height: 1.15; }
+  section h3 { font-size: 44px; font-weight: 600; line-height: 1.2; }
+  section p { font-size: 32px; line-height: 1.4; }
+  section ul, section ol { padding-left: 1.2em; }
+  section li + li { margin-top: .3em; }
+  section table { width: 100%; border-collapse: collapse; }
+  section th, section td { padding: .35em .6em; text-align: left; vertical-align: top; border-bottom: 1px solid rgba(22,32,43,.18); }
+  section th { font-weight: 600; border-bottom-width: 2px; }
+</style>
+</head>
+<body>
+<header class="top"><h1>De-Mystifying AI — OSYS1200 Workshop</h1><span>19 slides</span></header>
+<main>
+<figure class="frame" id="slide-1" aria-label="Slide 1 of 19"><div class="scaler"><section id="cover" data-transition="fade" style="background:#0E1621;color:#EEF1EC;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<div style="display:flex;flex-direction:column;gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#3CCFB0;letter-spacing:2px;text-transform:uppercase">OSYS1200 · Module 6 · In-class workshop</p>
+<h1 style="font-size:104px;font-weight:600;line-height:1.05;color:#EEF1EC">De-Mystifying Generative AI &amp; Agentic Systems</h1>
+<p style="font-size:32px;line-height:1.4;color:#A7B6C2">From pattern recognition to agents that act — and how to run them safely.</p>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:end;border-top:2px solid #2A3A4C;padding:32px 0 0 0">
+<p style="font-size:32px;line-height:1.4;color:#EEF1EC"><b>Matt Redmond</b><br><span style="color:#A7B6C2">Introduction to Windows Administration</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#3CCFB0">ML → LLMs → Chatbots → Agents → MCP</p>
+</div>
+
+</section></div><figcaption>1 / 19</figcaption></figure>
+<figure class="frame" id="slide-2" aria-label="Slide 2 of 19"><div class="scaler"><section id="objectives" data-transition="fade" style="background:#F3F1EB;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;letter-spacing:2px;text-transform:uppercase">Today’s objectives</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#16202B">What you’ll leave with</h2>
+</div>
+<div style="display:flex;flex-direction:column;border-top:2px solid #D9D4C7">
+<div style="display:flex;align-items:baseline;gap:40px;padding:24px 0;border-bottom:2px solid #D9D4C7">
+<p style="flex:none;width:80px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;color:#0B7563">01</p>
+<h3 style="flex:none;width:520px;font-size:32px;font-weight:600;line-height:1.2">The progression of AI</h3>
+<p style="flex:1;font-size:28px;line-height:1.4;color:#4A5866">From pattern recognition to chatbots, agents and MCP.</p>
+</div>
+<div style="display:flex;align-items:baseline;gap:40px;padding:24px 0;border-bottom:2px solid #D9D4C7">
+<p style="flex:none;width:80px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;color:#0B7563">02</p>
+<h3 style="flex:none;width:520px;font-size:32px;font-weight:600;line-height:1.2">The core lexicon</h3>
+<p style="flex:1;font-size:28px;line-height:1.4;color:#4A5866">Models, weights, tokens, harnesses, agents, protocols.</p>
+</div>
+<div style="display:flex;align-items:baseline;gap:40px;padding:24px 0;border-bottom:2px solid #D9D4C7">
+<p style="flex:none;width:80px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;color:#0B7563">03</p>
+<h3 style="flex:none;width:520px;font-size:32px;font-weight:600;line-height:1.2">The tooling landscape</h3>
+<p style="flex:1;font-size:28px;line-height:1.4;color:#4A5866">When to use a chat app, an IDE extension or a terminal agent.</p>
+</div>
+<div style="display:flex;align-items:baseline;gap:40px;padding:24px 0;border-bottom:2px solid #D9D4C7">
+<p style="flex:none;width:80px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;color:#0B7563">04</p>
+<h3 style="flex:none;width:520px;font-size:32px;font-weight:600;line-height:1.2">Hands-on reality</h3>
+<p style="flex:1;font-size:28px;line-height:1.4;color:#4A5866">Live generative coding and real admin automation.</p>
+</div>
+<div style="display:flex;align-items:baseline;gap:40px;padding:24px 0;border-bottom:2px solid #D9D4C7">
+<p style="flex:none;width:80px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;color:#0B7563">05</p>
+<h3 style="flex:none;width:520px;font-size:32px;font-weight:600;line-height:1.2">Governance and security</h3>
+<p style="flex:1;font-size:28px;line-height:1.4;color:#4A5866">Use AI without leaking secrets or running blind commands.</p>
+</div>
+</div>
+
+</section></div><figcaption>2 / 19</figcaption></figure>
+<figure class="frame" id="slide-3" aria-label="Slide 3 of 19"><div class="scaler"><section id="arc" data-transition="fade" style="background:#0E1621;color:#EEF1EC;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#3CCFB0;letter-spacing:2px;text-transform:uppercase">How we got here</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#EEF1EC">Five stages from asking to doing</h2>
+</div>
+<div style="display:flex;align-items:stretch;gap:12px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#172433;border-top:4px solid #3CCFB0;border-radius:12px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#3CCFB0">01 · pre-2017</p>
+<h3 style="font-size:32px;font-weight:600;line-height:1.2;color:#EEF1EC">Classical ML</h3>
+<p style="font-size:24px;line-height:1.4;color:#A7B6C2">Narrow pattern recognition</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="align-self:center;width:32px;height:16px;display:block;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#4C5F73"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#172433;border-top:4px solid #3CCFB0;border-radius:12px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#3CCFB0">02 · 2017–22</p>
+<h3 style="font-size:32px;font-weight:600;line-height:1.2;color:#EEF1EC">LLMs</h3>
+<p style="font-size:24px;line-height:1.4;color:#A7B6C2">Transformers predict the next token</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="align-self:center;width:32px;height:16px;display:block;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#4C5F73"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#172433;border-top:4px solid #3CCFB0;border-radius:12px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#3CCFB0">03 · 2022–24</p>
+<h3 style="font-size:32px;font-weight:600;line-height:1.2;color:#EEF1EC">Chatbots</h3>
+<p style="font-size:24px;line-height:1.4;color:#A7B6C2">Helpful, but passive</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="align-self:center;width:32px;height:16px;display:block;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#4C5F73"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#172433;border-top:4px solid #3CCFB0;border-radius:12px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#3CCFB0">04 · 2024–</p>
+<h3 style="font-size:32px;font-weight:600;line-height:1.2;color:#EEF1EC">Agents</h3>
+<p style="font-size:24px;line-height:1.4;color:#A7B6C2">Reason, act, observe, repeat</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="align-self:center;width:32px;height:16px;display:block;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#4C5F73"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#172433;border-top:4px solid #F2A65A;border-radius:12px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F2A65A">05 · 2024–</p>
+<h3 style="font-size:32px;font-weight:600;line-height:1.2;color:#EEF1EC">MCP</h3>
+<p style="font-size:24px;line-height:1.4;color:#A7B6C2">One standard plug for every tool</p>
+</div>
+</div>
+<div style="flex:1"></div>
+<p style="font-size:44px;font-weight:500;line-height:1.2;color:#EEF1EC">The big shift: from <span style="color:#3CCFB0">asking</span> a model to having it <span style="color:#F2A65A">do</span> the work.</p>
+
+</section></div><figcaption>3 / 19</figcaption></figure>
+<figure class="frame" id="slide-4" aria-label="Slide 4 of 19"><div class="scaler"><section id="stage-ml" data-transition="fade" style="background:#F3F1EB;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;letter-spacing:2px;text-transform:uppercase">Stages 1–2</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#16202B">Narrow models, then the Transformer</h2>
+</div>
+<div style="display:flex;gap:32px;align-items:stretch">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:16px;padding:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563">STAGE 1 · PRE-2017</p>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2">Classical machine learning</h3>
+<ul style="font-size:28px;line-height:1.45;color:#4A5866">
+<li>Decision trees, random forests, SVMs, logistic regression</li>
+<li>Show it 50,000 cats vs. dogs, or 100,000 spam vs. not-spam, and it learns to classify</li>
+<li><b style="color:#16202B">Limit:</b> completely rigid. A spam filter can’t write a sentence.</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:16px;padding:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563">STAGE 2 · 2017–2022</p>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2">Transformers and LLMs</h3>
+<ul style="font-size:28px;line-height:1.45;color:#4A5866">
+<li>Google’s 2017 paper <i>“Attention Is All You Need”</i></li>
+<li>Self-attention: every token weighs every other token, near or far</li>
+<li>Trained only to predict the <b style="color:#16202B">next token</b>, models picked up grammar and world knowledge</li>
+<li>Foundation models: GPT-3, PaLM, LLaMA</li>
+</ul>
+</div>
+</div>
+
+</section></div><figcaption>4 / 19</figcaption></figure>
+<figure class="frame" id="slide-5" aria-label="Slide 5 of 19"><div class="scaler"><section id="stage-chat" data-transition="fade" style="background:#0E1621;color:#EEF1EC;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#3CCFB0;letter-spacing:2px;text-transform:uppercase">Stage 3 · 2022–2024</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#EEF1EC">Chatbots and the single-turn trap</h2>
+</div>
+<div style="display:flex;gap:64px;align-items:center;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:44px;font-weight:500;line-height:1.25;color:#EEF1EC">A chatbot can tell you how to fix a locked Active Directory account.</p>
+<p style="font-size:44px;font-weight:600;line-height:1.25;color:#F2A65A">It can’t fix it.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;border-top:2px solid #2A3A4C">
+<div style="display:flex;flex-direction:column;gap:8px;padding:24px 0;border-bottom:2px solid #2A3A4C">
+<h3 style="font-size:32px;font-weight:600;line-height:1.2;color:#3CCFB0">Frozen in a vacuum</h3>
+<p style="font-size:26px;line-height:1.45;color:#A7B6C2">It answers from its context window and stops. No hands, no clock, no way to check its answer.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;padding:24px 0;border-bottom:2px solid #2A3A4C">
+<h3 style="font-size:32px;font-weight:600;line-height:1.2;color:#3CCFB0">RLHF made it helpful</h3>
+<p style="font-size:26px;line-height:1.45;color:#A7B6C2">Human feedback turned raw text predictors into assistants: ChatGPT, Claude, Gemini.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;padding:24px 0;border-bottom:2px solid #2A3A4C">
+<h3 style="font-size:32px;font-weight:600;line-height:1.2;color:#3CCFB0">But still passive</h3>
+<p style="font-size:26px;line-height:1.45;color:#A7B6C2">Great for “Explain NTFS permissions.” For real work, <i>you</i> copy, paste and run.</p>
+</div>
+</div>
+</div>
+
+</section></div><figcaption>5 / 19</figcaption></figure>
+<figure class="frame" id="slide-6" aria-label="Slide 6 of 19"><div class="scaler"><section id="react" data-transition="fade" style="background:#F3F1EB;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;letter-spacing:2px;text-transform:uppercase">Stage 4 · 2024–now</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#16202B">Agents: the ReAct loop</h2>
+</div>
+<div style="display:flex;align-items:stretch;gap:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:12px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563">1</p>
+<h3 style="font-size:32px;font-weight:600;line-height:1.2">Reason</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5866">Plan what needs to happen</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="align-self:center;width:40px;height:20px;display:block;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#9AA3A8"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:12px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563">2</p>
+<h3 style="font-size:32px;font-weight:600;line-height:1.2">Act</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5866">Emit a structured tool call</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="align-self:center;width:40px;height:20px;display:block;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#9AA3A8"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:12px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563">3</p>
+<h3 style="font-size:32px;font-weight:600;line-height:1.2">Observe</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5866">Read the real output or error</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="align-self:center;width:40px;height:20px;display:block;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#9AA3A8"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FBFAF6;border:2px solid #0B7563;border-radius:12px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563">4</p>
+<h3 style="font-size:32px;font-weight:600;line-height:1.2">Iterate</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5866">Fix, retry, continue until done</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0E1621;border-radius:12px;padding:32px 40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.6;color:#A7B6C2"><span style="color:#3CCFB0">reason ›</span> I need to see which volumes are low on space.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.6;color:#EEF1EC"><span style="color:#3CCFB0">act    ›</span> run_command("Get-Volume")</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.6;color:#A7B6C2"><span style="color:#3CCFB0">observe›</span> stdout / stderr returned into the model’s context</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.6;color:#A7B6C2"><span style="color:#F2A65A">iterate›</span> diagnose, pick the next command, repeat until the goal is met</p>
+</div>
+<p style="font-size:32px;line-height:1.4;color:#16202B">Now it <b>talks to tools and corrects itself</b> — not just to you.</p>
+
+</section></div><figcaption>6 / 19</figcaption></figure>
+<figure class="frame" id="slide-7" aria-label="Slide 7 of 19"><div class="scaler"><section id="mcp" data-transition="fade" style="background:#0E1621;color:#EEF1EC;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F2A65A;letter-spacing:2px;text-transform:uppercase">Stage 5 · Model Context Protocol</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#EEF1EC">MCP is the USB-C of AI</h2>
+</div>
+<div style="display:flex;align-items:center;gap:32px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#A7B6C2">ANY CLIENT</p>
+<p style="font-size:26px;background:#172433;border:2px solid #2A3A4C;border-radius:10px;padding:12px 20px">Claude Desktop</p>
+<p style="font-size:26px;background:#172433;border:2px solid #2A3A4C;border-radius:10px;padding:12px 20px">Claude Code</p>
+<p style="font-size:26px;background:#172433;border:2px solid #2A3A4C;border-radius:10px;padding:12px 20px">Antigravity IDE</p>
+<p style="font-size:26px;background:#172433;border:2px solid #2A3A4C;border-radius:10px;padding:12px 20px">Cursor · Zed</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="width:56px;height:28px;display:block;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#4C5F73"/></svg>
+<div style="flex:none;width:400px;display:flex;flex-direction:column;align-items:center;gap:12px;background:#F2A65A;border-radius:20px;padding:40px 32px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#0E1621" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:64px;height:64px;color:#0E1621;flex:none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+<h3 style="font-size:44px;font-weight:700;line-height:1.1;color:#0E1621;text-align:center">MCP</h3>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0E1621;text-align:center">JSON-RPC<br>Tools · Resources · Prompts</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 100 50" preserveAspectRatio="none" style="width:56px;height:28px;display:block;flex:none"><polygon points="0,15 60,15 60,0 100,25 60,50 60,35 0,35" fill="#4C5F73"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#A7B6C2">ANY SERVER</p>
+<p style="font-size:26px;background:#172433;border:2px solid #2A3A4C;border-radius:10px;padding:12px 20px">Brightspace</p>
+<p style="font-size:26px;background:#172433;border:2px solid #2A3A4C;border-radius:10px;padding:12px 20px">Proxmox · TrueNAS</p>
+<p style="font-size:26px;background:#172433;border:2px solid #2A3A4C;border-radius:10px;padding:12px 20px">Notion</p>
+<p style="font-size:26px;background:#172433;border:2px solid #2A3A4C;border-radius:10px;padding:12px 20px">SQLite</p>
+</div>
+</div>
+<p style="font-size:32px;line-height:1.4;color:#A7B6C2"><b style="color:#EEF1EC">Before:</b> a Proxmox tool for one app had to be rewritten for every other app. <b style="color:#EEF1EC">Now:</b> write the server once, plug it in anywhere.</p>
+
+</section></div><figcaption>7 / 19</figcaption></figure>
+<figure class="frame" id="slide-8" aria-label="Slide 8 of 19"><div class="scaler"><section id="architecture" data-transition="fade" style="background:#F3F1EB;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;letter-spacing:2px;text-transform:uppercase">Core concepts</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#16202B">How the pieces talk to each other</h2>
+</div>
+<div style="position:absolute;left:528px;top:330px;width:360px;height:140px;display:flex;flex-direction:column;justify-content:center;gap:4px;background:#0E1621;border-radius:14px;padding:20px 28px">
+<h3 style="font-size:32px;font-weight:600;line-height:1.2;color:#EEF1EC">Model</h3>
+<p style="font-size:24px;line-height:1.4;color:#A7B6C2">LLM: frontier or local</p>
+</div>
+<div style="position:absolute;left:128px;top:600px;width:280px;height:150px;display:flex;flex-direction:column;justify-content:center;gap:4px;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:14px;padding:20px 28px">
+<h3 style="font-size:32px;font-weight:600;line-height:1.2">User</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5866">You, the admin</p>
+</div>
+<div style="position:absolute;left:528px;top:600px;width:360px;height:150px;display:flex;flex-direction:column;justify-content:center;gap:4px;background:#FBFAF6;border:3px solid #0B7563;border-radius:14px;padding:20px 28px">
+<h3 style="font-size:32px;font-weight:600;line-height:1.2">Harness</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5866">The control point</p>
+</div>
+<div style="position:absolute;left:1048px;top:600px;width:300px;height:150px;display:flex;flex-direction:column;justify-content:center;gap:4px;background:#FBFAF6;border:3px solid #A94E0E;border-radius:14px;padding:20px 28px">
+<h3 style="font-size:32px;font-weight:600;line-height:1.2">MCP server</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5866">AD, Proxmox, …</p>
+</div>
+<div style="position:absolute;left:1488px;top:600px;width:304px;height:150px;display:flex;flex-direction:column;justify-content:center;gap:4px;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:14px;padding:20px 28px">
+<h3 style="font-size:32px;font-weight:600;line-height:1.2">Systems</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5866">VMs, disks, APIs</p>
+</div>
+<svg aria-hidden="true" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;pointer-events:none"><defs><marker id="ah1" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4A5866"/></marker></defs><line x1="408" y1="675" x2="528" y2="675" stroke="#4A5866" stroke-width="3" marker-end="url(#ah1)"/></svg>
+<svg aria-hidden="true" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;pointer-events:none"><defs><marker id="ah2" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4A5866"/></marker></defs><line x1="708" y1="600" x2="708" y2="470" stroke="#4A5866" stroke-width="3" marker-start="url(#ah2)" marker-end="url(#ah2)"/></svg>
+<svg aria-hidden="true" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;pointer-events:none"><defs><marker id="ah3" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4A5866"/></marker></defs><line x1="888" y1="675" x2="1048" y2="675" stroke="#4A5866" stroke-width="3" marker-start="url(#ah3)" marker-end="url(#ah3)"/></svg>
+<svg aria-hidden="true" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;pointer-events:none"><defs><marker id="ah4" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4A5866"/></marker></defs><line x1="1348" y1="675" x2="1488" y2="675" stroke="#4A5866" stroke-width="3" marker-start="url(#ah4)" marker-end="url(#ah4)"/></svg>
+<p style="position:absolute;left:408px;top:620px;width:120px;font-size:24px;color:#4A5866;text-align:center">intent</p>
+<p style="position:absolute;left:728px;top:505px;width:400px;font-size:24px;color:#4A5866">context ↑ · tool calls ↓</p>
+<p style="position:absolute;left:888px;top:620px;width:160px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#A94E0E;text-align:center">JSON-RPC</p>
+<p style="position:absolute;left:1348px;top:620px;width:140px;font-size:24px;color:#4A5866;text-align:center">OS / API</p>
+<p style="position:absolute;left:128px;top:800px;width:1664px;font-size:28px;line-height:1.45;color:#16202B">The model never touches your systems. The <b>harness</b> sends it context, runs the tool calls it asks for through <b>MCP servers</b>, and feeds the results back — looping until it can hand you a verified answer.</p>
+
+</section></div><figcaption>8 / 19</figcaption></figure>
+<figure class="frame" id="slide-9" aria-label="Slide 9 of 19"><div class="scaler"><section id="gloss-engine" data-transition="fade" style="background:#F3F1EB;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;letter-spacing:2px;text-transform:uppercase">The lexicon · 1 of 3</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#16202B">The engine</h2>
+</div>
+<table style="font-size:26px;line-height:1.35;color:#16202B">
+<tr><th style="width:24%;text-align:left">Term</th><th style="width:42%;text-align:left">What it is</th><th style="width:34%;text-align:left">Admin analogy</th></tr>
+<tr><td><b>Model</b></td><td>Neural network trained on vast data; encodes language, logic and knowledge</td><td>The raw engine on a test bench</td></tr>
+<tr style="background:#FBFAF6"><td><b>Weights / parameters</b></td><td>The numbers — often billions — fixed during training</td><td>The gear ratios and wiring inside</td></tr>
+<tr><td><b>Inference</b></td><td>Running a prompt through the model to generate tokens</td><td>Running the engine under load</td></tr>
+<tr style="background:#FBFAF6"><td><b>Frontier model</b></td><td>The most capable cloud models: Claude, GPT, Gemini</td><td>A Formula 1 engine in a datacenter</td></tr>
+<tr><td><b>Small / local model</b></td><td>About 1B–14B parameters; runs on a laptop via Ollama or vLLM</td><td>A 4-cylinder on your own generator</td></tr>
+</table>
+
+</section></div><figcaption>9 / 19</figcaption></figure>
+<figure class="frame" id="slide-10" aria-label="Slide 10 of 19"><div class="scaler"><section id="gloss-text" data-transition="fade" style="background:#F3F1EB;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;letter-spacing:2px;text-transform:uppercase">The lexicon · 2 of 3</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#16202B">Text, memory and mistakes</h2>
+</div>
+<table style="font-size:26px;line-height:1.35;color:#16202B">
+<tr><th style="width:24%;text-align:left">Term</th><th style="width:42%;text-align:left">What it is</th><th style="width:34%;text-align:left">Admin analogy</th></tr>
+<tr><td><b>Token</b></td><td>The unit a model reads: about 4 characters, or ¾ of a word</td><td>The byte chunks the engine digests</td></tr>
+<tr style="background:#FBFAF6"><td><b>Context window</b></td><td>The most tokens it can hold at once, from 128K to 2M</td><td>RAM available for one operation</td></tr>
+<tr><td><b>Hallucination</b></td><td>Confident output that is wrong or invented — a cmdlet or flag that doesn’t exist</td><td>A stale DNS cache returning a bad IP</td></tr>
+<tr style="background:#FBFAF6"><td><b>Prompt engineering vs. scaffolding</b></td><td>You write the prompt; the harness injects system rules, schemas, examples and tools</td><td>Pressing the pedal vs. the fuel-injection map</td></tr>
+</table>
+
+</section></div><figcaption>10 / 19</figcaption></figure>
+<figure class="frame" id="slide-11" aria-label="Slide 11 of 19"><div class="scaler"><section id="gloss-system" data-transition="fade" style="background:#F3F1EB;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;letter-spacing:2px;text-transform:uppercase">The lexicon · 3 of 3</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#16202B">The system around the model</h2>
+</div>
+<div style="display:flex;gap:32px;align-items:stretch">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:16px;padding:40px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#0B7563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;color:#0B7563;flex:none"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2">Harness</h3>
+<p style="font-size:26px;line-height:1.45;color:#4A5866">Software around the model that manages system prompts, history, token budgets, the tool loop and safety guards.</p>
+<div style="flex:1"></div>
+<p style="font-size:26px;line-height:1.45;color:#0B7563;border-top:2px solid #D9D4C7;padding:20px 0 0 0"><i>The chassis, steering, brakes and dashboard around the engine.</i></p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:16px;padding:40px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#0B7563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;color:#0B7563;flex:none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2">Agent</h3>
+<p style="font-size:26px;line-height:1.45;color:#4A5866">An LLM paired with tools, memory and an autonomous loop, pursuing a goal over many steps.</p>
+<div style="flex:1"></div>
+<p style="font-size:26px;line-height:1.45;color:#0B7563;border-top:2px solid #D9D4C7;padding:20px 0 0 0"><i>A rover that reads telemetry, decides, navigates and reports back.</i></p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:16px;padding:40px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#A94E0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;color:#A94E0E;flex:none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2">MCP</h3>
+<p style="font-size:26px;line-height:1.45;color:#4A5866">An open JSON-RPC spec for how harnesses read data (Resources), run actions (Tools) and load templates (Prompts).</p>
+<div style="flex:1"></div>
+<p style="font-size:26px;line-height:1.45;color:#A94E0E;border-top:2px solid #D9D4C7;padding:20px 0 0 0"><i>A universal USB-C hub for Windows, Linux, databases and switches.</i></p>
+</div>
+</div>
+
+</section></div><figcaption>11 / 19</figcaption></figure>
+<figure class="frame" id="slide-12" aria-label="Slide 12 of 19"><div class="scaler"><section id="demo-cube" data-transition="fade" style="background:#0e1621">
+  <div id="p0dd20a7de572r0-7ee0b1a8" style="position:absolute; top:128px; left:128px; width:1664px; height:129px; display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#3ccfb0">Live demo 1 · Generative visual synthesis</p>
+    <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#eef1ec">From one prompt to a working 3D app</h2>
+  </div>
+  <div id="p0dd20a7de572r1-7ee0b1a8" style="position:absolute; top:297px; left:128px; width:1664px; height:255px; display:flex; flex-direction:column; gap:12px">
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a7b6c2">PROMPT</p>
+    <p style="padding:28px 36px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.55; color:#eef1ec; background:#172433; border:2px solid #2a3a4c; border-radius:12px">Write a single, standalone HTML file that renders an interactive, 3D rotating cube using pure CSS3 3D transforms. Give each face a distinct modern neon cyber aesthetic, show an NSCC IT logo or label on top, and make it interactive: allow the user to drag with the mouse to rotate the cube in real time, with realistic inertia.</p>
+  </div>
+  <div id="p0dd20a7de572r2-7ee0b1a8" style="position:absolute; top:591px; left:128px; width:1664px; height:165px; display:flex; flex-direction:column; gap:12px">
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a7b6c2">THEN ITERATE</p>
+    <div style="display:flex; flex-direction:row; gap:24px">
+      <p style="flex:1; padding:20px 28px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:26px; line-height:1.45; color:#eef1ec; border:2px solid #3ccfb0; border-radius:12px">“Now add controls to dynamically change the rotation speed and toggle wireframe mode.”</p>
+      <p style="flex:1; padding:20px 28px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:26px; line-height:1.45; color:#eef1ec; border:2px solid #3ccfb0; border-radius:12px">“Embed a live clock displaying UTC and local Halifax ADT time on one of the faces.”</p>
+    </div>
+  </div>
+  <p id="p0dd20a7de572r3-7ee0b1a8" style="position:absolute; top:796px; left:128px; width:1664px; font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; line-height:1.45; color:#a7b6c2"><span style="color:#f2a65a"><b>Watch for:</b></span> spatial coordinates, matrix math, event listeners and styling — all handled at once.</p>
+  
+</section></div><figcaption>12 / 19</figcaption></figure>
+<figure class="frame" id="slide-13" aria-label="Slide 13 of 19"><div class="scaler"><section id="demo-audit" data-transition="fade" style="background:#F3F1EB;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;letter-spacing:2px;text-transform:uppercase">Live demo 2 · Admin automation</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#16202B">An agent audits a Windows box</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#4A5866">PROMPT</p>
+<div style="display:flex;flex-direction:column;background:#0E1621;border-radius:12px;padding:28px 36px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.55;color:#EEF1EC">I need a robust PowerShell script to audit our local Windows storage and user accounts. It must:</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.55;color:#A7B6C2"><span style="color:#3CCFB0">1.</span> List all local users with their Enabled status, LastLogon date, and PasswordNeverExpires flag.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.55;color:#A7B6C2"><span style="color:#3CCFB0">2.</span> Query all attached disks, partition styles (GPT vs MBR), free space percentage, and health status.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.55;color:#A7B6C2"><span style="color:#3CCFB0">3.</span> Check for any VHD/VHDX virtual disk files mounted under Hyper-V or disk management.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.55;color:#A7B6C2"><span style="color:#3CCFB0">4.</span> Export the findings to both a clean console table and a structured JSON report in C:\Audit.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.55;color:#F2A65A">Make it safe: run with -WhatIf support and include try/catch error handling.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#4A5866">POINT OUT IN THE OUTPUT</p>
+<div style="display:flex;flex-wrap:wrap;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:8px;padding:8px 18px">[CmdletBinding(SupportsShouldProcess)]</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:8px;padding:8px 18px">Get-LocalUser</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:8px;padding:8px 18px">Get-CimInstance Win32_DiskDrive</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:8px;padding:8px 18px">Get-Volume</p>
+</div>
+</div>
+
+</section></div><figcaption>13 / 19</figcaption></figure>
+<figure class="frame" id="slide-14" aria-label="Slide 14 of 19"><div class="scaler"><section id="demo-verify" data-transition="fade" style="background:#F2A65A;color:#0E1621;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<div style="display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0E1621;letter-spacing:2px;text-transform:uppercase">The demo 2 takeaway</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.15;color:#0E1621">AI can make admin scripting 10x faster. You still own every cmdlet it writes.</h2>
+</div>
+<div style="display:flex;gap:32px;border-top:3px solid #0E1621;padding:40px 0 0 0">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2;color:#0E1621">Safety switches</h3>
+<p style="font-size:28px;line-height:1.4;color:#2B2116">Does it support -WhatIf and -Confirm?</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2;color:#0E1621">Privileges</h3>
+<p style="font-size:28px;line-height:1.4;color:#2B2116">Does it really need to run as admin?</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2;color:#0E1621">Destructive verbs</h3>
+<p style="font-size:28px;line-height:1.4;color:#2B2116">Find every Remove-, Format- and Set- before you run it.</p>
+</div>
+</div>
+
+</section></div><figcaption>14 / 19</figcaption></figure>
+<figure class="frame" id="slide-15" aria-label="Slide 15 of 19"><div class="scaler"><section id="tooling" data-transition="fade" style="background:#F3F1EB;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;letter-spacing:2px;text-transform:uppercase">Demo 3 · Tooling tour</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#16202B">Four tiers of AI tooling</h2>
+</div>
+<table style="font-size:26px;line-height:1.35;color:#16202B">
+<tr><th style="width:22%;text-align:left">Tool</th><th style="width:20%;text-align:left">Tier</th><th style="width:28%;text-align:left">Best for</th><th style="width:30%;text-align:left">What sets it apart</th></tr>
+<tr><td>Claude Desktop</td><td>Desktop chat app</td><td>Summaries, documents, conversation</td><td>Built-in MCP client for local tools</td></tr>
+<tr style="background:#FBFAF6"><td>Claude Code</td><td>Terminal agent</td><td>CLI scripting, refactors, git work</td><td>Edits files, runs the shell, spawns subagents</td></tr>
+<tr><td>GitHub Copilot</td><td>Editor and shell helper</td><td>Inline completion, shell commands</td><td>Tab completions in VS Code; Copilot CLI</td></tr>
+<tr style="background:#FBFAF6"><td>Antigravity IDE and agy CLI</td><td>Agentic studio</td><td>Whole projects, multi-agent runs</td><td>Background tasks, UI artifacts, multi-MCP</td></tr>
+</table>
+
+</section></div><figcaption>15 / 19</figcaption></figure>
+<figure class="frame" id="slide-16" aria-label="Slide 16 of 19"><div class="scaler"><section id="security" data-transition="fade" style="background:#0E1621;color:#EEF1EC;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F2A65A;letter-spacing:2px;text-transform:uppercase">Security and governance</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#EEF1EC">Trust, but verify</h2>
+</div>
+<div style="display:flex;gap:32px;align-items:stretch;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#172433;border-top:4px solid #F2A65A;border-radius:16px;padding:40px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#F2A65A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;color:#F2A65A;flex:none"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2;color:#EEF1EC">Keep secrets out of prompts</h3>
+<p style="font-size:26px;line-height:1.45;color:#A7B6C2">Never paste API tokens, private SSH keys or Kerberos tickets into a public AI tool. Scan for secrets and PII before you commit.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#172433;border-top:4px solid #F2A65A;border-radius:16px;padding:40px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#F2A65A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;color:#F2A65A;flex:none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2;color:#EEF1EC">Read before you run</h3>
+<p style="font-size:26px;line-height:1.45;color:#A7B6C2"><span style="color:#EEF1EC">rm -rf</span>, <span style="color:#EEF1EC">Format-Volume</span>, <span style="color:#EEF1EC">Remove-Item -Recurse</span>: a human approves every destructive command an agent proposes.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#172433;border-top:4px solid #F2A65A;border-radius:16px;padding:40px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#F2A65A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;color:#F2A65A;flex:none"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2;color:#EEF1EC">Know where your data goes</h3>
+<p style="font-size:26px;line-height:1.45;color:#A7B6C2">Consumer accounts may use your chats to train models. Enterprise and API agreements can offer zero data retention.</p>
+</div>
+</div>
+
+</section></div><figcaption>16 / 19</figcaption></figure>
+<figure class="frame" id="slide-17" aria-label="Slide 17 of 19"><div class="scaler"><section id="local" data-transition="fade" style="background:#F3F1EB;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#0B7563;letter-spacing:2px;text-transform:uppercase">AI isn’t only in the cloud</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#16202B">Local open weights vs. cloud frontier</h2>
+</div>
+<div style="display:flex;gap:32px;align-items:stretch">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FBFAF6;border:2px solid #D9D4C7;border-radius:16px;padding:40px">
+<div style="display:flex;align-items:center;gap:20px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#A94E0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:48px;height:48px;color:#A94E0E;flex:none"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2">Cloud frontier APIs</h3>
+</div>
+<ul style="font-size:28px;line-height:1.45;color:#4A5866">
+<li>Strongest reasoning, biggest context windows</li>
+<li>Nothing to host or maintain</li>
+<li>Prompts and data leave your network</li>
+<li>Check the provider’s retention terms</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FBFAF6;border:3px solid #0B7563;border-radius:16px;padding:40px">
+<div style="display:flex;align-items:center;gap:20px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#0B7563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:48px;height:48px;color:#0B7563;flex:none"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+<h3 style="font-size:44px;font-weight:600;line-height:1.2">Local open weights</h3>
+</div>
+<ul style="font-size:28px;line-height:1.45;color:#4A5866">
+<li>Ollama or vLLM on a Proxmox server or workstation GPU</li>
+<li>Zero telemetry, complete data sovereignty</li>
+<li>Works offline and air-gapped, with predictable performance</li>
+<li>Smaller models: less capable on the hardest tasks</li>
+</ul>
+</div>
+</div>
+<p style="font-size:32px;line-height:1.4;color:#16202B"><b>Who runs local?</b> Banks, healthcare and air-gapped defense networks.</p>
+
+</section></div><figcaption>17 / 19</figcaption></figure>
+<figure class="frame" id="slide-18" aria-label="Slide 18 of 19"><div class="scaler"><section id="challenge" data-transition="fade" style="background:#0E1621;color:#EEF1EC;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#3CCFB0;letter-spacing:2px;text-transform:uppercase">Your turn · 15 minutes</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#EEF1EC">Challenge: prompt to production</h2>
+</div>
+<div style="display:flex;gap:64px;align-items:stretch;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#A7B6C2">THE TASK</p>
+<p style="font-size:32px;line-height:1.45;color:#EEF1EC">Use Copilot, Claude or ChatGPT to write a PowerShell one-liner or short script that scans</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#3CCFB0;background:#172433;border-radius:8px;padding:12px 20px">C:\Windows\System32\winevt\Logs</p>
+<p style="font-size:32px;line-height:1.45;color:#EEF1EC">and lists the <b>5 largest</b> event log files with their size in <b>MB</b>.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#172433;border-top:4px solid #F2A65A;border-radius:16px;padding:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F2A65A">TO PASS</p>
+<div style="display:flex;gap:20px;align-items:baseline">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;color:#F2A65A">1</p>
+<p style="font-size:32px;line-height:1.4;color:#EEF1EC">Run it on your own VM.</p>
+</div>
+<div style="display:flex;gap:20px;align-items:baseline">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;color:#F2A65A">2</p>
+<p style="font-size:32px;line-height:1.4;color:#EEF1EC">Explain what every pipeline stage does:</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:0 0 0 44px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#3CCFB0">| Where-Object</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#3CCFB0">| Sort-Object</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#3CCFB0">| Select-Object</p>
+</div>
+</div>
+</div>
+
+</section></div><figcaption>18 / 19</figcaption></figure>
+<figure class="frame" id="slide-19" aria-label="Slide 19 of 19"><div class="scaler"><section id="close" data-transition="fade" style="background:#0E1621;color:#EEF1EC;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#3CCFB0;letter-spacing:2px;text-transform:uppercase">Recap</p>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h2 style="font-size:96px;font-weight:600;line-height:1.1;color:#EEF1EC">Models predict.</h2>
+<h2 style="font-size:96px;font-weight:600;line-height:1.1;color:#EEF1EC">Harnesses act.</h2>
+<h2 style="font-size:96px;font-weight:600;line-height:1.1;color:#EEF1EC">MCP connects.</h2>
+<h2 style="font-size:96px;font-weight:600;line-height:1.1;color:#F2A65A">You verify.</h2>
+</div>
+<p style="font-size:44px;font-weight:500;line-height:1.2;color:#A7B6C2">Questions?</p>
+
+</section></div><figcaption>19 / 19</figcaption></figure>
+</main>
+<script>
+  const fit = () => document.querySelectorAll('.scaler').forEach(el => el.style.setProperty('--s', el.clientWidth / 1920));
+  new ResizeObserver(fit).observe(document.querySelector('main'));
+  fit();
+  const frames = [...document.querySelectorAll('.frame')];
+  addEventListener('keydown', e => {
+    const step = {ArrowRight: 1, ArrowDown: 1, PageDown: 1, ' ': 1, ArrowLeft: -1, ArrowUp: -1, PageUp: -1}[e.key];
+    if (!step) return;
+    e.preventDefault();
+    const mid = innerHeight / 2;
+    let cur = frames.findIndex(f => f.getBoundingClientRect().bottom > mid);
+    if (cur < 0) cur = frames.length - 1;
+    frames[Math.max(0, Math.min(frames.length - 1, cur + step))].scrollIntoView({behavior: 'smooth', block: 'center'});
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI in Quality Assurance & Automated Testing — INFT2700</title>
+<meta name="description" content="INFT2700 Software Development Project I - AI-Driven Software Testing and Quality Assurance Workshop">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  html, body { margin: 0; height: 100%; background: #070C12; overflow: hidden; }
+  #stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+  #deck { width: 1920px; height: 1080px; position: relative; flex: none; transform-origin: center center; }
+  #deck > section { position: absolute; inset: 0; box-sizing: border-box; visibility: hidden; overflow: hidden;
+                    display: flex; flex-direction: column; font-family: 'IBM Plex Sans', Arial, sans-serif; }
+  #deck > section.active { visibility: visible; }
+  #deck *, #deck *::before, #deck *::after { box-sizing: border-box; margin: 0; }
+  #deck h1 { font-size: 96px; font-weight: 600; line-height: 1.1; }
+  #deck h2 { font-size: 64px; font-weight: 600; line-height: 1.15; }
+  #deck h3 { font-size: 40px; font-weight: 600; line-height: 1.2; }
+  #deck p { font-size: 28px; line-height: 1.4; }
+  #deck ul, #deck ol { padding-left: 1.2em; }
+  #deck li { font-size: 26px; line-height: 1.45; }
+  #deck li + li { margin-top: .4em; }
+  #deck pre, #deck code { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+  
+  .badge { display: inline-block; padding: 6px 16px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+  .badge-teal { background: rgba(60,207,176,0.15); color: #3CCFB0; border: 1px solid rgba(60,207,176,0.3); }
+  .badge-amber { background: rgba(245,166,35,0.15); color: #F5A623; border: 1px solid rgba(245,166,35,0.3); }
+  .badge-red { background: rgba(226,74,74,0.15); color: #E24A4A; border: 1px solid rgba(226,74,74,0.3); }
+  .badge-purple { background: rgba(156,39,176,0.15); color: #BA68C8; border: 1px solid rgba(156,39,176,0.3); }
+  .badge-blue { background: rgba(33,150,243,0.15); color: #64B5F6; border: 1px solid rgba(33,150,243,0.3); }
+
+  .card { background: #16202B; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 36px; display: flex; flex-direction: column; gap: 16px; }
+  .code-block { background: #0B1017; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; font-family: 'JetBrains Mono', monospace; font-size: 20px; line-height: 1.45; color: #E0E6ED; overflow: hidden; }
+  
+  #bar { position: fixed; right: 16px; bottom: 12px; display: flex; gap: 8px; align-items: center;
+         font: 600 14px/1 system-ui, sans-serif; color: #C9D3DC; opacity: .55; transition: opacity .2s; z-index: 9999; }
+  #bar:hover, #bar:focus-within { opacity: 1; }
+  #bar button { background: rgba(255,255,255,.12); color: inherit; border: 0; border-radius: 6px;
+                padding: 8px 12px; font: inherit; cursor: pointer; }
+  #count { min-width: 56px; text-align: center; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- SLIDE 1: Title -->
+<section id="cover" style="background:#0E1621;color:#EEF1EC;padding:120px;display:flex;flex-direction:column;justify-content:space-between">
+  <div style="display:flex;flex-direction:column;gap:28px">
+    <div>
+      <span class="badge badge-teal">INFT 2700 &bull; SOFTWARE DEVELOPMENT PROJECT I</span>
+    </div>
+    <h1 style="color:#EEF1EC;margin-top:12px;font-size:84px">AI-Driven Quality Assurance &amp; Automated Testing</h1>
+    <p style="font-size:36px;color:#3CCFB0;font-weight:500;margin-top:-8px">
+      From Manual Test Matrices to Enterprise-Grade Agentic Verification
+    </p>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid rgba(255,255,255,0.12);padding-top:32px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <p style="font-size:24px;color:#A7B6C2">Instructor: Michael Redmond &bull; NSCC Truro Campus</p>
+      <p style="font-size:20px;color:#6C7D8B;font-family:'JetBrains Mono', monospace">Hands-On Workshop &amp; Industry Case Studies</p>
+    </div>
+    <div style="background:#16202B;border-radius:12px;padding:14px 24px;border:1px solid rgba(255,255,255,0.1)">
+      <span style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#F5A623">Interactive Live Demo</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 2: QR Follow Along -->
+<section id="follow-along" style="background:#0E1621;color:#EEF1EC;padding:120px;display:flex;flex-direction:row;align-items:center;gap:96px">
+  <div style="flex:1;display:flex;flex-direction:column;gap:32px">
+    <div>
+      <span class="badge badge-teal">LIVE SLIDES</span>
+    </div>
+    <h2 style="font-size:68px;line-height:1.15;color:#EEF1EC">Get the slides on your own device</h2>
+    <p style="font-size:32px;line-height:1.4;color:#A7B6C2">Scan the QR code with your phone or laptop camera, or navigate to:</p>
+    <div style="background:#16202B;border-radius:16px;padding:24px 32px;border:1px solid rgba(60,207,176,0.3);width:fit-content">
+      <p style="font-family:'JetBrains Mono', monospace;font-size:40px;color:#3CCFB0;margin:0">cluster.redmond.link/inft2700.html</p>
+    </div>
+    <p style="font-size:22px;color:#6C7D8B;margin-top:8px">&bull; Keyboard arrows or clicks navigate &bull; Press [F] for Fullscreen &bull; Direct links to repos &amp; starter kits</p>
+  </div>
+  <div style="flex:none;background:#FFFFFF;border-radius:28px;padding:36px;box-shadow:0 24px 64px rgba(0,0,0,0.6)">
+    <svg aria-label="QR code linking to https://cluster.redmond.link/inft2700.html" viewBox="0 0 33 33" width="33" height="33" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="width:560px;height:560px"><rect width="33" height="33" fill="#FFFFFF"/><path fill="#0E1621" d="M2,2h1v1h-1zM3,2h1v1h-1zM4,2h1v1h-1zM5,2h1v1h-1zM6,2h1v1h-1zM7,2h1v1h-1zM8,2h1v1h-1zM10,2h1v1h-1zM13,2h1v1h-1zM16,2h1v1h-1zM20,2h1v1h-1zM21,2h1v1h-1zM22,2h1v1h-1zM24,2h1v1h-1zM25,2h1v1h-1zM26,2h1v1h-1zM27,2h1v1h-1zM28,2h1v1h-1zM29,2h1v1h-1zM30,2h1v1h-1zM2,3h1v1h-1zM8,3h1v1h-1zM10,3h1v1h-1zM16,3h1v1h-1zM19,3h1v1h-1zM20,3h1v1h-1zM22,3h1v1h-1zM24,3h1v1h-1zM30,3h1v1h-1zM2,4h1v1h-1zM4,4h1v1h-1zM5,4h1v1h-1zM6,4h1v1h-1zM8,4h1v1h-1zM13,4h1v1h-1zM14,4h1v1h-1zM15,4h1v1h-1zM18,4h1v1h-1zM22,4h1v1h-1zM24,4h1v1h-1zM26,4h1v1h-1zM27,4h1v1h-1zM28,4h1v1h-1zM30,4h1v1h-1zM2,5h1v1h-1zM4,5h1v1h-1zM5,5h1v1h-1zM6,5h1v1h-1zM8,5h1v1h-1zM10,5h1v1h-1zM11,5h1v1h-1zM12,5h1v1h-1zM13,5h1v1h-1zM14,5h1v1h-1zM15,5h1v1h-1zM17,5h1v1h-1zM18,5h1v1h-1zM19,5h1v1h-1zM20,5h1v1h-1zM21,5h1v1h-1zM24,5h1v1h-1zM26,5h1v1h-1zM27,5h1v1h-1zM28,5h1v1h-1zM30,5h1v1h-1zM2,6h1v1h-1zM4,6h1v1h-1zM5,6h1v1h-1zM6,6h1v1h-1zM8,6h1v1h-1zM11,6h1v1h-1zM15,6h1v1h-1zM16,6h1v1h-1zM17,6h1v1h-1zM21,6h1v1h-1zM24,6h1v1h-1zM26,6h1v1h-1zM27,6h1v1h-1zM28,6h1v1h-1zM30,6h1v1h-1zM2,7h1v1h-1zM8,7h1v1h-1zM11,7h1v1h-1zM12,7h1v1h-1zM16,7h1v1h-1zM19,7h1v1h-1zM20,7h1v1h-1zM21,7h1v1h-1zM22,7h1v1h-1zM24,7h1v1h-1zM30,7h1v1h-1zM2,8h1v1h-1zM3,8h1v1h-1zM4,8h1v1h-1zM5,8h1v1h-1zM6,8h1v1h-1zM7,8h1v1h-1zM8,8h1v1h-1zM10,8h1v1h-1zM12,8h1v1h-1zM14,8h1v1h-1zM16,8h1v1h-1zM18,8h1v1h-1zM20,8h1v1h-1zM22,8h1v1h-1zM24,8h1v1h-1zM25,8h1v1h-1zM26,8h1v1h-1zM27,8h1v1h-1zM28,8h1v1h-1zM29,8h1v1h-1zM30,8h1v1h-1zM10,9h1v1h-1zM11,9h1v1h-1zM12,9h1v1h-1zM13,9h1v1h-1zM16,9h1v1h-1zM17,9h1v1h-1zM18,9h1v1h-1zM19,9h1v1h-1zM21,9h1v1h-1zM2,10h1v1h-1zM4,10h1v1h-1zM5,10h1v1h-1zM7,10h1v1h-1zM8,10h1v1h-1zM9,10h1v1h-1zM16,10h1v1h-1zM19,10h1v1h-1zM20,10h1v1h-1zM24,10h1v1h-1zM27,10h1v1h-1zM29,10h1v1h-1zM30,10h1v1h-1zM4,11h1v1h-1zM5,11h1v1h-1zM7,11h1v1h-1zM9,11h1v1h-1zM10,11h1v1h-1zM13,11h1v1h-1zM15,11h1v1h-1zM19,11h1v1h-1zM20,11h1v1h-1zM21,11h1v1h-1zM22,11h1v1h-1zM24,11h1v1h-1zM25,11h1v1h-1zM26,11h1v1h-1zM30,11h1v1h-1zM2,12h1v1h-1zM4,12h1v1h-1zM5,12h1v1h-1zM7,12h1v1h-1zM8,12h1v1h-1zM9,12h1v1h-1zM10,12h1v1h-1zM13,12h1v1h-1zM16,12h1v1h-1zM19,12h1v1h-1zM20,12h1v1h-1zM23,12h1v1h-1zM26,12h1v1h-1zM28,12h1v1h-1zM29,12h1v1h-1zM2,13h1v1h-1zM3,13h1v1h-1zM5,13h1v1h-1zM9,13h1v1h-1zM10,13h1v1h-1zM11,13h1v1h-1zM12,13h1v1h-1zM13,13h1v1h-1zM15,13h1v1h-1zM17,13h1v1h-1zM18,13h1v1h-1zM21,13h1v1h-1zM22,13h1v1h-1zM24,13h1v1h-1zM30,13h1v1h-1zM2,14h1v1h-1zM3,14h1v1h-1zM4,14h1v1h-1zM7,14h1v1h-1zM8,14h1v1h-1zM10,14h1v1h-1zM14,14h1v1h-1zM15,14h1v1h-1zM16,14h1v1h-1zM17,14h1v1h-1zM18,14h1v1h-1zM19,14h1v1h-1zM21,14h1v1h-1zM25,14h1v1h-1zM27,14h1v1h-1zM28,14h1v1h-1zM3,15h1v1h-1zM5,15h1v1h-1zM6,15h1v1h-1zM7,15h1v1h-1zM10,15h1v1h-1zM12,15h1v1h-1zM14,15h1v1h-1zM17,15h1v1h-1zM21,15h1v1h-1zM24,15h1v1h-1zM28,15h1v1h-1zM29,15h1v1h-1zM30,15h1v1h-1zM3,16h1v1h-1zM8,16h1v1h-1zM13,16h1v1h-1zM15,16h1v1h-1zM16,16h1v1h-1zM18,16h1v1h-1zM21,16h1v1h-1zM23,16h1v1h-1zM24,16h1v1h-1zM25,16h1v1h-1zM28,16h1v1h-1zM29,16h1v1h-1zM30,16h1v1h-1zM4,17h1v1h-1zM5,17h1v1h-1zM6,17h1v1h-1zM7,17h1v1h-1zM17,17h1v1h-1zM18,17h1v1h-1zM22,17h1v1h-1zM25,17h1v1h-1zM26,17h1v1h-1zM29,17h1v1h-1zM8,18h1v1h-1zM9,18h1v1h-1zM13,18h1v1h-1zM14,18h1v1h-1zM15,18h1v1h-1zM18,18h1v1h-1zM20,18h1v1h-1zM22,18h1v1h-1zM23,18h1v1h-1zM26,18h1v1h-1zM27,18h1v1h-1zM29,18h1v1h-1zM4,19h1v1h-1zM6,19h1v1h-1zM7,19h1v1h-1zM9,19h1v1h-1zM10,19h1v1h-1zM11,19h1v1h-1zM12,19h1v1h-1zM17,19h1v1h-1zM19,19h1v1h-1zM22,19h1v1h-1zM23,19h1v1h-1zM25,19h1v1h-1zM27,19h1v1h-1zM28,19h1v1h-1zM29,19h1v1h-1zM2,20h1v1h-1zM4,20h1v1h-1zM5,20h1v1h-1zM6,20h1v1h-1zM8,20h1v1h-1zM9,20h1v1h-1zM10,20h1v1h-1zM12,20h1v1h-1zM14,20h1v1h-1zM16,20h1v1h-1zM17,20h1v1h-1zM19,20h1v1h-1zM22,20h1v1h-1zM23,20h1v1h-1zM26,20h1v1h-1zM28,20h1v1h-1zM5,21h1v1h-1zM6,21h1v1h-1zM7,21h1v1h-1zM10,21h1v1h-1zM11,21h1v1h-1zM12,21h1v1h-1zM13,21h1v1h-1zM14,21h1v1h-1zM17,21h1v1h-1zM18,21h1v1h-1zM19,21h1v1h-1zM24,21h1v1h-1zM26,21h1v1h-1zM28,21h1v1h-1zM3,22h1v1h-1zM5,22h1v1h-1zM7,22h1v1h-1zM8,22h1v1h-1zM9,22h1v1h-1zM10,22h1v1h-1zM11,22h1v1h-1zM12,22h1v1h-1zM13,22h1v1h-1zM14,22h1v1h-1zM16,22h1v1h-1zM18,22h1v1h-1zM19,22h1v1h-1zM20,22h1v1h-1zM21,22h1v1h-1zM22,22h1v1h-1zM23,22h1v1h-1zM24,22h1v1h-1zM25,22h1v1h-1zM26,22h1v1h-1zM27,22h1v1h-1zM28,22h1v1h-1zM10,23h1v1h-1zM11,23h1v1h-1zM14,23h1v1h-1zM15,23h1v1h-1zM18,23h1v1h-1zM19,23h1v1h-1zM20,23h1v1h-1zM22,23h1v1h-1zM26,23h1v1h-1zM27,23h1v1h-1zM28,23h1v1h-1zM29,23h1v1h-1zM30,23h1v1h-1zM2,24h1v1h-1zM3,24h1v1h-1zM4,24h1v1h-1zM5,24h1v1h-1zM6,24h1v1h-1zM7,24h1v1h-1zM8,24h1v1h-1zM10,24h1v1h-1zM11,24h1v1h-1zM12,24h1v1h-1zM21,24h1v1h-1zM22,24h1v1h-1zM24,24h1v1h-1zM26,24h1v1h-1zM27,24h1v1h-1zM29,24h1v1h-1zM2,25h1v1h-1zM8,25h1v1h-1zM10,25h1v1h-1zM13,25h1v1h-1zM14,25h1v1h-1zM15,25h1v1h-1zM17,25h1v1h-1zM20,25h1v1h-1zM22,25h1v1h-1zM26,25h1v1h-1zM27,25h1v1h-1zM2,26h1v1h-1zM4,26h1v1h-1zM5,26h1v1h-1zM6,26h1v1h-1zM8,26h1v1h-1zM11,26h1v1h-1zM14,26h1v1h-1zM19,26h1v1h-1zM20,26h1v1h-1zM22,26h1v1h-1zM23,26h1v1h-1zM24,26h1v1h-1zM25,26h1v1h-1zM26,26h1v1h-1zM28,26h1v1h-1zM29,26h1v1h-1zM30,26h1v1h-1zM2,27h1v1h-1zM4,27h1v1h-1zM5,27h1v1h-1zM6,27h1v1h-1zM8,27h1v1h-1zM10,27h1v1h-1zM11,27h1v1h-1zM13,27h1v1h-1zM14,27h1v1h-1zM16,27h1v1h-1zM17,27h1v1h-1zM18,27h1v1h-1zM25,27h1v1h-1zM26,27h1v1h-1zM27,27h1v1h-1zM30,27h1v1h-1zM2,28h1v1h-1zM4,28h1v1h-1zM5,28h1v1h-1zM6,28h1v1h-1zM8,28h1v1h-1zM10,28h1v1h-1zM12,28h1v1h-1zM13,28h1v1h-1zM14,28h1v1h-1zM15,28h1v1h-1zM19,28h1v1h-1zM20,28h1v1h-1zM21,28h1v1h-1zM25,28h1v1h-1zM28,28h1v1h-1zM30,28h1v1h-1zM2,29h1v1h-1zM8,29h1v1h-1zM11,29h1v1h-1zM14,29h1v1h-1zM15,29h1v1h-1zM17,29h1v1h-1zM21,29h1v1h-1zM22,29h1v1h-1zM24,29h1v1h-1zM25,29h1v1h-1zM27,29h1v1h-1zM29,29h1v1h-1zM2,30h1v1h-1zM3,30h1v1h-1zM4,30h1v1h-1zM5,30h1v1h-1zM6,30h1v1h-1zM7,30h1v1h-1zM8,30h1v1h-1zM10,30h1v1h-1zM11,30h1v1h-1zM12,30h1v1h-1zM13,30h1v1h-1zM15,30h1v1h-1zM17,30h1v1h-1zM20,30h1v1h-1zM21,30h1v1h-1zM22,30h1v1h-1zM24,30h1v1h-1zM25,30h1v1h-1zM29,30h1v1h-1z"/></svg>
+  </div>
+</section>
+
+<!-- SLIDE 3: The QA Reality Check -->
+<section id="qa-reality" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-amber">THE REALITY OF MODERN ENGINEERING</span>
+    <h2 style="margin-top:16px;font-size:60px">Writing Code is Cheap. Verifying it is Hard.</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div class="card" style="border-left:4px solid #E24A4A">
+      <h3 style="color:#E24A4A;font-size:32px">The Traditional Testing Bottleneck</h3>
+      <ul style="color:#C9D3DC;display:flex;flex-direction:column;gap:12px;margin-top:8px">
+        <li>Developers write happy-path tests to pass CI/CD deadlines.</li>
+        <li>Edge cases, boundary conditions, and race states are overlooked.</li>
+        <li>Manual QA matrices don't scale with daily deployment cycles.</li>
+        <li>Production users end up discovering the edge cases.</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left:4px solid #3CCFB0">
+      <h3 style="color:#3CCFB0;font-size:32px">The AI Opportunity</h3>
+      <ul style="color:#C9D3DC;display:flex;flex-direction:column;gap:12px;margin-top:8px">
+        <li>LLMs excel at rapid combinatorial analysis and boundary fuzzing.</li>
+        <li>AI acts as a tireless adversarial tester thinking like a malicious user.</li>
+        <li>Generates regression suites from raw business specifications.</li>
+        <li>Frees developers to focus on high-level architecture and UX.</li>
+      </ul>
+    </div>
+  </div>
+  <div style="background:#16202B;border-radius:12px;padding:16px 28px;border-left:4px solid #F5A623">
+    <p style="font-size:22px;color:#A7B6C2"><strong style="color:#F5A623">Key Metric:</strong> Industry studies show that fixing a defect in production costs <strong style="color:#FFF">30x to 100x</strong> more than catching it during the unit testing phase.</p>
+  </div>
+</section>
+
+<!-- SLIDE 4: Deterministic vs Probabilistic -->
+<section id="deterministic-vs-probabilistic" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-purple">THE CORE MENTAL MODEL</span>
+    <h2 style="margin-top:16px;font-size:60px">Deterministic vs. Probabilistic Systems</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="badge badge-teal">DETERMINISTIC</span>
+        <h3 style="color:#3CCFB0;font-size:32px;margin:0">Compilers &amp; Pytest</h3>
+      </div>
+      <p style="color:#A7B6C2;font-size:24px">Zero tolerance for ambiguity. Same input always yields the exact same binary outcome.</p>
+      <div class="code-block" style="font-size:18px">
+assert report.is_valid() == True<br>
+assert response.status_code == 200<br>
+assert len(incident.photos) &gt;= 1
+      </div>
+      <p style="color:#6C7D8B;font-size:20px">&bull; Predictable &bull; Executable &bull; Objective truth gatekeeper</p>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="badge badge-amber">PROBABILISTIC</span>
+        <h3 style="color:#F5A623;font-size:32px;margin:0">LLMs &amp; Reasoning Models</h3>
+      </div>
+      <p style="color:#A7B6C2;font-size:24px">Token probability distributions. Creative, semantic, exploratory, but subject to hallucination.</p>
+      <div class="code-block" style="font-size:18px">
+"What if the user passes an empty string inside a list: ['']?"<br>
+"What happens if length is exactly 10 characters?"<br>
+"What if timestamp has an offset timezone?"
+      </div>
+      <p style="color:#6C7D8B;font-size:20px">&bull; Creative exploration &bull; Discovers unknowns &bull; Non-deterministic</p>
+    </div>
+  </div>
+  <div style="background:rgba(60,207,176,0.1);border-radius:12px;padding:18px 32px;border:1px solid rgba(60,207,176,0.3)">
+    <p style="font-size:24px;color:#EEF1EC"><strong style="color:#3CCFB0">The Golden Rule of AI QA:</strong> Use probabilistic AI to <em>explore and generate</em> test cases; rely on deterministic test runners to <em>execute and enforce</em> truth.</p>
+  </div>
+</section>
+
+<!-- SLIDE 5: 4 Levels of AI Testing -->
+<section id="levels-of-qa" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-blue">MATURITY MODEL</span>
+    <h2 style="margin-top:16px;font-size:60px">The 4 Levels of AI-Assisted Testing</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:24px">
+    <div class="card" style="padding:28px">
+      <span class="badge badge-teal" style="font-size:14px">LEVEL 1</span>
+      <h3 style="font-size:24px;color:#EEF1EC;margin-top:8px">Syntax &amp; Boilerplate</h3>
+      <p style="font-size:20px;color:#A7B6C2;line-height:1.4">Writing pytest fixtures, mock objects, and repetitive test function definitions from existing signatures.</p>
+      <span style="font-family:'JetBrains Mono', monospace;font-size:14px;color:#6C7D8B">Speed multiplier</span>
+    </div>
+    <div class="card" style="padding:28px;border-top:3px solid #3CCFB0">
+      <span class="badge badge-teal" style="font-size:14px">LEVEL 2</span>
+      <h3 style="font-size:24px;color:#EEF1EC;margin-top:8px">Boundary &amp; Equivalence</h3>
+      <p style="font-size:20px;color:#A7B6C2;line-height:1.4">Deriving Boundary Value Analysis (BVA) and Equivalence Partitioning from requirements documents.</p>
+      <span style="font-family:'JetBrains Mono', monospace;font-size:14px;color:#3CCFB0">Today's Focus</span>
+    </div>
+    <div class="card" style="padding:28px">
+      <span class="badge badge-amber" style="font-size:14px">LEVEL 3</span>
+      <h3 style="font-size:24px;color:#EEF1EC;margin-top:8px">Semantic Mutation &amp; Fuzzing</h3>
+      <p style="font-size:20px;color:#A7B6C2;line-height:1.4">Mutating business state machines, generating adversarial payloads, and detecting memory/concurrency race states.</p>
+      <span style="font-family:'JetBrains Mono', monospace;font-size:14px;color:#F5A623">High Leverage</span>
+    </div>
+    <div class="card" style="padding:28px;border-top:3px solid #BA68C8">
+      <span class="badge badge-purple" style="font-size:14px">LEVEL 4</span>
+      <h3 style="font-size:24px;color:#EEF1EC;margin-top:8px">Autonomous QA Agents</h3>
+      <p style="font-size:20px;color:#A7B6C2;line-height:1.4">Multi-agent CI/CD bots that review diffs, locate unhandled exceptions, write test cases, and patch bugs.</p>
+      <span style="font-family:'JetBrains Mono', monospace;font-size:14px;color:#BA68C8">Enterprise Scale</span>
+    </div>
+  </div>
+  <div style="background:#16202B;border-radius:12px;padding:16px 28px">
+    <p style="font-size:20px;color:#A7B6C2">Most students operate at <strong style="color:#FFF">Level 1</strong>. By the end of this workshop, you will operate at <strong style="color:#3CCFB0">Level 2 and 3</strong>.</p>
+  </div>
+</section>
+
+<!-- SLIDE 6: Enterprise Case Study: Alibaba OCR -->
+<section id="enterprise-alibaba-ocr" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <div style="display:flex;align-items:center;gap:16px">
+      <span class="badge badge-purple">ENTERPRISE SPOTLIGHT</span>
+      <span style="font-family:'JetBrains Mono', monospace;font-size:18px;color:#F5A623">&#9733; 27,000+ GitHub Stars</span>
+    </div>
+    <h2 style="margin-top:16px;font-size:56px">Alibaba's <code style="color:#3CCFB0;font-size:52px">open-code-review</code> (OCR)</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:40px">
+    <div class="card" style="gap:20px">
+      <h3 style="font-size:28px;color:#3CCFB0">Automated Code Review &amp; Quality Gatekeeping</h3>
+      <p style="font-size:22px;color:#C9D3DC;line-height:1.45">
+        At Alibaba's scale (hundreds of thousands of daily PRs across Taobao, Tmall, and Alibaba Cloud), human code review cannot catch every regression before production.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <span style="color:#3CCFB0;font-size:22px">&#10003;</span>
+          <p style="font-size:20px;color:#A7B6C2"><strong>Static AST Slicing:</strong> Deterministically isolates modified code paths and syntax trees from Git diffs.</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <span style="color:#3CCFB0;font-size:22px">&#10003;</span>
+          <p style="font-size:20px;color:#A7B6C2"><strong>Multi-Agent Bug Detection:</strong> AI agents audit for Null Pointer Exceptions (NPEs), concurrency deadlocks, and boundary errors.</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <span style="color:#3CCFB0;font-size:22px">&#10003;</span>
+          <p style="font-size:20px;color:#A7B6C2"><strong>Automated Test Synthesis:</strong> Directly writes and proposes unit test assertions covering the modified logic.</p>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="card" style="background:#0B1017;border-left:4px solid #BA68C8">
+        <h4 style="font-size:20px;color:#BA68C8;font-family:'JetBrains Mono', monospace">Repository Details</h4>
+        <p style="font-size:18px;color:#A7B6C2;font-family:'JetBrains Mono', monospace;margin-top:4px">github.com/alibaba/open-code-review</p>
+        <p style="font-size:18px;color:#C9D3DC;margin-top:8px">Used across Alibaba Group to automate PR verification, reduce manual review overhead by 40%, and eliminate zero-day regression leaks.</p>
+      </div>
+      <div class="card" style="background:#0B1017;border-left:4px solid #3CCFB0">
+        <h4 style="font-size:20px;color:#3CCFB0;font-family:'JetBrains Mono', monospace">Sibling: Alibaba Markov Platform</h4>
+        <p style="font-size:18px;color:#C9D3DC;margin-top:4px">Alibaba's <code>intelligent-test-platform</code>: automated test case recommendation, mock synthesis, and smart regression test selection.</p>
+      </div>
+    </div>
+  </div>
+  <div style="background:#16202B;border-radius:12px;padding:16px 28px;border-left:4px solid #3CCFB0">
+    <p style="font-size:20px;color:#A7B6C2"><strong style="color:#3CCFB0">The Enterprise Blueprint:</strong> Notice that Alibaba doesn't replace engineers with AI—they insert AI as an <strong>automated quality gate</strong> in the pull request pipeline.</p>
+  </div>
+</section>
+
+<!-- SLIDE 7: The Hybrid Architecture -->
+<section id="hybrid-architecture" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-teal">SYSTEM DESIGN</span>
+    <h2 style="margin-top:16px;font-size:60px">The Enterprise Hybrid QA Pipeline</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:20px">
+    <div class="card" style="border-top:4px solid #64B5F6">
+      <span class="badge badge-blue" style="font-size:12px">STAGE 1: DETERMINISTIC</span>
+      <h3 style="font-size:22px;color:#EEF1EC;margin-top:8px">Code &amp; Spec Extraction</h3>
+      <p style="font-size:18px;color:#A7B6C2">Git diff slicing, AST parsing, and extracting interface schemas &amp; business requirements.</p>
+    </div>
+    <div class="card" style="border-top:4px solid #BA68C8">
+      <span class="badge badge-purple" style="font-size:12px">STAGE 2: PROBABILISTIC</span>
+      <h3 style="font-size:22px;color:#EEF1EC;margin-top:8px">Reasoning &amp; Edge Cases</h3>
+      <p style="font-size:18px;color:#A7B6C2">LLM analyzes boundary thresholds, negative workflows, data type edge cases, and security vectors.</p>
+    </div>
+    <div class="card" style="border-top:4px solid #F5A623">
+      <span class="badge badge-amber" style="font-size:12px">STAGE 3: CODE GEN</span>
+      <h3 style="font-size:22px;color:#EEF1EC;margin-top:8px">Structured Pytest Suite</h3>
+      <p style="font-size:18px;color:#A7B6C2">Generates strict, executable Python test cases with assertions anchored to the specification.</p>
+    </div>
+    <div class="card" style="border-top:4px solid #3CCFB0">
+      <span class="badge badge-teal" style="font-size:12px">STAGE 4: DETERMINISTIC</span>
+      <h3 style="font-size:22px;color:#EEF1EC;margin-top:8px">Runner Execution Gate</h3>
+      <p style="font-size:18px;color:#A7B6C2">Pytest runs in sandbox. Pass = Merge. Fail = Reject PR or automatically trigger debugging loop.</p>
+    </div>
+  </div>
+  <div class="card" style="background:#0B1017;padding:24px 32px">
+    <p style="font-family:'JetBrains Mono', monospace;font-size:20px;color:#3CCFB0">
+      [Git Diff &amp; Spec] &rarr; [AST Slicer] &rarr; [LLM Adversarial Reasoning] &rarr; [Pytest Execution Gate] &rarr; [Pass / Fail]
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 8: 3 Antipatterns of Vibe-Testing -->
+<section id="vibe-testing-antipatterns" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-red">PITFALLS TO AVOID</span>
+    <h2 style="margin-top:16px;font-size:60px">The 3 Antipatterns of "Vibe-Testing"</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:28px">
+    <div class="card" style="border-left:4px solid #E24A4A">
+      <h3 style="font-size:26px;color:#E24A4A">1. Testing the Implementation</h3>
+      <p style="font-size:19px;color:#C9D3DC;line-height:1.45">
+        <strong>The Mistake:</strong> Feeding buggy code to an LLM and asking: <em>"Write tests for this."</em>
+      </p>
+      <p style="font-size:18px;color:#A7B6C2;margin-top:8px">
+        The LLM assumes existing behavior is correct and writes assertions that enshrine the bug!
+      </p>
+    </div>
+    <div class="card" style="border-left:4px solid #E24A4A">
+      <h3 style="font-size:26px;color:#E24A4A">2. Tautological Mocks</h3>
+      <p style="font-size:19px;color:#C9D3DC;line-height:1.45">
+        <strong>The Mistake:</strong> Over-mocking until you are merely asserting that the mock returns what you told it to return.
+      </p>
+      <p style="font-size:18px;color:#A7B6C2;margin-top:8px">
+        Tests pass 100%, but the actual underlying database or API fails completely in staging.
+      </p>
+    </div>
+    <div class="card" style="border-left:4px solid #E24A4A">
+      <h3 style="font-size:26px;color:#E24A4A">3. Happy-Path Complacency</h3>
+      <p style="font-size:19px;color:#C9D3DC;line-height:1.45">
+        <strong>The Mistake:</strong> Relying on standard LLM responses that default to standard, pleasant inputs.
+      </p>
+      <p style="font-size:18px;color:#A7B6C2;margin-top:8px">
+        Fails to test whitespace-only strings, boundary numbers (e.g. 0, -1, 10), and injection vectors.
+      </p>
+    </div>
+  </div>
+  <div style="background:#16202B;border-radius:12px;padding:16px 28px;border-left:4px solid #F5A623">
+    <p style="font-size:20px;color:#A7B6C2"><strong style="color:#F5A623">Solution:</strong> The <em>Specification Anchor Technique</em> — anchor test assertions to the written contract, NOT the code.</p>
+  </div>
+</section>
+
+<!-- SLIDE 9: The Specification Anchor Technique -->
+<section id="spec-anchor-technique" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-teal">PROMPT ENGINEERING FOR QA</span>
+    <h2 style="margin-top:16px;font-size:56px">The Specification Anchor Technique</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div class="card" style="border-left:4px solid #E24A4A">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="badge badge-red">DO NOT DO THIS</span>
+      </div>
+      <div class="code-block" style="font-size:17px;color:#E24A4A;background:rgba(226,74,74,0.08)">
+"Here is my Python function.<br>
+Write unit tests using pytest for it."
+      </div>
+      <p style="font-size:18px;color:#A7B6C2"><strong>Result:</strong> The LLM reads the buggy code, treats the bug as expected behavior, and writes tests that pass on broken software.</p>
+    </div>
+    <div class="card" style="border-left:4px solid #3CCFB0">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="badge badge-teal">RECOMMENDED ANCHOR PROMPT</span>
+      </div>
+      <div class="code-block" style="font-size:16px;color:#3CCFB0;background:rgba(60,207,176,0.08)">
+"Here is the BUSINESS SPECIFICATION: [...]<br>
+Here is the IMPLEMENTATION CODE: [...]<br><br>
+Analyze all discrepancies between the spec and code.<br>
+Apply Boundary Value Analysis (min, min+1, max-1, max).<br>
+Generate pytest assertions that test against the SPEC,<br>
+NOT the current implementation."
+      </div>
+      <p style="font-size:18px;color:#A7B6C2"><strong>Result:</strong> Discrepancies immediately show up as test failures in Pytest, pointing directly to the bugs.</p>
+    </div>
+  </div>
+  <div style="background:#16202B;border-radius:12px;padding:16px 28px">
+    <p style="font-size:20px;color:#A7B6C2">Tests are only valuable when they have the potential to <strong>FAIL</strong> when the requirements are violated.</p>
+  </div>
+</section>
+
+<!-- SLIDE 10: Today's System Under Test -->
+<section id="system-under-test" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-amber">TODAY'S LAB MISSION</span>
+    <h2 style="margin-top:16px;font-size:56px">System Under Test: <code style="color:#F5A623">WarehouseIncidentReport</code></h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:40px">
+    <div class="card">
+      <h3 style="font-size:26px;color:#EEF1EC">Business Specification Contract</h3>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:12px"><span style="color:#3CCFB0">&bull;</span><p style="font-size:20px;color:#C9D3DC"><strong>Incident ID:</strong> Must match regex <code style="color:#3CCFB0">^INC-\d{4,8}$</code> (e.g. <code>INC-1001</code>).</p></div>
+        <div style="display:flex;gap:12px"><span style="color:#3CCFB0">&bull;</span><p style="font-size:20px;color:#C9D3DC"><strong>Severity:</strong> Must be one of <code>LOW</code>, <code>MEDIUM</code>, <code>HIGH</code>, <code>CRITICAL</code>.</p></div>
+        <div style="display:flex;gap:12px"><span style="color:#3CCFB0">&bull;</span><p style="font-size:20px;color:#C9D3DC"><strong>Summary:</strong> Minimum 10 characters, maximum 200 characters.</p></div>
+        <div style="display:flex;gap:12px"><span style="color:#3CCFB0">&bull;</span><p style="font-size:20px;color:#C9D3DC"><strong>Photo Requirement:</strong> Incidents marked <code>CRITICAL</code> require at least one valid photo filename.</p></div>
+        <div style="display:flex;gap:12px"><span style="color:#3CCFB0">&bull;</span><p style="font-size:20px;color:#C9D3DC"><strong>Timestamp:</strong> Cannot be set in the future.</p></div>
+      </div>
+    </div>
+    <div class="card" style="background:#0B1017">
+      <h3 style="font-size:24px;color:#F5A623">The Initial Status</h3>
+      <p style="font-size:20px;color:#A7B6C2">The starter test suite currently passes <strong>4 of 4 tests</strong>:</p>
+      <div class="code-block" style="font-size:17px;color:#3CCFB0">
+test_valid_incident PASSED<br>
+test_invalid_severity PASSED<br>
+test_summary_too_short PASSED<br>
+test_critical_requires_photo PASSED<br>
+<span style="color:#FFF">====== 4 passed in 0.04s ======</span>
+      </div>
+      <p style="font-size:18px;color:#E24A4A;margin-top:4px">&#9888; <strong>Warning:</strong> Two subtle bugs are lurking in the code right now!</p>
+    </div>
+  </div>
+  <div style="background:#16202B;border-radius:12px;padding:16px 28px">
+    <p style="font-size:20px;color:#A7B6C2">Passing tests do not prove the absence of bugs; they only prove that your test cases didn't look in the right places.</p>
+  </div>
+</section>
+
+<!-- SLIDE 11: Setup Instructions -->
+<section id="setup-instructions" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-teal">HANDS-ON LAB</span>
+    <h2 style="margin-top:16px;font-size:56px">Get Your Environment Ready (2 Mins)</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div class="card">
+      <h3 style="font-size:26px;color:#3CCFB0">Step 1: Download &amp; Extract</h3>
+      <p style="font-size:20px;color:#A7B6C2">Grab the starter kit from your course directory or download zip:</p>
+      <div class="code-block" style="font-size:16px">
+# Locate the starter archive:<br>
+INFT2700_AI_Test_Automation_Starter.zip<br><br>
+# Extract files:<br>
+- app.py         (System Under Test)<br>
+- test_app.py    (Pytest Suite)<br>
+- README.md      (Mission Guide)
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:26px;color:#3CCFB0">Step 2: Activate &amp; Run Baseline</h3>
+      <p style="font-size:20px;color:#A7B6C2">Open in VS Code or terminal and run pytest:</p>
+      <div class="code-block" style="font-size:16px">
+# Create &amp; activate virtual environment:<br>
+python -m venv .venv<br>
+source .venv/bin/activate  # (Windows: .venv\Scripts\activate)<br><br>
+# Install &amp; verify:<br>
+pip install pytest<br>
+pytest -v
+      </div>
+    </div>
+  </div>
+  <div style="background:rgba(60,207,176,0.1);border-radius:12px;padding:16px 28px;border:1px solid rgba(60,207,176,0.3)">
+    <p style="font-size:22px;color:#EEF1EC">&#128640; Once you see <strong>"4 passed"</strong>, you are ready for Mission 1.</p>
+  </div>
+</section>
+
+<!-- SLIDE 12: Mission 1: Boundary Bug -->
+<section id="mission-1" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-amber">MISSION 1</span>
+    <h2 style="margin-top:16px;font-size:56px">Expose Bug #1: The Boundary Off-by-One</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div class="card">
+      <h3 style="font-size:24px;color:#EEF1EC">Specification vs. Code</h3>
+      <div style="background:#0B1017;padding:16px;border-radius:8px">
+        <p style="font-size:18px;color:#3CCFB0;font-family:'JetBrains Mono', monospace">SPEC: "Summary must be at least 10 characters long."</p>
+      </div>
+      <div style="background:#0B1017;padding:16px;border-radius:8px;margin-top:12px">
+        <p style="font-size:18px;color:#E24A4A;font-family:'JetBrains Mono', monospace">CODE in app.py:<br>if len(self.summary.strip()) &lt;= 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;return False</p>
+      </div>
+      <p style="font-size:19px;color:#A7B6C2;margin-top:8px">Notice the off-by-one: A summary with <em>exactly 10 characters</em> is rejected as invalid!</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:24px;color:#3CCFB0">Your Task with AI</h3>
+      <p style="font-size:19px;color:#C9D3DC;line-height:1.45">Prompt your AI tool using Boundary Value Analysis:</p>
+      <div class="code-block" style="font-size:16px;color:#3CCFB0">
+"Generate test cases testing the summary length at<br>
+the exact boundaries: 9 chars, 10 chars, and 11 chars.<br>
+Assert that 10 and 11 chars are VALID according to spec."
+      </div>
+      <p style="font-size:18px;color:#E24A4A;margin-top:8px">Run <code>pytest -v</code> &rarr; <strong>FAIL!</strong> The bug is exposed.</p>
+    </div>
+  </div>
+  <div style="background:#16202B;border-radius:12px;padding:16px 28px">
+    <p style="font-size:20px;color:#A7B6C2">Boundary errors are among the most common defects in production software. AI finds them instantaneously when asked to perform BVA.</p>
+  </div>
+</section>
+
+<!-- SLIDE 13: Mission 2: Photo Bypass Bug -->
+<section id="mission-2" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-amber">MISSION 2</span>
+    <h2 style="margin-top:16px;font-size:56px">Expose Bug #2: The Photo Array Bypass</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div class="card">
+      <h3 style="font-size:24px;color:#EEF1EC">Specification vs. Code</h3>
+      <div style="background:#0B1017;padding:16px;border-radius:8px">
+        <p style="font-size:18px;color:#3CCFB0;font-family:'JetBrains Mono', monospace">SPEC: "CRITICAL incidents require at least one valid photo."</p>
+      </div>
+      <div style="background:#0B1017;padding:16px;border-radius:8px;margin-top:12px">
+        <p style="font-size:18px;color:#E24A4A;font-family:'JetBrains Mono', monospace">CODE in app.py:<br>if self.severity == "CRITICAL" and not self.photos:<br>&nbsp;&nbsp;&nbsp;&nbsp;return False</p>
+      </div>
+      <p style="font-size:19px;color:#A7B6C2;margin-top:8px">What happens if a user submits: <code style="color:#F5A623">photos=[""]</code> or <code style="color:#F5A623">photos=["   "]</code>?</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:24px;color:#3CCFB0">Your Task with AI</h3>
+      <p style="font-size:19px;color:#C9D3DC;line-height:1.45">Prompt your AI assistant for negative semantic fuzzing:</p>
+      <div class="code-block" style="font-size:16px;color:#3CCFB0">
+"What malicious or evasive inputs could a user provide to<br>
+the photos list to bypass the CRITICAL photo requirement?<br>
+Write pytest assertions that reject empty-string photos."
+      </div>
+      <p style="font-size:18px;color:#E24A4A;margin-top:8px">Run <code>pytest -v</code> &rarr; <strong>FAIL!</strong> The bypass is captured.</p>
+    </div>
+  </div>
+  <div style="background:#16202B;border-radius:12px;padding:16px 28px">
+    <p style="font-size:20px;color:#A7B6C2">Passing an empty string is a classic semantic exploit. The list is non-empty, but the content contains zero photos!</p>
+  </div>
+</section>
+
+<!-- SLIDE 14: Mission 3: Parametrized Testing -->
+<section id="mission-3" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-teal">MISSION 3</span>
+    <h2 style="margin-top:16px;font-size:56px">Automate with <code style="color:#3CCFB0">@pytest.mark.parametrize</code></h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div class="card">
+      <h3 style="font-size:24px;color:#EEF1EC">From 1 Test to 20 Matrix Scenarios</h3>
+      <p style="font-size:19px;color:#A7B6C2;line-height:1.4">Don't write 20 separate test functions. Use pytest table parametrization to test all ID regex patterns, special chars, and boundary dates:</p>
+      <div class="code-block" style="font-size:15px;color:#E0E6ED">
+@pytest.mark.parametrize("incident_id, expected", [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("INC-1001", True),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("INC-12345678", True),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("INC-123", False),       # Too short<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("INC-123456789", False),   # Too long<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("BUG-1001", False),       # Wrong prefix<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("INC-ABCD", False),       # Non-numeric<br>
+])<br>
+def test_id_regex_matrix(incident_id, expected):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;report = make_report(incident_id=incident_id)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;assert report.is_valid() == expected
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:24px;color:#3CCFB0">Prompting AI for Parametrization</h3>
+      <p style="font-size:19px;color:#C9D3DC;line-height:1.45">Give the regex and request a comprehensive matrix:</p>
+      <div class="code-block" style="font-size:16px;color:#3CCFB0">
+"Generate a pytest @pytest.mark.parametrize matrix for<br>
+the regex ^INC-\d{4,8}$ covering:<br>
+- Minimum length boundary (4 digits)<br>
+- Maximum length boundary (8 digits)<br>
+- Underflow (3 digits) &amp; Overflow (9 digits)<br>
+- Invalid prefixes and alphabetical values<br>
+- SQL injection / special character payloads"
+      </div>
+      <p style="font-size:18px;color:#A7B6C2;margin-top:8px">Within seconds, you have full equivalence partition coverage!</p>
+    </div>
+  </div>
+  <div style="background:#16202B;border-radius:12px;padding:16px 28px">
+    <p style="font-size:20px;color:#A7B6C2">Parametrization turns tests into executable specifications and documentation for your whole team.</p>
+  </div>
+</section>
+
+<!-- SLIDE 15: Fixing the Bugs -->
+<section id="fixing-the-bugs" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-teal">CLOSE THE LOOP</span>
+    <h2 style="margin-top:16px;font-size:56px">Patching the SUT &amp; Achieving 100% Green</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div class="card" style="border-left:4px solid #3CCFB0">
+      <h3 style="font-size:24px;color:#3CCFB0">Fix #1: Summary Length Boundary</h3>
+      <div class="code-block" style="font-size:16px">
+# Before (Bug):<br>
+if len(self.summary.strip()) &lt;= 10:  # Rejects 10 chars!<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return False<br><br>
+# After (Fixed):<br>
+if len(self.summary.strip()) &lt; 10:   # Accepts 10 chars<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return False
+      </div>
+    </div>
+    <div class="card" style="border-left:4px solid #3CCFB0">
+      <h3 style="font-size:24px;color:#3CCFB0">Fix #2: Valid Photo Filenames</h3>
+      <div class="code-block" style="font-size:16px">
+# Before (Bug):<br>
+if self.severity == "CRITICAL" and not self.photos:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return False<br><br>
+# After (Fixed):<br>
+valid_photos = [p.strip() for p in self.photos if p and p.strip()]<br>
+if self.severity == "CRITICAL" and len(valid_photos) == 0:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return False
+      </div>
+    </div>
+  </div>
+  <div class="card" style="background:#0B1017;padding:24px 32px">
+    <p style="font-family:'JetBrains Mono', monospace;font-size:22px;color:#3CCFB0">
+      $ pytest -v<br>
+      ====== <strong style="color:#FFF">14 passed</strong> in 0.08s ====== &#9989; 100% Spec Compliant
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 16: Beyond Code Coverage -->
+<section id="beyond-coverage" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-purple">SENIOR ENGINEERING MINDSET</span>
+    <h2 style="margin-top:16px;font-size:56px">Beyond Line Coverage: Mutation Testing</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:28px">
+    <div class="card">
+      <h3 style="font-size:24px;color:#64B5F6">Line Coverage</h3>
+      <p style="font-size:19px;color:#A7B6C2;line-height:1.4">Measures which lines were executed during the test run.</p>
+      <div style="background:#0B1017;padding:14px;border-radius:8px;margin-top:8px">
+        <p style="font-size:16px;color:#F5A623;font-family:'JetBrains Mono', monospace">Flaw: A test that calls a function without any assertions still achieves 100% line coverage!</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:24px;color:#BA68C8">Branch Coverage</h3>
+      <p style="font-size:19px;color:#A7B6C2;line-height:1.4">Measures whether every boolean branch (true/false) was exercised.</p>
+      <div style="background:#0B1017;padding:14px;border-radius:8px;margin-top:8px">
+        <p style="font-size:16px;color:#A7B6C2;font-family:'JetBrains Mono', monospace">Better: Guarantees both if and else pathways are visited.</p>
+      </div>
+    </div>
+    <div class="card" style="border:1px solid rgba(60,207,176,0.4)">
+      <h3 style="font-size:24px;color:#3CCFB0">Mutation Testing (Gold Standard)</h3>
+      <p style="font-size:19px;color:#A7B6C2;line-height:1.4">Automatically mutates your code (e.g. changes <code>&gt;</code> to <code>&gt;=</code>) and checks if tests fail.</p>
+      <div style="background:#0B1017;padding:14px;border-radius:8px;margin-top:8px">
+        <p style="font-size:16px;color:#3CCFB0;font-family:'JetBrains Mono', monospace">"Did your test kill the mutant?" If not, your tests are weak.</p>
+      </div>
+    </div>
+  </div>
+  <div style="background:#16202B;border-radius:12px;padding:16px 28px">
+    <p style="font-size:20px;color:#A7B6C2">Tools to check out: <code style="color:#3CCFB0">mutmut</code> for Python, <code style="color:#3CCFB0">Stryker</code> for JavaScript/TypeScript.</p>
+  </div>
+</section>
+
+<!-- SLIDE 17: Connection to Course Projects -->
+<section id="course-projects" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-amber">INFT 2700 APPLICATION</span>
+    <h2 style="margin-top:16px;font-size:56px">Applying This to Your Project Charter &amp; Sprints</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div class="card">
+      <h3 style="font-size:26px;color:#F5A623">This Week's Project Execution</h3>
+      <ul style="color:#C9D3DC;display:flex;flex-direction:column;gap:14px;margin-top:8px">
+        <li>You finalized your Unified Team Charters and team norms.</li>
+        <li>This week is dedicated to sprint execution: defining tasks and building features.</li>
+        <li>Hold coordination roles (Project Managers, Tech Leads) accountable.</li>
+        <li>Friday requirement: <strong>Weekly Status Flash Update</strong>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="font-size:26px;color:#3CCFB0">Integrating Automated QA Into Your Repo</h3>
+      <ul style="color:#C9D3DC;display:flex;flex-direction:column;gap:14px;margin-top:8px">
+        <li>Anchor test cases directly to user stories from your charter.</li>
+        <li>Set up a simple GitHub Actions CI workflow to run tests on every push.</li>
+        <li>Use AI prompting to generate boundary test cases for your API endpoints and schemas.</li>
+        <li>Protect your <code>main</code> branch with passing test status checks.</li>
+      </ul>
+    </div>
+  </div>
+  <div style="background:#16202B;border-radius:12px;padding:16px 28px">
+    <p style="font-size:20px;color:#A7B6C2">A project without automated tests is technical debt waiting to explode during final presentations.</p>
+  </div>
+</section>
+
+<!-- SLIDE 18: Summary & Key Takeaways -->
+<section id="summary" style="background:#0E1621;color:#EEF1EC;padding:110px;display:flex;flex-direction:column;justify-content:space-between">
+  <div>
+    <span class="badge badge-teal">SUMMARY</span>
+    <h2 style="margin-top:16px;font-size:56px">Key Takeaways for Your Developer Toolkit</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:32px">
+    <div class="card">
+      <h3 style="font-size:24px;color:#3CCFB0">1. Hybrid Architecture</h3>
+      <p style="font-size:20px;color:#C9D3DC;line-height:1.45">
+        Never trust probabilistic AI output blindly. Always feed AI-generated tests into a deterministic test runner (Pytest/Jest/JUnit).
+      </p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:24px;color:#F5A623">2. Anchor to Specification</h3>
+      <p style="font-size:20px;color:#C9D3DC;line-height:1.45">
+        Provide both the contract/spec and the code. Force the AI to find discrepancies, rather than assuming existing code is correct.
+      </p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:24px;color:#BA68C8">3. Think Like an Adversary</h3>
+      <p style="font-size:20px;color:#C9D3DC;line-height:1.45">
+        Use AI to generate boundary values (BVA), malformed data, and malicious edge cases that humans don't think to write.
+      </p>
+    </div>
+  </div>
+  <div style="background:rgba(60,207,176,0.1);border-radius:12px;padding:20px 32px;border:1px solid rgba(60,207,176,0.3)">
+    <p style="font-size:24px;color:#EEF1EC"><strong>Enterprise Precedent:</strong> Tools like Alibaba's <code>open-code-review</code> prove that AI-driven quality gates are the future of software delivery.</p>
+  </div>
+</section>
+
+<!-- SLIDE 19: Q&A and Live Hacking -->
+<section id="qa-hacking" style="background:#0E1621;color:#EEF1EC;padding:120px;display:flex;flex-direction:column;justify-content:space-between">
+  <div style="display:flex;flex-direction:column;gap:24px">
+    <div>
+      <span class="badge badge-teal">OPEN LAB &bull; LIVE HACKING</span>
+    </div>
+    <h1 style="color:#EEF1EC;font-size:80px">Q&amp;A &amp; Live Hacking Time</h1>
+    <p style="font-size:36px;color:#3CCFB0;font-weight:500">
+      Open your IDEs, extract the starter kit, and run your first test suite!
+    </p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;background:#16202B;border-radius:16px;padding:36px;border:1px solid rgba(255,255,255,0.08)">
+    <div>
+      <p style="font-size:22px;color:#A7B6C2;font-family:'JetBrains Mono', monospace">Workshop Resources:</p>
+      <ul style="color:#EEF1EC;margin-top:12px;display:flex;flex-direction:column;gap:8px">
+        <li>Slides: <a href="https://cluster.redmond.link/inft2700.html" style="color:#3CCFB0;text-decoration:none">cluster.redmond.link/inft2700.html</a></li>
+        <li>Starter: <code>INFT2700_AI_Test_Automation_Starter.zip</code></li>
+        <li>Reference: <code>github.com/alibaba/open-code-review</code></li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start">
+      <p style="font-size:24px;color:#F5A623;font-weight:600">Friday Milestone Reminder:</p>
+      <p style="font-size:20px;color:#A7B6C2;margin-top:6px">Status Flash Updates are due by end of week. Coordinate with your team PM &amp; execute your sprint!</p>
+    </div>
+  </div>
+</section>
+
+</div></div>
+
+<nav id="bar" aria-label="Slide controls">
+  <button id="prev" aria-label="Previous slide">&#8249;</button>
+  <span id="count" aria-live="polite"></span>
+  <button id="next" aria-label="Next slide">&#8250;</button>
+  <button id="full">Full screen</button>
+</nav>
+
+<script>
+  const slides = [...document.querySelectorAll("#deck > section")];
+  const deckEl = document.getElementById("deck");
+  const fullBtn = document.getElementById("full");
+  let i = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 || 0, 0), slides.length - 1);
+
+  function fit() {
+    const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+    deckEl.style.transform = "scale(" + s + ")";
+  }
+  function show(n) {
+    i = Math.min(Math.max(n, 0), slides.length - 1);
+    slides.forEach((el, k) => el.classList.toggle("active", k === i));
+    document.getElementById("count").textContent = (i + 1) + " / " + slides.length;
+    history.replaceState(null, "", "#" + (i + 1));
+  }
+  const canFull = !!document.documentElement.requestFullscreen;
+  const full = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+  if (!canFull) fullBtn.hidden = true;
+  document.addEventListener("fullscreenchange", () => {
+    fullBtn.textContent = document.fullscreenElement ? "Exit full screen" : "Full screen";
+  });
+
+  addEventListener("resize", fit);
+  addEventListener("hashchange", () => show((parseInt(location.hash.slice(1), 10) || 1) - 1));
+  addEventListener("keydown", (e) => {
+    if (e.target.closest && e.target.closest("button") && (e.key === " " || e.key === "Enter")) return;
+    if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); show(i + 1); }
+    else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); show(i - 1); }
+    else if (e.key === "Home") show(0);
+    else if (e.key === "End") show(slides.length - 1);
+    else if (e.key.toLowerCase() === "f") full();
+  });
+  document.getElementById("stage").addEventListener("click", (e) => show(e.clientX < innerWidth / 3 ? i - 1 : i + 1));
+  let x0 = null;
+  addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  addEventListener("touchend", (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) show(dx < 0 ? i + 1 : i - 1);
+  });
+  document.getElementById("prev").onclick = () => show(i - 1);
+  document.getElementById("next").onclick = () => show(i + 1);
+  fullBtn.onclick = full;
+  fit(); show(i);
+</script>
+</body>
+</html>

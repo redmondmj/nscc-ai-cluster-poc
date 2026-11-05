@@ -132,7 +132,7 @@
       </div>
       <p style="color:#A7B6C2;font-size:22px">Zero tolerance for fuzziness. Same input always yields the exact same binary pass/fail result.</p>
       <div class="code-block" style="font-size:17px">
-assert report.is_valid() == True<br>
+assert success is True<br>
 expect(page.locator("#subtotal")).to_have_text("$100.00")
       </div>
       <p style="color:#6C7D8B;font-size:18px">&bull; Objective ground truth &bull; Automated CI/CD gatekeeper</p>
@@ -144,7 +144,7 @@ expect(page.locator("#subtotal")).to_have_text("$100.00")
       </div>
       <p style="color:#A7B6C2;font-size:22px">Statistical probability distributions. Creative, semantic, exploratory, but prone to hallucinations.</p>
       <div class="code-block" style="font-size:17px">
-"What if the user passes an empty string list: ['']?"<br>
+"What if the user passes photo_url='' or '   '?"<br>
 "What happens when adding product ID 2 after product 1?"
       </div>
       <p style="color:#6C7D8B;font-size:18px">&bull; Creative fuzzing &bull; Generates test matrices &bull; Non-deterministic</p>
@@ -241,7 +241,7 @@ expect(page.locator("#subtotal")).to_have_text("$100.00")
         <span class="badge badge-red">THE "VIBE-TESTING" TRAP</span>
       </div>
       <div class="code-block" style="font-size:16px;color:#E24A4A;background:rgba(226,74,74,0.08)">
-"Here is my Python function.<br>
+"Here is my Python function submit_issue_report.<br>
 Write unit tests using pytest for it."
       </div>
       <p style="font-size:18px;color:#A7B6C2"><strong>Fatal Flaw:</strong> The LLM reads the buggy code, assumes existing behavior is intended, and writes assertions that <em>guarantee the bug passes!</em></p>
@@ -252,7 +252,7 @@ Write unit tests using pytest for it."
       </div>
       <div class="code-block" style="font-size:15px;color:#3CCFB0;background:rgba(60,207,176,0.08)">
 "Here is the BUSINESS SPECIFICATION: [...]<br>
-Here is the IMPLEMENTATION CODE: [...]<br><br>
+Here is the IMPLEMENTATION CODE in app.py: [...]<br><br>
 Analyze discrepancies between the spec and code.<br>
 Apply Boundary Value Analysis (BVA).<br>
 Write assertions testing against the SPECIFICATION,<br>
@@ -280,9 +280,9 @@ NOT the current implementation."
       </div>
       <h3 style="color:#EEF1EC;font-size:26px">Pytest &amp; Boundary Bug Hunting</h3>
       <ul style="color:#C9D3DC;display:flex;flex-direction:column;gap:10px;font-size:20px">
-        <li><strong>SUT:</strong> <code>WarehouseIncidentReport</code> business contract.</li>
+        <li><strong>SUT:</strong> <code>submit_issue_report(payload)</code> in <code>app.py</code>.</li>
         <li><strong>Baseline:</strong> 4 initial tests pass (false sense of security).</li>
-        <li><strong>The Bugs:</strong> Boundary off-by-one &amp; empty photo bypass.</li>
+        <li><strong>The Bugs:</strong> Description length off-by-one &amp; empty <code>photo_url</code>.</li>
         <li><strong>Mission:</strong> Prompt AI with BVA &rarr; expose bugs &rarr; patch to 100% green.</li>
       </ul>
     </div>
@@ -313,26 +313,28 @@ NOT the current implementation."
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
     <div class="card" style="border-left:4px solid #E24A4A">
-      <h3 style="font-size:24px;color:#E24A4A">Bug #1: The Boundary Off-by-One</h3>
+      <h3 style="font-size:24px;color:#E24A4A">Bug #1: The Description Off-by-One</h3>
       <div class="code-block" style="font-size:15px">
 # Specification:<br>
-"Summary must be at least 10 characters long."<br><br>
-# Code in app.py:<br>
-if len(self.summary.strip()) &lt;= 10:  # &larr; BUG!<br>
-&nbsp;&nbsp;&nbsp;&nbsp;return False
+"Description must be 10 to 500 characters inclusive."<br><br>
+# Code in app.py (Line 51):<br>
+if len(desc.strip()) > 10:  # &larr; BUG: Uses '>' instead of '>='!<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pass<br>
+else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return False, "Must be at least 10 chars"
       </div>
-      <p style="font-size:18px;color:#C9D3DC">A summary with <strong>exactly 10 chars</strong> is rejected! BVA at 9, 10, and 11 immediately catches this.</p>
+      <p style="font-size:18px;color:#C9D3DC">A description with <strong>exactly 10 chars</strong> is rejected! BVA at 9, 10, and 11 immediately catches this.</p>
     </div>
     <div class="card" style="border-left:4px solid #E24A4A">
-      <h3 style="font-size:24px;color:#E24A4A">Bug #2: Empty-String Photo Bypass</h3>
+      <h3 style="font-size:24px;color:#E24A4A">Bug #2: Empty photo_url Bypass</h3>
       <div class="code-block" style="font-size:15px">
 # Specification:<br>
-"CRITICAL incidents require at least 1 valid photo."<br><br>
-# Code in app.py:<br>
-if self.severity == "CRITICAL" and not self.photos:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;return False  # &larr; BUG!
+"CRITICAL severity requires a non-empty photo_url."<br><br>
+# Code in app.py (Line 68):<br>
+if photo_url is None:  # &larr; BUG: Checks None, but allows empty strings!<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return False, "Critical requires photo"
       </div>
-      <p style="font-size:18px;color:#C9D3DC">Passing <code>photos=[""]</code> or <code>["  "]</code> evaluates to a non-empty list, slipping past the guard!</p>
+      <p style="font-size:18px;color:#C9D3DC">Passing <code>photo_url=""</code> or <code>"   "</code> is <em>not None</em>, so it slips right past the validation!</p>
     </div>
   </div>
   <div class="card" style="background:#0B1017;padding:20px 28px">
@@ -352,23 +354,24 @@ if self.severity == "CRITICAL" and not self.photos:<br>
     <div class="card">
       <h3 style="font-size:24px;color:#EEF1EC">From 1 Test to 20 Scenarios in a Table</h3>
       <div class="code-block" style="font-size:14px;line-height:1.35">
-@pytest.mark.parametrize("incident_id, expected", [<br>
-&nbsp;&nbsp;&nbsp;&nbsp;("INC-1001", True),         # Valid min length (4 digits)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;("INC-12345678", True),     # Valid max length (8 digits)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;("INC-123", False),         # Boundary underflow (3 digits)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;("INC-123456789", False),   # Boundary overflow (9 digits)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;("BUG-1001", False),        # Invalid prefix<br>
-&nbsp;&nbsp;&nbsp;&nbsp;("INC-ABCD", False),        # Alphabetical payload<br>
+@pytest.mark.parametrize("eq_id, expected", [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("WH-FL-101", True),         # Valid standard format<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("WH-CV-002", True),         # Valid standard format<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("FORKLIFT-99", False),      # Invalid prefix<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("WH-F-101", False),         # Single letter (expected 2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("WH-FL-10", False),         # 2 digits (expected 3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;("WH-FL-1001", False),       # 4 digits (expected 3)<br>
 ])<br>
-def test_id_regex_matrix(incident_id, expected):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;report = make_report(incident_id=incident_id)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;assert report.is_valid() == expected
+def test_equipment_id_regex_matrix(eq_id, expected):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;payload = make_payload(equipment_id=eq_id)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;success, _ = submit_issue_report(payload)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;assert success == expected
       </div>
     </div>
     <div class="card" style="background:#0B1017">
       <h3 style="font-size:22px;color:#3CCFB0">Why Parametrization Matters</h3>
       <ul style="color:#A7B6C2;display:flex;flex-direction:column;gap:12px;font-size:18px">
-        <li><strong>Executable Specification:</strong> Anyone reading the test file instantly understands all valid and invalid inputs.</li>
+        <li><strong>Executable Specification:</strong> Anyone reading the test file instantly understands all valid and invalid patterns for <code>^WH-[A-Z]{2}-\d{3}$</code>.</li>
         <li><strong>Zero Code Duplication:</strong> One test function executes dozens of boundary scenarios cleanly.</li>
         <li><strong>AI Synergy:</strong> LLMs generate massive, high-coverage boundary tables in seconds from regular expressions.</li>
       </ul>
